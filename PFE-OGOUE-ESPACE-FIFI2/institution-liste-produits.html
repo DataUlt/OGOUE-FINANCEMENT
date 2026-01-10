@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Liste des Produits (Institution)</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13eca4",
+                        "primary-dark": "#0eb57d",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#10221c",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#162e26",
+                        "text-main": "#111816",
+                        "text-secondary": "#61897c",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        aside.collapsed {
+            width: 80px;
+        }
+        aside.collapsed .sidebar-text {
+            display: none;
+        }
+        aside.collapsed .sidebar-header {
+            flex-direction: column;
+            justify-content: center;
+            padding: 12px;
+        }
+        aside.collapsed .sidebar-header h1,
+        aside.collapsed .sidebar-header p {
+            display: none;
+        }
+        aside.collapsed .sidebar-header .size-10 {
+            margin: 0;
+        }
+        aside.collapsed .sidebar-nav {
+            padding: 8px;
+        }
+        aside.collapsed .sidebar-nav a {
+            padding: 12px;
+            justify-content: center;
+        }
+        aside.collapsed .sidebar-user {
+            padding: 8px;
+            flex-direction: column;
+            align-items: center;
+        }
+        aside.collapsed .sidebar-user > div:last-child {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main dark:text-white font-display overflow-hidden">
+<div class="flex h-screen w-full">
+<aside id="sidebar" class="w-64 flex flex-col border-r border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark shrink-0 transition-all duration-300">
+<div class="sidebar-header p-6 flex items-center gap-3">
+<button id="sidebarToggle" class="flex-shrink-0 p-1.5 hover:bg-background-light dark:hover:bg-background-dark rounded-lg transition-colors">
+<span class="material-symbols-outlined text-xl">menu</span>
+</button>
+</div>
+<nav class="sidebar-nav flex-1 px-4 flex flex-col gap-2 mt-4">
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-background-light dark:hover:bg-background-dark hover:text-text-main transition-colors" href="institution-tableau-bord.html">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="sidebar-text">Vue d'Ensemble</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-background-light dark:hover:bg-background-dark hover:text-text-main transition-colors" href="institution-liste-produits.html">
+<span class="material-symbols-outlined">payments</span>
+<span class="sidebar-text">Produits</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-background-light dark:hover:bg-background-dark hover:text-text-main transition-colors" href="institution-liste-modeles.html">
+<span class="material-symbols-outlined">table_chart</span>
+<span class="sidebar-text">Modèles</span>
+</a>
+</nav>
+<div class="p-4 mt-auto">
+<div class="sidebar-user bg-[#f0f4f3] dark:bg-[#1c332b] rounded-xl p-4 flex items-center gap-3">
+<div class="size-8 rounded-full bg-cover bg-center" data-alt="User profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCRIT7ff6v9rrUcAhYe0OOUrUpnKRPk116GNykQEkHvpkm8OcnbFIHebI_9s2BLSgjCDBIiCeTAyUqjsiPk6ByM9xta6qZ1RWzIhxls9I4Sk5sNcDyDiKiJf5ycTmKrqubfo50DZ8awUuPWSee77ZLhFpXooySZDpCEyN09_mGL6P3cfWBrKmY-W59JNITG3gg73Gcfexu3E4wl2e-ftUXVW2HngUX2vEFC-gITs_jcsGdd2m05m69kA6GmDheaVmMJx3vZ3B9VR24');"></div>
+<div class="overflow-hidden">
+<p class="text-sm font-semibold text-text-main dark:text-white truncate" id="sidebarOrgName">Institution</p>
+<p class="text-xs text-text-secondary truncate" id="sidebarContactName">Contact</p>
+<p class="text-xs text-text-secondary truncate" id="sidebarOrgEmail">email@example.com</p>
+</div>
+</div><button id="logoutBtn" class="w-full mt-3 flex items-center justify-center gap-2 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors text-sm font-semibold">
+<span class="material-symbols-outlined text-[18px]">logout</span>
+<span class="sidebar-text">Déconnexion</span>
+</button></div>
+</aside>
+<main class="flex-1 flex flex-col h-full overflow-hidden">
+<div class="flex-1 overflow-y-auto p-8">
+<div class="w-full">
+<div class="flex flex-col gap-8">
+<div class="flex flex-wrap justify-between items-start gap-4">
+<div>
+<h1 class="text-4xl font-bold text-text-main dark:text-white mb-2">Gestion des Produits de Crédit</h1>
+<p class="text-text-secondary text-base">Consultez, modifiez ou supprimez vos offres de crédit.</p>
+</div>
+<a href="institution-creation-produit.html" class="flex items-center gap-2 px-6 h-12 bg-primary text-white rounded-lg font-bold hover:bg-primary-dark transition-colors">
+<span class="material-symbols-outlined">add</span>
+<span>Nouveau Produit</span>
+</a>
+</div>
+
+<div class="grid grid-cols-1 gap-4">
+<div class="flex items-center gap-4 bg-surface-light dark:bg-surface-dark rounded-lg p-4 border border-[#dbe6e2] dark:border-[#2a4038]">
+<input id="searchInput" placeholder="Rechercher un produit..." class="flex-1 bg-transparent border-0 outline-0 text-text-main dark:text-white placeholder:text-text-secondary" type="text"/>
+<span class="material-symbols-outlined text-text-secondary">search</span>
+</div>
+</div>
+
+<div class="border border-[#dbe6e2] dark:border-[#2a4038] rounded-xl bg-surface-light dark:bg-surface-dark overflow-x-auto">
+<table class="w-full min-w-full">
+<thead>
+<tr class="border-b border-[#dbe6e2] dark:border-[#2a4038] bg-background-light dark:bg-background-dark">
+<th class="text-left text-xs font-semibold text-text-main dark:text-white px-4 py-3">Nom du Produit</th>
+<th class="text-left text-xs font-semibold text-text-main dark:text-white px-4 py-3">Cible</th>
+<th class="text-left text-xs font-semibold text-text-main dark:text-white px-4 py-3">Objectif</th>
+<th class="text-left text-xs font-semibold text-text-main dark:text-white px-4 py-3">Montants</th>
+<th class="text-left text-xs font-semibold text-text-main dark:text-white px-4 py-3">Durée</th>
+<th class="text-left text-xs font-semibold text-text-main dark:text-white px-4 py-3">Taux d'Intérêt</th>
+<th class="text-left text-xs font-semibold text-text-main dark:text-white px-4 py-3">Typologie</th>
+<th class="text-left text-xs font-semibold text-text-main dark:text-white px-4 py-3">Documents Requis</th>
+<th class="text-center text-xs font-semibold text-text-main dark:text-white px-4 py-3">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#dbe6e2] dark:divide-[#2a4038]" id="productsTableBody">
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</div>
+<script type="module">
+import { sessionAPI, productsAPI } from './api.js';
+
+// Check authentication
+if (!sessionAPI.isLoggedIn()) {
+  window.location.href = './institution-login.html';
+}
+
+// Update sidebar with user info
+function updateSidebarUserInfo() {
+  try {
+    const institution = sessionAPI.getInstitution();
+    const user = sessionAPI.getUser();
+    
+    const orgNameEl = document.getElementById('sidebarOrgName');
+    const contactNameEl = document.getElementById('sidebarContactName');
+    const orgEmailEl = document.getElementById('sidebarOrgEmail');
+    
+    // Use institution data if available, otherwise use user data
+    if (institution) {
+      if (orgNameEl && institution.name) {
+        orgNameEl.textContent = institution.name;
+      }
+      if (contactNameEl && institution.full_name) {
+        contactNameEl.textContent = institution.full_name;
+      }
+      if (orgEmailEl && institution.email) {
+        orgEmailEl.textContent = institution.email;
+      }
+    } else if (user) {
+      // Fallback to user data if no institution stored
+      if (orgEmailEl && user.email) {
+        orgEmailEl.textContent = user.email;
+      }
+      if (contactNameEl && user.full_name) {
+        contactNameEl.textContent = user.full_name;
+      }
+      // If no institution, show a placeholder
+      if (orgNameEl) {
+        orgNameEl.textContent = 'Institution';
+      }
+    }
+  } catch (error) {
+    console.error('Error updating sidebar user info:', error);
+  }
+}
+
+updateSidebarUserInfo();
+
+// Logout button
+const logoutBtn = document.getElementById('logoutBtn');
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', () => {
+    sessionAPI.logout();
+    window.location.href = './institution-login.html';
+  });
+}
+
+const sidebar = document.getElementById('sidebar');
+const sidebarToggle = document.getElementById('sidebarToggle');
+const navLinks = document.querySelectorAll('.sidebar-nav a');
+
+sidebarToggle.addEventListener('click', () => {
+  sidebar.classList.toggle('collapsed');
+  localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+});
+
+navLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    sidebar.classList.add('collapsed');
+    localStorage.setItem('sidebarCollapsed', 'true');
+  });
+});
+
+if (localStorage.getItem('sidebarCollapsed') === 'true') {
+  sidebar.classList.add('collapsed');
+}
+
+// Load products
+// Store all products for search functionality
+let allProducts = [];
+
+// Load products
+async function loadProducts() {
+  try {
+    const token = sessionAPI.getToken();
+    console.log('🔍 Loading products with token:', token ? 'Present' : 'Missing');
+    
+    const res = await productsAPI.getInstitutionProducts(token);
+    console.log('📦 API Response:', res);
+    console.log('📊 Products from response:', res.products);
+    
+    allProducts = res.products || [];
+    console.log('✅ Products array length:', allProducts.length);
+    console.log('📋 Products content:', JSON.stringify(allProducts, null, 2));
+    console.log('🔍 First product documents:', allProducts[0]?.product_required_documents);
+    
+    displayProducts(allProducts);
+    
+  } catch (error) {
+    console.error('Error loading products:', error);
+  }
+}
+
+// Display products in table
+function displayProducts(productsToDisplay) {
+  const tableBody = document.getElementById('productsTableBody');
+  tableBody.innerHTML = '';
+  
+  if (productsToDisplay.length === 0) {
+    tableBody.innerHTML = `
+      <tr>
+        <td class="px-4 py-3 text-center text-text-secondary" colspan="9">
+          Aucun produit trouvé. <a href="institution-creation-produit.html" class="text-primary font-semibold">Créer un produit</a>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+  
+  productsToDisplay.forEach(product => {
+    const montants = `${Math.round(product.amount_min).toLocaleString('fr-FR')} - ${Math.round(product.amount_max).toLocaleString('fr-FR')}`;
+    const duree = product.duration_min_months && product.duration_max_months 
+      ? `${product.duration_min_months} - ${product.duration_max_months} mois`
+      : 'À définir';
+    
+    tableBody.innerHTML += `
+      <tr class="hover:bg-background-light dark:hover:bg-background-dark transition-colors">
+        <td class="px-4 py-3">
+          <div class="min-w-0">
+            <p class="font-semibold text-text-main dark:text-white text-sm">${product.name}</p>
+          </div>
+        </td>
+        <td class="px-4 py-3">
+          <p class="text-sm text-text-secondary">${product.target || 'N/A'}</p>
+        </td>
+        <td class="px-4 py-3">
+          <p class="text-sm text-text-secondary">${product.objective || 'N/A'}</p>
+        </td>
+        <td class="px-4 py-3">
+          <p class="text-sm text-text-main dark:text-white font-medium whitespace-nowrap">${montants}</p>
+        </td>
+        <td class="px-4 py-3">
+          <p class="text-sm text-text-secondary whitespace-nowrap">${duree}</p>
+        </td>
+        <td class="px-4 py-3">
+          <p class="text-sm text-text-secondary">${product.interest_type || 'N/A'}</p>
+        </td>
+        <td class="px-4 py-3">
+          <p class="text-sm text-text-secondary">${product.typology || 'N/A'}</p>
+        </td>
+        <td class="px-4 py-3">
+          <div class="flex flex-col gap-1.5">
+            ${product.product_required_documents && product.product_required_documents.length > 0 
+              ? product.product_required_documents.map(doc => `
+                  <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-sm text-primary">check_circle</span>
+                    <span class="text-sm text-text-secondary">${doc.name}</span>
+                  </div>
+                `).join('')
+              : '<span class="text-sm text-text-secondary italic">Aucun document</span>'
+            }
+          </div>
+        </td>
+        <td class="px-4 py-3 text-center">
+          <div class="flex justify-center gap-1">
+            <a href="institution-modification-produit.html?id=${product.id}" class="p-1.5 hover:bg-blue-500/10 rounded transition-colors inline-flex items-center justify-center" title="Modifier">
+              <span class="material-symbols-outlined text-sm text-blue-500">edit</span>
+            </a>
+            <button class="p-1.5 hover:bg-red-500/10 rounded transition-colors delete-btn" data-product-id="${product.id}" title="Supprimer">
+              <span class="material-symbols-outlined text-sm text-red-500">delete</span>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+
+  // Add event listeners to delete buttons
+  document.querySelectorAll('.delete-btn').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      const productId = btn.dataset.productId;
+      if (confirm('Êtes-vous sûr de vouloir supprimer ce produit?')) {
+        try {
+          const token = sessionAPI.getToken();
+          await productsAPI.deleteProduct(token, productId);
+          console.log('✅ Product deleted successfully');
+          loadProducts();
+        } catch (error) {
+          console.error('Error deleting product:', error);
+          alert('Erreur lors de la suppression du produit: ' + error.message);
+        }
+      }
+    });
+  });
+}
+
+// Search functionality
+const searchInput = document.getElementById('searchInput');
+if (searchInput) {
+  searchInput.addEventListener('input', (e) => {
+    const searchTerm = e.target.value;
+    
+    if (!searchTerm.trim()) {
+      // If search is empty, show all products
+      displayProducts(allProducts);
+    } else {
+      // Filter products based on search term (case-sensitive)
+      const filteredProducts = allProducts.filter(product => {
+        return (
+          product.name.includes(searchTerm) ||
+          (product.target && product.target.includes(searchTerm)) ||
+          (product.objective && product.objective.includes(searchTerm)) ||
+          (product.typology && product.typology.includes(searchTerm))
+        );
+      });
+      
+      console.log(`🔍 Search results for "${searchTerm}": ${filteredProducts.length} product(s)`);
+      displayProducts(filteredProducts);
+    }
+  });
+}
+
+loadProducts();
+</script>
+</body>
+</html>

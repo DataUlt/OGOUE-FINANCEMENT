@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Modification Modèle d'Octroi (Institution)</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13eca4",
+                        "primary-dark": "#0eb57d",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#10221c",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#162e26",
+                        "text-main": "#111816",
+                        "text-secondary": "#61897c",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        aside.collapsed {
+            width: 80px;
+        }
+        aside.collapsed .sidebar-text {
+            display: none;
+        }
+        aside.collapsed .sidebar-header {
+            flex-direction: column;
+            justify-content: center;
+            padding: 12px;
+        }
+        aside.collapsed .sidebar-header h1,
+        aside.collapsed .sidebar-header p {
+            display: none;
+        }
+        aside.collapsed .sidebar-header .size-10 {
+            margin: 0;
+        }
+        aside.collapsed .sidebar-nav {
+            padding: 8px;
+        }
+        aside.collapsed .sidebar-nav a {
+            padding: 12px;
+            justify-content: center;
+        }
+        aside.collapsed .sidebar-user {
+            padding: 8px;
+            flex-direction: column;
+            align-items: center;
+        }
+        aside.collapsed .sidebar-user > div:last-child {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main dark:text-white font-display overflow-hidden">
+<div class="flex h-screen w-full">
+<aside id="sidebar" class="w-64 flex flex-col border-r border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark shrink-0 transition-all duration-300">
+<div class="sidebar-header p-6 flex items-center gap-3">
+<button id="sidebarToggle" class="flex-shrink-0 p-1.5 hover:bg-background-light dark:hover:bg-background-dark rounded-lg transition-colors">
+<span class="material-symbols-outlined text-xl">menu</span>
+</button>
+</div>
+<nav class="sidebar-nav flex-1 px-4 flex flex-col gap-2 mt-4">
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-background-light dark:hover:bg-background-dark hover:text-text-main transition-colors" href="institution-tableau-bord.html">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="sidebar-text">Vue d'Ensemble</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-background-light dark:hover:bg-background-dark hover:text-text-main transition-colors" href="institution-liste-produits.html">
+<span class="material-symbols-outlined">payments</span>
+<span class="sidebar-text">Produits</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl bg-primary/10 text-primary-dark dark:text-primary font-medium" href="institution-liste-modeles.html">
+<span class="material-symbols-outlined icon-filled">table_chart</span>
+<span class="sidebar-text">Modèles</span>
+</a>
+</nav>
+<div class="p-4 mt-auto">
+<div class="sidebar-user bg-[#f0f4f3] dark:bg-[#1c332b] rounded-xl p-4 flex items-center gap-3">
+<div class="size-8 rounded-full bg-gradient-to-br from-primary to-[#0eb57d] flex items-center justify-center text-white font-bold text-sm" id="userAvatarInitials">
+                    ?
+                </div>
+<div class="overflow-hidden flex-1">
+<p class="text-sm font-semibold text-text-main dark:text-white truncate" id="institutionDisplayName">Institution</p>
+<p class="text-xs text-text-secondary truncate" id="contactDisplayName">Contact</p>
+<p class="text-xs text-text-secondary truncate" id="institutionDisplayEmail">email@example.com</p>
+</div>
+</div>
+<button id="logoutBtn" class="w-full mt-4 flex items-center justify-center gap-2 rounded-lg h-10 px-4 text-red-500 dark:text-red-400 text-sm font-bold bg-red-500/10 dark:bg-red-500/20 hover:bg-red-500/20 dark:hover:bg-red-500/30 transition-colors">
+<span class="material-symbols-outlined text-sm">logout</span>
+<span class="sidebar-text">Déconnexion</span>
+</button>
+</div>
+</aside>
+<main class="flex-1 flex flex-col h-full overflow-hidden">
+<div class="flex-1 overflow-y-auto p-8">
+<div class="max-w-4xl mx-auto">
+<a href="institution-liste-modeles.html" class="inline-flex items-center gap-2 text-primary hover:text-primary-dark font-medium mb-6">
+<span class="material-symbols-outlined text-xl">arrow_back</span>
+<span>Retour</span>
+</a>
+<div class="flex flex-wrap justify-between gap-3 p-4">
+<div class="flex min-w-72 flex-col gap-3">
+<p class="text-text-main dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">Modification du Modèle de Crédit</p>
+<p class="text-text-secondary text-base font-normal leading-normal">Mettez à jour les variables, les poids et les critères d'acceptation.</p>
+</div>
+</div>
+<div class="mt-8 bg-surface-light dark:bg-surface-dark p-8 rounded-xl shadow-sm border border-[#dbe6e2] dark:border-[#2a4038]">
+<div class="flex flex-col gap-8">
+<div>
+<h2 class="text-text-main dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3">Informations Générales</h2>
+<div class="grid grid-cols-1 gap-6">
+<label class="flex flex-col">
+<p class="text-text-main dark:text-white text-base font-medium leading-normal pb-2">Nom du Modèle</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 h-14 placeholder:text-text-secondary p-[15px] text-base font-normal leading-normal" placeholder="Ex: Modèle PME Standard 2024" value="Modèle PME Standard"/>
+</label>
+<label class="flex flex-col">
+<p class="text-text-main dark:text-white text-base font-medium leading-normal pb-2">Description</p>
+<textarea class="form-textarea flex w-full min-w-0 flex-1 resize-y overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 min-h-[120px] placeholder:text-text-secondary p-[15px] text-base font-normal leading-normal">Modèle standard pour l'évaluation des PME en fonction de leur rentabilité, stabilité et perspectives de croissance.</textarea>
+</label>
+</div>
+</div>
+<div>
+<h2 class="text-text-main dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] pt-5 pb-3">Variables du Modèle</h2>
+<div class="overflow-x-auto">
+<table class="w-full text-sm">
+<thead>
+<tr class="border-b border-[#dbe6e2] dark:border-[#2a4038]">
+<th class="px-4 py-3 text-left"><p class="text-text-secondary text-xs font-semibold">Variable</p></th>
+<th class="px-4 py-3 text-left"><p class="text-text-secondary text-xs font-semibold">Poids (%)</p></th>
+<th class="px-4 py-3 text-left"><p class="text-text-secondary text-xs font-semibold">Min</p></th>
+<th class="px-4 py-3 text-left"><p class="text-text-secondary text-xs font-semibold">Max</p></th>
+<th class="px-4 py-3 text-left"><p class="text-text-secondary text-xs font-semibold">Unité</p></th>
+<th class="px-4 py-3 text-left"><p class="text-text-secondary text-xs font-semibold">Sens Favorable</p></th>
+<th class="px-4 py-3 text-left"><p class="text-text-secondary text-xs font-semibold">Critère Bloquant</p></th>
+<th class="px-4 py-3 text-center"><p class="text-text-secondary text-xs font-semibold">Action</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-[#dbe6e2] dark:border-[#2a4038] hover:bg-background-light dark:hover:bg-background-dark">
+<td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-secondary p-2 text-sm font-normal leading-normal" value="CA" type="text"/></td>
+<td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-secondary p-2 text-sm font-normal leading-normal" value="100" type="number"/></td>
+<td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-secondary p-2 text-sm font-normal leading-normal" value="100" type="number"/></td>
+<td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-secondary p-2 text-sm font-normal leading-normal" value="300" type="number"/></td>
+<td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-secondary p-2 text-sm font-normal leading-normal" placeholder="%, mois, millions FCFA" type="text"/></td>
+<td class="px-4 py-3"><select class="form-select flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 p-2 text-sm font-normal leading-normal"><option selected>Croissant</option><option>Décroissant</option></select></td>
+<td class="px-4 py-3"><label class="flex"><input class="form-checkbox h-4 w-4 rounded text-primary focus:ring-primary/50 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark dark:checked:bg-primary" type="checkbox"/></label></td>
+<td class="px-4 py-3 text-center"><button class="p-1 hover:bg-red-500/10 rounded transition-colors delete-btn"><span class="material-symbols-outlined text-sm text-red-500">delete</span></button></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="mt-6 p-4 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-900">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-blue-600 dark:text-blue-400 mt-1">info</span>
+<div>
+<p class="text-sm font-medium text-blue-900 dark:text-blue-200">Pour valider votre modèle</p>
+<p class="text-sm text-blue-800 dark:text-blue-300">La somme des poids de chaque variable doit être égale à 100%</p>
+<p class="text-sm font-bold text-blue-900 dark:text-blue-200 mt-2">Poids actuel : <span id="totalWeightDisplay">0</span>%</p>
+</div>
+</div>
+</div>
+<button class="mt-4 flex min-w-[100px] max-w-[200px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-10 px-4 bg-background-light dark:bg-background-dark text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/10 disabled:opacity-50 disabled:cursor-not-allowed" id="addVariableBtn">
+<span class="material-symbols-outlined">add</span>
+<span>Ajouter une Variable</span>
+</button>
+</div>
+<div class="flex justify-end items-center gap-4 pt-8 border-t border-[#dbe6e2] dark:border-[#2a4038] mt-4">
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-transparent text-text-main dark:text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-background-light dark:hover:bg-background-dark">
+<span class="truncate">Annuler</span>
+</button>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-primary-dark">
+<span class="truncate">Enregistrer les modifications</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<script type="module">
+import { sessionAPI } from './api.js';
+
+const sidebar = document.getElementById('sidebar');
+const sidebarToggle = document.getElementById('sidebarToggle');
+const navLinks = document.querySelectorAll('.sidebar-nav a');
+
+sidebarToggle.addEventListener('click', () => {
+  sidebar.classList.toggle('collapsed');
+  localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+});
+
+navLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    sidebar.classList.add('collapsed');
+    localStorage.setItem('sidebarCollapsed', 'true');
+  });
+});
+
+if (localStorage.getItem('sidebarCollapsed') === 'true') {
+  sidebar.classList.add('collapsed');
+}
+
+// Update sidebar with institution info
+const institution = sessionAPI.getInstitution();
+const user = sessionAPI.getUser();
+
+if (institution) {
+  // Update institution logo (first letter)
+  const institutionLogo = document.getElementById('institutionLogo');
+  if (institutionLogo) {
+    institutionLogo.textContent = (institution.name || 'I').charAt(0).toUpperCase();
+  }
+  
+  // Update institution info
+  const institutionInfo = document.getElementById('institutionInfo');
+  if (institutionInfo) {
+    institutionInfo.innerHTML = `
+      <h1 class="text-text-main dark:text-white text-sm font-bold tracking-tight">${institution.name || 'Institution'}</h1>
+      <p class="text-text-secondary text-xs font-medium">${user?.full_name || 'Contact'}</p>
+    `;
+  }
+}
+
+// Update user info (bottom sidebar)
+if (user && institution) {
+  const institutionDisplayName = document.getElementById('institutionDisplayName');
+  const contactDisplayName = document.getElementById('contactDisplayName');
+  const institutionDisplayEmail = document.getElementById('institutionDisplayEmail');
+  const userAvatarInitials = document.getElementById('userAvatarInitials');
+  
+  if (institutionDisplayName) institutionDisplayName.textContent = institution.name || 'Institution';
+  if (contactDisplayName) contactDisplayName.textContent = user.full_name || 'Contact';
+  if (institutionDisplayEmail) institutionDisplayEmail.textContent = user.email || 'email@example.com';
+  
+  if (userAvatarInitials) {
+    const initials = (institution.name || 'I')
+      .split(' ')
+      .map(n => n.charAt(0).toUpperCase())
+      .join('')
+      .slice(0, 2);
+    userAvatarInitials.textContent = initials;
+  }
+}
+
+// Logout button
+const logoutBtn = document.getElementById('logoutBtn');
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', () => {
+    sessionAPI.logout();
+    window.location.href = './institution-login.html';
+  });
+}
+
+// Load model data from URL parameter
+const urlParams = new URLSearchParams(window.location.search);
+const modelId = urlParams.get('id');
+
+if (modelId) {
+  const token = sessionAPI.getToken();
+  
+  fetch(`http://localhost:3001/api/scoring-models/${modelId}`, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  })
+  .then(res => {
+    if (!res.ok) throw new Error('Failed to load model');
+    return res.json();
+  })
+  .then(data => {
+    const model = data.model;
+    console.log('📋 Model loaded:', model);
+    
+    // Update form with model data
+    const nameInput = document.querySelector('input[placeholder="Ex: Modèle PME Standard 2024"]');
+    const descriptionInput = document.querySelector('textarea.form-textarea');
+    
+    if (nameInput) nameInput.value = model.name || '';
+    if (descriptionInput) descriptionInput.value = model.description || '';
+    
+    // Clear existing table rows and add model variables
+    const tbody = document.querySelector('table tbody');
+    if (tbody && model.model_variables && model.model_variables.length > 0) {
+      tbody.innerHTML = '';
+      
+      model.model_variables.forEach(variable => {
+        const row = document.createElement('tr');
+        row.className = 'border-b border-[#dbe6e2] dark:border-[#2a4038] hover:bg-background-light dark:hover:bg-background-dark';
+        row.innerHTML = `
+          <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:ring-primary/50 focus:border-primary w-full" type="text" value="${variable.name || ''}"/></td>
+          <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:ring-primary/50 focus:border-primary w-full" type="number" value="${variable.weight || 0}"/></td>
+          <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:ring-primary/50 focus:border-primary w-full" type="number" value="${variable.min_value || 0}"/></td>
+          <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:ring-primary/50 focus:border-primary w-full" type="number" value="${variable.max_value || 0}"/></td>
+          <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:ring-primary/50 focus:border-primary w-full" type="text" value="${variable.unit || ''}"/></td>
+          <td class="px-4 py-3"><select class="form-select rounded-md h-10 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:ring-primary/50 focus:border-primary w-full">
+            <option ${(variable.favorable_direction || 'Croissant') === 'Croissant' ? 'selected' : ''}>Croissant</option>
+            <option ${(variable.favorable_direction || 'Croissant') === 'Décroissant' ? 'selected' : ''}>Décroissant</option>
+          </select></td>
+          <td class="px-4 py-3 text-center"><label class="relative inline-flex cursor-pointer items-center">
+            <input class="peer sr-only" type="checkbox" ${variable.is_blocking ? 'checked' : ''}/>
+            <div class="peer h-6 w-11 rounded-full bg-gray-200 dark:bg-gray-600 after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 dark:after:border-gray-500 after:bg-white after:transition-all after:content-[''] peer-checked:bg-primary/70 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50"></div>
+          </label></td>
+          <td class="px-4 py-3 text-center"><button class="flex items-center justify-center text-text-secondary dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 delete-btn" type="button"><span class="material-symbols-outlined">delete</span></button></td>
+        `;
+        tbody.appendChild(row);
+        
+        // Add delete functionality
+        const deleteBtn = row.querySelector('.delete-btn');
+        deleteBtn.addEventListener('click', () => {
+          row.remove();
+          updateWeightDisplay();
+        });
+        
+        // Add event listener to weight input to update total in real-time
+        const weightInput = row.querySelector('input[type="number"]');
+        if (weightInput) {
+          weightInput.addEventListener('input', updateWeightDisplay);
+        }
+      });
+      
+      // Update weight display after loading variables
+      updateWeightDisplay();
+    }
+  })
+  .catch(error => {
+    console.error('❌ Error loading model:', error);
+    alert('Erreur: ' + error.message);
+  });
+}
+
+// Add variable button functionality
+const addVariableBtn = Array.from(document.querySelectorAll('button')).find(btn => 
+  btn.textContent.includes('Ajouter une Variable')
+);
+
+// Function to calculate total weight
+function calculateTotalWeight() {
+  const rows = document.querySelectorAll('table tbody tr');
+  let total = 0;
+  rows.forEach(row => {
+    const weightInput = row.querySelectorAll('input[type="number"]')[0];
+    if (weightInput) {
+      total += parseFloat(weightInput.value) || 0;
+    }
+  });
+  return total;
+}
+
+// Function to update weight display and button state
+function updateWeightDisplay() {
+  const totalWeight = calculateTotalWeight();
+  const display = document.getElementById('totalWeightDisplay');
+  const addBtn = document.getElementById('addVariableBtn');
+  
+  if (display) {
+    display.textContent = totalWeight;
+    
+    // Change color based on total
+    if (totalWeight > 100) {
+      display.className = 'font-bold text-red-600 dark:text-red-400';
+    } else if (totalWeight < 100) {
+      display.className = 'font-bold text-yellow-600 dark:text-yellow-400';
+    } else {
+      display.className = 'font-bold text-green-600 dark:text-green-400';
+    }
+  }
+  
+  // Disable "Add variable" button if total is already 100%
+  if (addBtn) {
+    addBtn.disabled = totalWeight >= 100;
+    if (totalWeight >= 100) {
+      addBtn.title = 'Le poids total est déjà à 100%';
+    } else {
+      addBtn.title = '';
+    }
+  }
+}
+
+if (addVariableBtn) {
+  addVariableBtn.addEventListener('click', () => {
+    const tbody = document.querySelector('table tbody');
+    const newRow = document.createElement('tr');
+    newRow.className = 'border-b border-[#dbe6e2] dark:border-[#2a4038] hover:bg-background-light dark:hover:bg-background-dark';
+    newRow.innerHTML = `
+      <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:ring-primary/50 focus:border-primary w-full" type="text" placeholder="Nom de la variable"/></td>
+      <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:ring-primary/50 focus:border-primary w-full" type="number" value="0"/></td>
+      <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:ring-primary/50 focus:border-primary w-full" type="number" value="0"/></td>
+      <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:ring-primary/50 focus:border-primary w-full" type="number" value="0"/></td>
+      <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:ring-primary/50 focus:border-primary w-full" type="text" placeholder="%, mois, millions FCFA"/></td>
+      <td class="px-4 py-3"><select class="form-select rounded-md h-10 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:ring-primary/50 focus:border-primary w-full">
+        <option selected="">Croissant</option>
+        <option>Décroissant</option>
+      </select></td>
+      <td class="px-4 py-3 text-center"><label class="relative inline-flex cursor-pointer items-center">
+        <input class="peer sr-only" type="checkbox"/>
+        <div class="peer h-6 w-11 rounded-full bg-gray-200 dark:bg-gray-600 after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 dark:after:border-gray-500 after:bg-white after:transition-all after:content-[''] peer-checked:bg-primary/70 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50"></div>
+      </label></td>
+      <td class="px-4 py-3 text-center"><button class="flex items-center justify-center text-text-secondary dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 delete-btn" type="button"><span class="material-symbols-outlined">delete</span></button></td>
+    `;
+    tbody.appendChild(newRow);
+    
+    // Add delete functionality to new row
+    const deleteBtn = newRow.querySelector('.delete-btn');
+    deleteBtn.addEventListener('click', () => {
+      newRow.remove();
+      updateWeightDisplay();
+    });
+    
+    // Add change listener to weight input
+    const weightInput = newRow.querySelectorAll('input[type="number"]')[0];
+    if (weightInput) {
+      weightInput.addEventListener('change', updateWeightDisplay);
+      weightInput.addEventListener('input', updateWeightDisplay);
+    }
+    
+    updateWeightDisplay();
+  });
+}
+
+// Delete button functionality for existing rows
+document.querySelectorAll('table tbody .delete-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    btn.closest('tr').remove();
+    updateWeightDisplay();
+  });
+});
+
+// Add change listeners to all weight inputs (existing rows)
+document.querySelectorAll('table tbody input[type="number"]').forEach(input => {
+  input.addEventListener('change', updateWeightDisplay);
+  input.addEventListener('input', updateWeightDisplay);
+});
+
+// Initial weight display update
+updateWeightDisplay();
+
+// Save modifications button
+const saveBtn = Array.from(document.querySelectorAll('button')).find(btn => 
+  btn.textContent.includes('Enregistrer les modifications')
+);
+
+if (saveBtn) {
+  saveBtn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    console.log('💾 Saving model modifications...');
+    
+    // Validate total weight first
+    const totalWeight = calculateTotalWeight();
+    if (totalWeight !== 100) {
+      alert(`Le poids total doit égaler 100% (actuellement: ${totalWeight}%)`);
+      return;
+    }
+    
+    // Get form data
+    const nameInput = document.querySelector('input[placeholder="Ex: Modèle PME Standard 2024"]');
+    const descriptionInput = document.querySelector('textarea.form-textarea');
+    const rows = document.querySelectorAll('table tbody tr');
+    
+    const modelName = nameInput?.value.trim();
+    const modelDescription = descriptionInput?.value.trim();
+    
+    if (!modelName) {
+      alert('Le nom du modèle est requis');
+      return;
+    }
+    
+    // Collect variables
+    const variables = [];
+    rows.forEach(row => {
+      const inputs = row.querySelectorAll('input[type="text"], input[type="number"]');
+      const select = row.querySelector('select');
+      const checkbox = row.querySelector('input[type="checkbox"]');
+      
+      if (inputs.length >= 5) {
+        const variable = {
+          name: inputs[0].value.trim(),
+          weight: parseFloat(inputs[1].value) || 0,
+          min: parseFloat(inputs[2].value) || 0,
+          max: parseFloat(inputs[3].value) || 0,
+          unit: inputs[4].value.trim() || '',
+          favorableDirection: select ? select.value : 'Croissant',
+          isBlocking: checkbox ? checkbox.checked : false
+        };
+        
+        if (variable.name && variable.weight > 0) {
+          variables.push(variable);
+        }
+      }
+    });
+    
+    if (variables.length === 0) {
+      alert('Chaque variable doit avoir un nom et un poids > 0');
+      return;
+    }
+    
+    const token = sessionAPI.getToken();
+    if (!token) {
+      alert('Session expirée, veuillez vous reconnecter');
+      window.location.href = 'institution-login.html';
+      return;
+    }
+    
+    try {
+      const response = await fetch(`http://localhost:3001/api/scoring-models/${modelId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          name: modelName,
+          description: modelDescription,
+          variables: variables
+        })
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to update model');
+      }
+      
+      const result = await response.json();
+      console.log('✅ Model updated:', result);
+      alert('Modèle enregistré avec succès!');
+      
+      // Redirect to models list
+      window.location.href = 'institution-liste-modeles.html';
+    } catch (error) {
+      console.error('❌ Error updating model:', error);
+      alert('Erreur: ' + error.message);
+    }
+  });
+}
+
+// Cancel button
+const cancelBtn = Array.from(document.querySelectorAll('button')).find(btn => 
+  btn.textContent.trim().includes('Annuler')
+);
+
+if (cancelBtn) {
+  cancelBtn.addEventListener('click', () => {
+    window.location.href = 'institution-liste-modeles.html';
+  });
+}
+</script>
+</body>
+</html>

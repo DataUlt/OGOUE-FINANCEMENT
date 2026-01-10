@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html class="light" lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Résultats des Simulations</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13eca4",
+                        "primary-dark": "#0eb57d",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#10221c",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#162e26",
+                        "text-main": "#111816",
+                        "text-secondary": "#61897c",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        aside.collapsed {
+            width: 80px;
+        }
+        aside.collapsed .sidebar-text {
+            display: none;
+        }
+        aside.collapsed .sidebar-header {
+            flex-direction: column;
+            justify-content: center;
+            padding: 12px;
+        }
+        aside.collapsed .sidebar-header h1,
+        aside.collapsed .sidebar-header p {
+            display: none;
+        }
+        aside.collapsed .sidebar-header .size-10 {
+            margin: 0;
+        }
+        aside.collapsed .sidebar-nav {
+            padding: 8px;
+        }
+        aside.collapsed .sidebar-nav a {
+            padding: 12px;
+            justify-content: center;
+        }
+        aside.collapsed .sidebar-user {
+            padding: 8px;
+            flex-direction: column;
+            align-items: center;
+        }
+        aside.collapsed .sidebar-user > div:last-child {
+            display: none;
+        }
+        aside.collapsed #logoutBtn {
+            padding: 8px;
+            width: fit-content;
+            margin: 0 auto;
+        }
+        aside.collapsed #logoutBtn span:last-child {
+            display: none;
+        }
+    </style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-text-main dark:text-white overflow-hidden">
+<div class="flex h-screen w-full">
+<!-- Sidebar -->
+<aside id="sidebar" class="w-64 flex flex-col border-r border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark shrink-0 transition-all duration-300 collapsed">
+<div class="sidebar-header p-6 flex items-center gap-3">
+<button id="sidebarToggle" class="flex-shrink-0 p-1.5 hover:bg-background-light dark:hover:bg-background-dark rounded-lg transition-colors">
+<span class="material-symbols-outlined text-xl">menu</span>
+</button>
+</div>
+<nav class="sidebar-nav flex-1 px-4 flex flex-col gap-2 mt-4">
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-background-light dark:hover:bg-background-dark hover:text-text-main transition-colors" href="pme-selection-institution.html">
+<span class="material-symbols-outlined icon-filled">home</span>
+<span class="sidebar-text">Accueil</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-background-light dark:hover:bg-background-dark hover:text-text-main transition-colors" href="pme-tableau-resultats.html">
+<span class="material-symbols-outlined">analytics</span>
+<span class="sidebar-text">Résultats</span>
+</a>
+</nav>
+<div class="p-4 mt-auto border-t border-[#dbe6e2] dark:border-[#2a4038]">
+<div class="sidebar-user bg-[#f0f4f3] dark:bg-[#1c332b] rounded-xl p-4 flex items-center gap-3 mb-3">
+<div class="size-8 rounded-full bg-cover bg-center" data-alt="User profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCsQLbKh2SkSv6u3K_uv_lh40ZRyn8vwTzctnhE088sEIQg91HuY0D9rdCA3skiTL2fbbtCcwx_Txn7sxWucWzWAjAeQVOyl6nPvfQkvQCQymIESsLKoBiWofqAJPcEGaBeR8TxGNJ4axeN0KA7LjcYmFy8d-Mp5E3YLGFPccbulsgaL05zdom16CWEYdo3arrNniw95UKXdBLaDWHCjip5hpkkkKEZHSmKYo8Cc_9Je1M7dO57qpCAI6Z2UbJEa41fvLae3QZkw38');"></div>
+<div class="overflow-hidden flex-1">
+<p id="pmeCompanyName" class="text-sm font-semibold text-text-main dark:text-white truncate">PME User</p>
+<p id="pmeEmail" class="text-xs text-text-secondary truncate">pme@example.com</p>
+</div>
+</div>
+<button id="logoutBtn" class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-red-500/10 text-red-600 hover:bg-red-500/20 transition-colors text-sm font-semibold">
+<span class="material-symbols-outlined text-sm">logout</span>
+<span class="sidebar-text">Déconnexion</span>
+</button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-full overflow-hidden">
+<div class="flex-1 overflow-y-auto p-8">
+<div class="max-w-7xl mx-auto">
+<div class="mb-8">
+<h1 class="text-4xl font-bold text-text-main dark:text-white mb-2">Résultats des Simulations</h1>
+<p class="text-text-secondary text-base">Consultez l'historique de vos simulations de score.</p>
+</div>
+
+<!-- Tableau des résultats -->
+<div class="border border-[#dbe6e2] dark:border-[#2a4038] rounded-xl bg-surface-light dark:bg-surface-dark overflow-x-auto">
+<table class="w-full min-w-full">
+<thead>
+<tr class="border-b border-[#dbe6e2] dark:border-[#2a4038] bg-background-light dark:bg-background-dark">
+<th class="text-left text-xs font-semibold text-text-main dark:text-white px-4 py-3">Date</th>
+<th class="text-left text-xs font-semibold text-text-main dark:text-white px-4 py-3">Institution</th>
+<th class="text-left text-xs font-semibold text-text-main dark:text-white px-4 py-3">Produit</th>
+<th class="text-left text-xs font-semibold text-text-main dark:text-white px-4 py-3">Score</th>
+<th class="text-left text-xs font-semibold text-text-main dark:text-white px-4 py-3">Classe</th>
+<th class="text-left text-xs font-semibold text-text-main dark:text-white px-4 py-3">Critères</th>
+<th class="text-center text-xs font-semibold text-text-main dark:text-white px-4 py-3">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#dbe6e2] dark:divide-[#2a4038]" id="resultsTableBody">
+<tr>
+<td class="px-4 py-3 text-center text-text-secondary" colspan="7">
+Aucune simulation pour le moment. <a href="pme-resultats-simulation.html" class="text-primary font-semibold">Démarrer une simulation</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body>
+
+<script type="module">
+import { sessionAPI } from './api.js';
+
+// Check authentication
+if (!sessionAPI.isLoggedIn()) {
+  window.location.href = './pme-login.html';
+}
+
+// Update user info dynamically
+function updateUserInfo() {
+  const user = sessionAPI.getUser();
+  const pmeCompanyNameEl = document.getElementById('pmeCompanyName');
+  const pmeEmailEl = document.getElementById('pmeEmail');
+  
+  if (user) {
+    if (pmeEmailEl && user.email) {
+      pmeEmailEl.textContent = user.email;
+    }
+    if (pmeCompanyNameEl) {
+      const pmeData = localStorage.getItem('pmeData');
+      if (pmeData) {
+        try {
+          const parsed = JSON.parse(pmeData);
+          if (parsed.company_name) {
+            pmeCompanyNameEl.textContent = parsed.company_name;
+          } else {
+            pmeCompanyNameEl.textContent = user.full_name || 'User';
+          }
+        } catch (e) {
+          pmeCompanyNameEl.textContent = user.full_name || 'User';
+        }
+      } else {
+        pmeCompanyNameEl.textContent = user.full_name || 'User';
+      }
+    }
+  }
+}
+
+// Load and display simulation results
+function loadSimulationResults() {
+  const tableBody = document.getElementById('resultsTableBody');
+  let results = JSON.parse(localStorage.getItem('simulationResults') || '[]');
+  
+  // Inverser l'ordre pour afficher les plus récents en premier
+  results = results.reverse();
+  
+  if (results.length === 0) {
+    tableBody.innerHTML = `
+      <tr>
+        <td class="px-4 py-3 text-center text-text-secondary" colspan="7">
+          Aucune simulation pour le moment. <a href="pme-selection-institution.html" class="text-primary font-semibold">Démarrer une simulation</a>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+  
+  tableBody.innerHTML = results.map((result, index) => {
+    const date = new Date(result.timestamp).toLocaleDateString('fr-FR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+    
+    const scoreClass = result.score < 35 ? 'RISQUE' : 
+                       result.score < 65 ? 'MOYEN' : 
+                       result.score < 85 ? 'BON' : 'EXCELLENT';
+    
+    const scoreColor = scoreClass === 'RISQUE' ? 'text-red-600' :
+                       scoreClass === 'MOYEN' ? 'text-yellow-600' :
+                       scoreClass === 'BON' ? 'text-blue-600' : 'text-green-600';
+    
+    // Get variable names from variableNames object or from fullResult details
+    let variableNames = result.variableNames || {};
+    
+    // If no variableNames, try to extract from fullResult.details
+    if (Object.keys(variableNames).length === 0 && result.fullResult && result.fullResult.details) {
+      result.fullResult.details.forEach(detail => {
+        // Find the variable ID that corresponds to this detail
+        Object.keys(result.variables || {}).forEach(varId => {
+          if (result.variables[varId] == detail.value) {
+            variableNames[varId] = detail.name;
+          }
+        });
+      });
+    }
+    
+    return `
+      <tr class="hover:bg-background-light dark:hover:bg-background-dark transition-colors">
+        <td class="px-4 py-3 text-sm">${date}</td>
+        <td class="px-4 py-3 text-sm text-text-main dark:text-white font-medium">${result.institutionName || 'N/A'}</td>
+        <td class="px-4 py-3 text-sm text-text-main dark:text-white font-medium">${result.productName || 'N/A'}</td>
+        <td class="px-4 py-3 text-sm font-bold">${Math.round(result.score)}</td>
+        <td class="px-4 py-3">
+          <span class="px-2 py-1 rounded text-xs font-medium ${scoreColor} bg-opacity-10">${scoreClass}</span>
+        </td>
+        <td class="px-4 py-3">
+          ${result.variables && Object.keys(result.variables).length > 0 ? 
+            `<div class="flex flex-wrap gap-2">
+              ${Object.entries(result.variables)
+                .map(([key, val]) => {
+                  const varName = variableNames[key] || key;
+                  return `<span class="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs font-medium">${varName}: ${typeof val === 'object' ? JSON.stringify(val) : val}</span>`;
+                })
+                .join('')}
+            </div>`
+            : '<span class="text-text-secondary">N/A</span>'
+          }
+        </td>
+        <td class="px-4 py-3 text-center">
+          <button onclick="deleteResult('${result.timestamp}')" class="text-red-600 hover:text-red-700 font-medium text-sm" title="Supprimer">
+            <span class="material-symbols-outlined text-lg">delete</span>
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+// View simulation details
+window.viewDetails = function(timestamp) {
+  const results = JSON.parse(localStorage.getItem('simulationResults') || '[]');
+  const result = results.find(r => r.timestamp === timestamp);
+  if (result) {
+    console.log('Détails de la simulation:', result);
+    alert(`Score: ${result.score}\nProduit: ${result.productName}`);
+  }
+};
+
+// Delete simulation result
+window.deleteResult = function(timestamp) {
+  if (confirm('Êtes-vous sûr de vouloir supprimer ce résultat ?')) {
+    let results = JSON.parse(localStorage.getItem('simulationResults') || '[]');
+    results = results.filter(r => r.timestamp !== timestamp);
+    localStorage.setItem('simulationResults', JSON.stringify(results));
+    console.log('✅ Résultat supprimé');
+    loadSimulationResults(); // Recharger le tableau
+  }
+};
+
+// Load data on page load
+updateUserInfo();
+loadSimulationResults();
+</script>
+
+<script>
+// Sidebar toggle functionality
+const sidebar = document.getElementById('sidebar');
+const sidebarToggle = document.getElementById('sidebarToggle');
+
+if (sidebarToggle) {
+  sidebarToggle.addEventListener('click', () => {
+    sidebar.classList.toggle('collapsed');
+  });
+}
+
+// Logout functionality
+const logoutBtn = document.getElementById('logoutBtn');
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', () => {
+    localStorage.removeItem('authToken');
+    window.location.href = './pme-login.html';
+  });
+}
+</script>
+</body>
+</html>

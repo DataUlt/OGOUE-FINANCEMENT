@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Création Modèle d'Octroi (Institution)</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13eca4",
+                        "primary-dark": "#0eb57d",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#10221c",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#162e26",
+                        "text-main": "#111816",
+                        "text-secondary": "#61897c",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        aside.collapsed {
+            width: 80px;
+        }
+        aside.collapsed .sidebar-text {
+            display: none;
+        }
+        aside.collapsed .sidebar-header {
+            flex-direction: column;
+            justify-content: center;
+            padding: 12px;
+        }
+        aside.collapsed .sidebar-header h1,
+        aside.collapsed .sidebar-header p {
+            display: none;
+        }
+        aside.collapsed .sidebar-header .size-10 {
+            margin: 0;
+        }
+        aside.collapsed .sidebar-nav {
+            padding: 8px;
+        }
+        aside.collapsed .sidebar-nav a {
+            padding: 12px;
+            justify-content: center;
+        }
+        aside.collapsed .sidebar-user {
+            padding: 8px;
+            flex-direction: column;
+            align-items: center;
+        }
+        aside.collapsed .sidebar-user > div:last-child {
+            display: none;
+        }
+        aside.collapsed #logoutBtn {
+            padding: 8px;
+            width: fit-content;
+            margin: 0 auto;
+        }
+        aside.collapsed #logoutBtn span:last-child {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main dark:text-white font-display overflow-hidden">
+<div class="flex h-screen w-full">
+<aside id="sidebar" class="w-64 flex flex-col border-r border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark shrink-0 transition-all duration-300">
+<div class="sidebar-header p-6 flex items-center gap-3">
+<button id="sidebarToggle" class="flex-shrink-0 p-1.5 hover:bg-background-light dark:hover:bg-background-dark rounded-lg transition-colors">
+<span class="material-symbols-outlined text-xl">menu</span>
+</button>
+</div>
+<nav class="sidebar-nav flex-1 px-4 flex flex-col gap-2 mt-4">
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-background-light dark:hover:bg-background-dark hover:text-text-main transition-colors" href="institution-tableau-bord.html">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="sidebar-text">Vue d'Ensemble</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-background-light dark:hover:bg-background-dark hover:text-text-main transition-colors" href="institution-liste-produits.html">
+<span class="material-symbols-outlined">payments</span>
+<span class="sidebar-text">Produits</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl bg-primary/10 text-primary-dark dark:text-primary font-medium" href="institution-liste-modeles.html">
+<span class="material-symbols-outlined icon-filled">table_chart</span>
+<span class="sidebar-text">Modèles</span>
+</a>
+</nav>
+<div class="p-4 mt-auto border-t border-[#dbe6e2] dark:border-[#2a4038]">
+<div class="sidebar-user bg-[#f0f4f3] dark:bg-[#1c332b] rounded-xl p-4 flex items-center gap-3 mb-3">
+<div class="size-8 rounded-full bg-cover bg-center" data-alt="User profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCRIT7ff6v9rrUcAhYe0OOUrUpnKRPk116GNykQEkHvpkm8OcnbFIHebI_9s2BLSgjCDBIiCeTAyUqjsiPk6ByM9xta6qZ1RWzIhxls9I4Sk5sNcDyDiKiJf5ycTmKrqubfo50DZ8awUuPWSee77ZLhFpXooySZDpCEyN09_mGL6P3cfWBrKmY-W59JNITG3gg73Gcfexu3E4wl2e-ftUXVW2HngUX2vEFC-gITs_jcsGdd2m05m69kA6GmDheaVmMJx3vZ3B9VR24');"></div>
+<div class="overflow-hidden flex-1">
+<p class="text-sm font-semibold text-text-main dark:text-white truncate">Testbank5</p>
+<p class="text-xs text-text-secondary truncate">test5@gmail.com</p>
+<p class="text-xs text-text-secondary truncate">Contact: Tester5</p>
+</div>
+</div>
+<button id="logoutBtn" class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-red-500/10 text-red-600 hover:bg-red-500/20 transition-colors text-sm font-semibold">
+<span class="material-symbols-outlined text-sm">logout</span>
+<span class="sidebar-text">Déconnexion</span>
+</button>
+</div>
+</aside>
+<main class="flex-1 flex flex-col h-full overflow-hidden">
+<div class="flex-1 overflow-y-auto p-8">
+<div class="max-w-4xl mx-auto">
+<div class="flex flex-wrap justify-between gap-3 p-4">
+<div class="flex min-w-72 flex-col gap-3">
+<a href="institution-liste-modeles.html" class="flex items-center gap-2 text-primary hover:text-primary-dark transition-colors w-fit mb-2">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+<span class="text-sm font-semibold">Retour</span>
+</a>
+<p class="text-text-main dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">Création d'un Modèle de Crédit</p>
+<p class="text-text-secondary text-base font-normal leading-normal">Créez un nouveau modèle en définissant les variables, leurs poids et les critères.</p>
+</div>
+</div>
+<div class="mt-8 bg-surface-light dark:bg-surface-dark p-8 rounded-xl shadow-sm border border-[#dbe6e2] dark:border-[#2a4038]">
+<div class="flex flex-col gap-8">
+<div>
+<h2 class="text-text-main dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3">Informations Générales</h2>
+<div class="grid grid-cols-1 gap-6">
+<label class="flex flex-col">
+<p class="text-text-main dark:text-white text-base font-medium leading-normal pb-2">Nom du Modèle</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 h-14 placeholder:text-text-secondary p-[15px] text-base font-normal leading-normal" placeholder="Ex: Modèle PME Standard 2024" type="text"/>
+</label>
+<label class="flex flex-col">
+<p class="text-text-main dark:text-white text-base font-medium leading-normal pb-2">Description</p>
+<textarea class="form-textarea flex w-full min-w-0 flex-1 resize-y overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 min-h-[120px] placeholder:text-text-secondary p-[15px] text-base font-normal leading-normal" placeholder="Décrivez le modèle et son utilisation..."></textarea>
+</label>
+</div>
+</div>
+<div>
+<h2 class="text-text-main dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] pt-5 pb-3">Variables du Modèle</h2>
+<div class="overflow-x-auto">
+<table class="w-full text-sm">
+<thead>
+<tr class="border-b border-[#dbe6e2] dark:border-[#2a4038]">
+<th class="px-4 py-3 text-left"><p class="text-text-secondary text-xs font-semibold">Variable</p></th>
+<th class="px-4 py-3 text-left"><p class="text-text-secondary text-xs font-semibold">Poids (%)</p></th>
+<th class="px-4 py-3 text-left"><p class="text-text-secondary text-xs font-semibold">Min</p></th>
+<th class="px-4 py-3 text-left"><p class="text-text-secondary text-xs font-semibold">Max</p></th>
+<th class="px-4 py-3 text-left"><p class="text-text-secondary text-xs font-semibold">Unité</p></th>
+<th class="px-4 py-3 text-left"><p class="text-text-secondary text-xs font-semibold">Sens Favorable</p></th>
+<th class="px-4 py-3 text-left"><p class="text-text-secondary text-xs font-semibold">Critère Bloquant</p></th>
+<th class="px-4 py-3 text-center"><p class="text-text-secondary text-xs font-semibold">Action</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-[#dbe6e2] dark:border-[#2a4038] hover:bg-background-light dark:hover:bg-background-dark">
+<td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-secondary p-2 text-sm font-normal leading-normal" placeholder="Variable" type="text"/></td>
+<td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-secondary p-2 text-sm font-normal leading-normal" placeholder="%" type="number"/></td>
+<td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-secondary p-2 text-sm font-normal leading-normal" placeholder="Min" type="number"/></td>
+<td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-secondary p-2 text-sm font-normal leading-normal" placeholder="Max" type="number"/></td>
+<td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-secondary p-2 text-sm font-normal leading-normal" placeholder="%, mois, millions FCFA" type="text"/></td>
+<td class="px-4 py-3"><select class="form-select flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 p-2 text-sm font-normal leading-normal"><option>Croissant</option><option>Décroissant</option></select></td>
+<td class="px-4 py-3"><input class="form-checkbox h-4 w-4 rounded text-primary focus:ring-primary/50 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark dark:checked:bg-primary" type="checkbox"/></td>
+<td class="px-4 py-3 text-center"><button class="p-1 hover:bg-red-500/10 rounded transition-colors"><span class="material-symbols-outlined text-sm text-red-500">delete</span></button></td>
+</tr>
+</tbody>
+</table>
+</div>
+<button class="mt-4 flex min-w-[100px] max-w-[200px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-10 px-4 bg-background-light dark:bg-background-dark text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/10 disabled:opacity-50 disabled:cursor-not-allowed" id="addVariableBtn">
+<span class="material-symbols-outlined">add</span>
+<span>Ajouter une Variable</span>
+</button>
+
+<!-- Weight Information Box -->
+<div class="mt-6 p-4 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-900">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-blue-600 dark:text-blue-400 mt-1">info</span>
+<div>
+<p class="text-sm font-medium text-blue-900 dark:text-blue-200">Pour valider votre modèle</p>
+<p class="text-sm text-blue-800 dark:text-blue-300">La somme des poids de chaque variable doit être égale à 100%</p>
+<p class="text-sm font-bold text-blue-900 dark:text-blue-200 mt-2">Poids actuel : <span id="totalWeightDisplay">0</span>%</p>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-end items-center gap-4 pt-8 border-t border-[#dbe6e2] dark:border-[#2a4038] mt-4">
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-transparent text-text-main dark:text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-background-light dark:hover:bg-background-dark">
+<span class="truncate">Annuler</span>
+</button>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-primary-dark">
+<span class="truncate">Créer le Modèle</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<script type="module">
+import { sessionAPI } from './api.js';
+
+const sidebar = document.getElementById('sidebar');
+const sidebarToggle = document.getElementById('sidebarToggle');
+const navLinks = document.querySelectorAll('.sidebar-nav a');
+
+sidebarToggle.addEventListener('click', () => {
+  sidebar.classList.toggle('collapsed');
+  localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+});
+
+navLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    sidebar.classList.add('collapsed');
+    localStorage.setItem('sidebarCollapsed', 'true');
+  });
+});
+
+if (localStorage.getItem('sidebarCollapsed') === 'true') {
+  sidebar.classList.add('collapsed');
+}
+
+// Update sidebar with institution info
+const institution = sessionAPI.getInstitution();
+if (institution) {
+  const sidebarUserDiv = document.querySelector('.sidebar-user');
+  if (sidebarUserDiv) {
+    const textDiv = sidebarUserDiv.querySelector('div:last-child');
+    if (textDiv) {
+      textDiv.innerHTML = `
+        <p class="text-sm font-semibold text-text-main dark:text-white truncate">${institution.name || 'Institution'}</p>
+        <p class="text-xs text-text-secondary truncate">${institution.full_name || 'Contact'}</p>
+        <p class="text-xs text-text-secondary truncate">${institution.email || 'email@example.com'}</p>
+      `;
+    }
+  }
+}
+
+// Logout button handler
+const logoutBtn = document.getElementById('logoutBtn');
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', () => {
+    sessionAPI.logout();
+    window.location.href = './institution-login.html';
+  });
+}
+
+// Add variable row functionality
+const addVariableBtn = Array.from(document.querySelectorAll('button')).find(btn => 
+  btn.textContent.includes('Ajouter une Variable')
+);
+
+// Function to calculate total weight
+function calculateTotalWeight() {
+  const rows = document.querySelectorAll('table tbody tr');
+  let total = 0;
+  rows.forEach(row => {
+    const weightInput = row.querySelectorAll('input[type="number"]')[0];
+    if (weightInput) {
+      total += parseFloat(weightInput.value) || 0;
+    }
+  });
+  return total;
+}
+
+// Function to update weight display and button state
+function updateWeightDisplay() {
+  const totalWeight = calculateTotalWeight();
+  const display = document.getElementById('totalWeightDisplay');
+  const addBtn = document.getElementById('addVariableBtn');
+  
+  if (display) {
+    display.textContent = totalWeight;
+    
+    // Change color based on total
+    if (totalWeight > 100) {
+      display.className = 'font-bold text-red-600 dark:text-red-400';
+    } else if (totalWeight < 100) {
+      display.className = 'font-bold text-yellow-600 dark:text-yellow-400';
+    } else {
+      display.className = 'font-bold text-green-600 dark:text-green-400';
+    }
+  }
+  
+  // Disable "Add variable" button if total is already 100%
+  if (addBtn) {
+    addBtn.disabled = totalWeight >= 100;
+    if (totalWeight >= 100) {
+      addBtn.title = 'Le poids total est déjà à 100%';
+    } else {
+      addBtn.title = '';
+    }
+  }
+}
+
+if (addVariableBtn) {
+  addVariableBtn.addEventListener('click', () => {
+    const tbody = document.querySelector('table tbody');
+    const newRow = document.createElement('tr');
+    newRow.className = 'border-b border-[#dbe6e2] dark:border-[#2a4038] hover:bg-background-light dark:hover:bg-background-dark';
+    newRow.innerHTML = `
+      <td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-secondary p-2 text-sm font-normal leading-normal" placeholder="Variable" type="text"/></td>
+      <td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-secondary p-2 text-sm font-normal leading-normal" placeholder="%" type="number"/></td>
+      <td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-secondary p-2 text-sm font-normal leading-normal" placeholder="Min" type="number"/></td>
+      <td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-secondary p-2 text-sm font-normal leading-normal" placeholder="Max" type="number"/></td>
+      <td class="px-4 py-3"><select class="form-select flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 p-2 text-sm font-normal leading-normal"><option>Croissant</option><option>Décroissant</option></select></td>
+      <td class="px-4 py-3"><input class="form-checkbox h-4 w-4 rounded text-primary focus:ring-primary/50 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark dark:checked:bg-primary" type="checkbox"/></td>
+      <td class="px-4 py-3 text-center"><button class="p-1 hover:bg-red-500/10 rounded transition-colors delete-btn" type="button"><span class="material-symbols-outlined text-sm text-red-500">delete</span></button></td>
+    `;
+    tbody.appendChild(newRow);
+    
+    // Add delete functionality to new row
+    const deleteBtn = newRow.querySelector('.delete-btn');
+    deleteBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      newRow.remove();
+      updateWeightDisplay();
+    });
+    
+    // Add event listener to weight input to update total in real-time
+    const weightInput = newRow.querySelectorAll('input[type="number"]')[0];
+    if (weightInput) {
+      weightInput.addEventListener('input', updateWeightDisplay);
+    }
+    
+    updateWeightDisplay();
+  });
+}
+
+// Delete button functionality for existing rows
+document.querySelectorAll('.delete-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    btn.closest('tr').remove();
+    updateWeightDisplay();
+  });
+});
+
+// Add change listeners to all weight inputs (existing rows)
+document.querySelectorAll('table tbody input[type="number"]').forEach(input => {
+  input.addEventListener('change', updateWeightDisplay);
+  input.addEventListener('input', updateWeightDisplay);
+});
+
+// Initial weight display update
+updateWeightDisplay();
+
+// Form submission handler
+const createModelBtn = Array.from(document.querySelectorAll('button')).find(btn => {
+  const text = btn.textContent.trim();
+  console.log('Button found:', text);
+  return text.includes('Créer le Modèle');
+});
+
+console.log('Create model button:', createModelBtn);
+
+const cancelBtn = Array.from(document.querySelectorAll('button')).find(btn => 
+  btn.textContent.trim().includes('Annuler')
+);
+
+if (createModelBtn) {
+  console.log('✅ Create model button found, attaching listener');
+  createModelBtn.addEventListener('click', async (e) => {
+    e.preventDefault();
+    console.log('🔵 Create model button clicked');
+    
+    // Validate total weight first
+    const totalWeight = calculateTotalWeight();
+    if (totalWeight !== 100) {
+      alert(`Le poids total doit égaler 100% (actuellement: ${totalWeight}%)`);
+      return;
+    }
+    
+    // Get form inputs
+    const nameInput = document.querySelector('input[placeholder="Ex: Modèle PME Standard 2024"]');
+    const descriptionInput = document.querySelector('textarea[placeholder="Décrivez le modèle et son utilisation..."]');
+    const rows = document.querySelectorAll('table tbody tr');
+    
+    console.log('nameInput:', nameInput?.value);
+    console.log('descriptionInput:', descriptionInput?.value);
+    console.log('rows count:', rows.length);
+    
+    // Validate form
+    if (!nameInput || !nameInput.value.trim()) {
+      alert('Le nom du modèle est requis');
+      return;
+    }
+    
+    if (rows.length === 0) {
+      alert('Au moins une variable est requise');
+      return;
+    }
+    
+    // Collect variables from table
+    const variables = [];
+    rows.forEach(row => {
+      const inputs = row.querySelectorAll('input[type="text"], input[type="number"]');
+      const select = row.querySelector('select');
+      const checkbox = row.querySelector('input[type="checkbox"]');
+      
+      if (inputs.length >= 5) {
+        const variable = {
+          name: inputs[0].value.trim(),
+          weight: parseFloat(inputs[1].value) || 0,
+          min: parseFloat(inputs[2].value) || 0,
+          max: parseFloat(inputs[3].value) || 0,
+          unit: inputs[4].value.trim() || '',
+          favorableDirection: select ? select.value : 'Croissant',
+          isBlocking: checkbox ? checkbox.checked : false
+        };
+        
+        if (variable.name && variable.weight > 0) {
+          variables.push(variable);
+        }
+      }
+    });
+    
+    if (variables.length === 0) {
+      alert('Chaque variable doit avoir un nom et un poids > 0');
+      return;
+    }
+    
+    // Get token
+    const token = sessionAPI.getToken();
+    if (!token) {
+      alert('Session expirée, veuillez vous reconnecter');
+      window.location.href = 'institution-login.html';
+      return;
+    }
+    
+    // Create model
+    try {
+      const response = await fetch('http://localhost:3001/api/scoring-models', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          name: nameInput.value.trim(),
+          description: descriptionInput ? descriptionInput.value.trim() : '',
+          variables: variables
+        })
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to create model');
+      }
+      
+      const result = await response.json();
+      console.log('✅ Model created:', result);
+      alert('Modèle créé avec succès!');
+      
+      // Redirect to models list
+      window.location.href = 'institution-liste-modeles.html';
+    } catch (error) {
+      console.error('❌ Error creating model:', error);
+      alert('Erreur: ' + error.message);
+    }
+  });
+}
+
+if (cancelBtn) {
+  cancelBtn.addEventListener('click', () => {
+    window.location.href = 'institution-liste-modeles.html';
+  });
+}
+</script>
+</body>
+</html>

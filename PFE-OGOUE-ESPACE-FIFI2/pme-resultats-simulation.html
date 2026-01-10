@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Simulation de Score</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13eca4",
+                        "primary-dark": "#0eb57d",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#10221c",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#162e26",
+                        "text-main": "#111816",
+                        "text-secondary": "#61897c",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .score-gauge {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            position: relative;
+        }
+        aside.collapsed {
+            width: 80px;
+        }
+        aside.collapsed .sidebar-text {
+            display: none;
+        }
+        aside.collapsed .sidebar-header {
+            flex-direction: column;
+            justify-content: center;
+            padding: 12px;
+        }
+        aside.collapsed .sidebar-header h1,
+        aside.collapsed .sidebar-header p {
+            display: none;
+        }
+        aside.collapsed .sidebar-header .size-10 {
+            margin: 0;
+        }
+        aside.collapsed .sidebar-nav {
+            padding: 8px;
+        }
+        aside.collapsed .sidebar-nav a {
+            padding: 12px;
+            justify-content: center;
+        }
+        aside.collapsed .sidebar-user {
+            padding: 8px;
+            flex-direction: column;
+            align-items: center;
+        }
+        aside.collapsed .sidebar-user > div:last-child {
+            display: none;
+        }
+        aside.collapsed #logoutBtn {
+            padding: 8px;
+            width: fit-content;
+            margin: 0 auto;
+        }
+        aside.collapsed #logoutBtn span:last-child {
+            display: none;
+        }
+    </style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark text-text-main dark:text-white overflow-hidden">
+<div class="flex h-screen w-full">
+<!-- Sidebar -->
+<aside id="sidebar" class="w-64 flex flex-col border-r border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark shrink-0 transition-all duration-300 collapsed">
+<div class="sidebar-header p-6 flex items-center gap-3">
+<button id="sidebarToggle" class="flex-shrink-0 p-1.5 hover:bg-background-light dark:hover:bg-background-dark rounded-lg transition-colors">
+<span class="material-symbols-outlined text-xl">menu</span>
+</button>
+</div>
+<nav class="sidebar-nav flex-1 px-4 flex flex-col gap-2 mt-4">
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-background-light dark:hover:bg-background-dark hover:text-text-main transition-colors" href="pme-selection-institution.html">
+<span class="material-symbols-outlined icon-filled">home</span>
+<span class="sidebar-text">Accueil</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-background-light dark:hover:bg-background-dark hover:text-text-main transition-colors" href="pme-historique-scores.html">
+<span class="material-symbols-outlined">analytics</span>
+<span class="sidebar-text">Résultats</span>
+</a>
+</nav>
+<div class="p-4 mt-auto border-t border-[#dbe6e2] dark:border-[#2a4038]">
+<div class="sidebar-user bg-[#f0f4f3] dark:bg-[#1c332b] rounded-xl p-4 flex items-center gap-3 mb-3">
+<div class="size-8 rounded-full bg-cover bg-center" data-alt="User profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCsQLbKh2SkSv6u3K_uv_lh40ZRyn8vwTzctnhE088sEIQg91HuY0D9rdCA3skiTL2fbbtCcwx_Txn7sxWucWzWAjAeQVOyl6nPvfQkvQCQymIESsLKoBiWofqAJPcEGaBeR8TxGNJ4axeN0KA7LjcYmFy8d-Mp5E3YLGFPccbulsgaL05zdom16CWEYdo3arrNniw95UKXdBLaDWHCjip5hpkkkKEZHSmKYo8Cc_9Je1M7dO57qpCAI6Z2UbJEa41fvLae3QZkw38');"></div>
+<div class="overflow-hidden flex-1">
+<p id="pmeCompanyName" class="text-sm font-semibold text-text-main dark:text-white truncate">PME User</p>
+<p id="pmeEmail" class="text-xs text-text-secondary truncate">pme@example.com</p>
+</div>
+</div>
+<button id="logoutBtn" class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-red-500/10 text-red-600 hover:bg-red-500/20 transition-colors text-sm font-semibold">
+<span class="material-symbols-outlined text-sm">logout</span>
+<span class="sidebar-text">Déconnexion</span>
+</button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col h-full overflow-hidden">
+<div class="flex-1 overflow-y-auto p-8">
+<div class="max-w-7xl mx-auto">
+<a href="#" id="backBtn" class="inline-flex items-center gap-2 text-primary hover:text-primary-dark mb-6">
+<span class="material-symbols-outlined">arrow_back</span>
+<span>Retour au catalogue</span>
+</a>
+<div class="mb-8">
+<h1 class="text-4xl font-bold text-text-main dark:text-white mb-2">Simulation de Score</h1>
+<p class="text-text-secondary text-base">Entrez vos critères pour calculer votre score d'éligibilité.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 auto-rows-max">
+<!-- Formulaire de saisie -->
+<div class="lg:col-span-2">
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-[#dbe6e2] dark:border-[#2a4038] p-8">
+<h2 class="text-2xl font-bold text-text-main dark:text-white mb-6">Critères d'Évaluation</h2>
+
+<!-- Variables du modèle -->
+<form id="simulationForm" class="space-y-6">
+<div id="variablesContainer">
+<!-- Les variables seront générées ici dynamiquement -->
+</div>
+
+<div class="flex gap-4 pt-6 border-t border-[#dbe6e2] dark:border-[#2a4038]">
+<button type="submit" class="flex items-center gap-2 px-8 h-12 bg-primary text-white rounded-lg font-bold hover:bg-primary-dark transition-colors">
+<span class="material-symbols-outlined">calculate</span>
+<span>Calculer le Score</span>
+</button>
+<a href="#" id="resetBtn" class="flex items-center gap-2 px-8 h-12 bg-surface-light dark:bg-surface-dark border border-[#dbe6e2] dark:border-[#2a4038] text-text-main dark:text-white rounded-lg font-bold hover:bg-background-light dark:hover:bg-background-dark transition-colors">
+<span class="material-symbols-outlined">refresh</span>
+<span>Réinitialiser</span>
+</a>
+</div>
+</form>
+</div>
+</div>
+
+<!-- Affichage du score -->
+<div class="lg:col-span-1">
+<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-[#dbe6e2] dark:border-[#2a4038] p-8 sticky top-8 flex flex-col justify-between h-full">
+<div>
+<h3 class="text-xl font-bold text-text-main dark:text-white mb-4">Score d'Éligibilité</h3>
+
+<!-- Score gauge -->
+<div class="flex justify-center mb-4">
+<div class="score-gauge bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800" id="scoreGauge">
+<span id="scoreValue">-</span>
+</div>
+</div>
+
+<!-- Score details -->
+<div class="space-y-3" id="scoreDetails">
+<div class="p-3 bg-background-light dark:bg-background-dark rounded-lg text-center">
+<p class="text-sm text-text-secondary mb-1">Score Brut</p>
+<p class="text-lg font-bold text-text-main dark:text-white" id="rawScore">-</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body>
+
+<script type="module">
+import { sessionAPI, profileAPI } from './api.js';
+
+// Check authentication
+if (!sessionAPI.isLoggedIn()) {
+  window.location.href = './pme-login.html';
+}
+
+// Load PME profile at startup
+async function loadPMEProfile() {
+  try {
+    const token = sessionAPI.getToken();
+    const pmeProfile = await profileAPI.getPME(token);
+    console.log('✅ PME Profile loaded:', pmeProfile);
+    if (pmeProfile && pmeProfile.id) {
+      sessionAPI.setPME(pmeProfile);
+    }
+  } catch (error) {
+    console.warn('⚠️ Failed to load PME profile:', error.message);
+    // Continue anyway - PME can still simulate
+  }
+}
+
+loadPMEProfile();
+
+// Get product ID from URL
+function getProductId() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('productId');
+}
+
+const productId = getProductId();
+const backBtn = document.getElementById('backBtn');
+let currentProductName = 'N/A'; // Store product name globally
+let currentInstitutionName = 'N/A'; // Store institution name globally
+
+// Set back button to return to catalogue
+if (backBtn) {
+  backBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.history.back();
+  });
+}
+
+// Load product and its scoring model
+async function loadProduct() {
+  try {
+    if (!productId) {
+      throw new Error('No product selected');
+    }
+
+    const response = await fetch(`http://localhost:3001/api/credit-products/public/${productId}`);
+    
+    if (!response.ok) {
+      throw new Error('Failed to load product');
+    }
+
+    const data = await response.json();
+    const product = data.product;
+    const modelVariables = data.model_variables || [];
+
+    console.log('✅ Product loaded:', product);
+    console.log('📊 Model variables:', modelVariables);
+
+    // Store product name globally
+    currentProductName = product.name;
+    console.log('💾 Product name stored:', currentProductName);
+    
+    // Store institution name from backend
+    currentInstitutionName = data.product?.institution_name || 'N/A';
+    console.log('💾 Institution name stored:', currentInstitutionName);
+
+    // Generate form fields for variables
+    generateVariableFields(modelVariables);
+
+  } catch (error) {
+    console.error('❌ Error loading product:', error);
+    // Try to get product name from fallback sources
+    console.warn('⚠️ Fallback: Could not load product details, will use generic name');
+    currentProductName = 'Produit'; // Fallback to generic name
+  }
+}
+
+// Generate form fields for each variable
+function generateVariableFields(variables) {
+  const container = document.getElementById('variablesContainer');
+  
+  if (!variables || variables.length === 0) {
+    container.innerHTML = '<p class="text-text-secondary">Aucune variable définie pour ce modèle.</p>';
+    return;
+  }
+
+  const html = variables
+    .sort((a, b) => (a.display_order || 0) - (b.display_order || 0))
+    .map(variable => {
+      const fieldId = `var-${variable.id}`;
+      const isNumeric = variable.variable_type === 'numeric' || variable.variable_type === 'number';
+      const inputType = isNumeric ? 'number' : 'text';
+      
+      // Create placeholder with min and max bounds
+      let placeholder = "Entrez une valeur...";
+      if (isNumeric && (variable.min_value !== null || variable.max_value !== null)) {
+        const min = variable.min_value ?? '?';
+        const max = variable.max_value ?? '?';
+        placeholder = `Entrez une valeur entre ${min} et ${max}`;
+      }
+      
+      return `
+        <div class="space-y-2">
+          <label for="${fieldId}" class="block text-sm font-semibold text-text-main dark:text-white">
+            ${variable.name}
+            <span class="text-primary text-xs font-normal">(Poids: ${variable.weight}%)</span>
+          </label>
+          <input 
+            type="${inputType}" 
+            id="${fieldId}" 
+            name="${variable.id}"
+            data-variable-id="${variable.id}"
+            data-variable-name="${variable.name}"
+            data-variable-weight="${variable.weight}"
+            data-variable-type="${variable.variable_type}"
+            placeholder="${placeholder}"
+            class="w-full px-4 py-3 rounded-lg border border-[#dbe6e2] dark:border-[#2a4038] bg-background-light dark:bg-background-dark text-text-main dark:text-white placeholder:text-text-secondary focus:outline-0 focus:ring-2 focus:ring-primary/50"
+            ${isNumeric ? 'step="0.01"' : ''}
+          />
+        </div>
+      `;
+    })
+    .join('');
+
+  container.innerHTML = html;
+}
+
+// Handle form submission
+const form = document.getElementById('simulationForm');
+if (form) {
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    calculateScore();
+  });
+}
+
+// Reset form
+const resetBtn = document.getElementById('resetBtn');
+if (resetBtn) {
+  resetBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    form.reset();
+    resetScoreDisplay();
+  });
+}
+
+// Calculate score
+async function calculateScore() {
+  const inputs = document.querySelectorAll('[data-variable-id]');
+  
+  const values = {};
+  const variableNames = {};
+  let allFilled = true;
+
+  inputs.forEach(input => {
+    const value = input.value;
+    const variableId = input.dataset.variableId;
+    const variableName = input.dataset.variableName;
+    
+    if (!value) {
+      allFilled = false;
+      input.classList.add('ring-2', 'ring-red-500');
+      return;
+    }
+
+    input.classList.remove('ring-2', 'ring-red-500');
+    
+    // Parse numeric values
+    const parsedValue = isNaN(value) ? value : parseFloat(value);
+    values[variableId] = parsedValue;
+    variableNames[variableId] = variableName;
+  });
+
+  if (!allFilled) {
+    alert('Veuillez remplir tous les champs');
+    return;
+  }
+
+  try {
+    // Call backend API to calculate score
+    const pmeData = sessionAPI.getPME?.() || null;  // Safely get PME data if it exists
+    
+    const payload = {
+      product_id: productId,
+      values: values
+    };
+    
+    if (pmeData?.id) {
+      payload.pme_id = pmeData.id;
+    }
+    
+    const response = await fetch('http://localhost:3001/api/simulations/calculate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Erreur lors du calcul');
+    }
+
+    const result = await response.json();
+    
+    console.log('✅ Score calculation result:', result);
+    console.log('📊 Variables sent:', values);
+    
+    // Add the variables to the result so we can save them
+    result.inputVariables = values;
+    result.variableNames = variableNames;
+    
+    // Display results from backend
+    displayScore(result);
+
+  } catch (error) {
+    console.error('❌ Error calculating score:', error);
+    alert('Erreur lors du calcul du score: ' + error.message);
+  }
+}
+
+// Display score results
+function displayScore(result) {
+  const scoreValue = document.getElementById('scoreValue');
+  const rawScoreEl = document.getElementById('rawScore');
+  const scoreGauge = document.getElementById('scoreGauge');
+
+  const score = result.score_final || 0;
+  const classification = result.classification || 'RISQUE';
+  const status = result.status || 'ERROR';
+
+  // Save simulation result to localStorage
+  const simulationResult = {
+    timestamp: new Date().toISOString(),
+    productId: productId,
+    productName: currentProductName,
+    institutionName: currentInstitutionName,
+    score: score,
+    classification: classification,
+    variablesCount: Object.keys(result.inputVariables || result.variables || {}).length,
+    variables: result.inputVariables || result.variables || {},
+    variableNames: result.variableNames || {},
+    details: result.details || [],
+    fullResult: result
+  };
+  
+  const existingResults = JSON.parse(localStorage.getItem('simulationResults') || '[]');
+  existingResults.push(simulationResult);
+  localStorage.setItem('simulationResults', JSON.stringify(existingResults));
+  console.log('✅ Résultat sauvegardé:', simulationResult);
+  console.log('📝 Nom du produit sauvegardé:', currentProductName);
+  console.log('🏛️ Nom de l\'institution sauvegardé:', currentInstitutionName);
+
+  // Update gauge
+  scoreValue.textContent = Math.round(score);
+  rawScoreEl.textContent = score.toFixed(2);
+
+  // Determine gauge color based on classification
+  let gaugeColor = '';
+
+  switch (classification) {
+    case 'EXCELLENT':
+      gaugeColor = 'from-green-300 to-green-400 dark:from-green-700 dark:to-green-600';
+      break;
+    case 'BON':
+      gaugeColor = 'from-blue-300 to-blue-400 dark:from-blue-700 dark:to-blue-600';
+      break;
+    case 'MOYEN':
+      gaugeColor = 'from-yellow-300 to-yellow-400 dark:from-yellow-700 dark:to-yellow-600';
+      break;
+    case 'RISQUE':
+      gaugeColor = 'from-red-300 to-red-400 dark:from-red-700 dark:to-red-600';
+      break;
+    default:
+      gaugeColor = 'from-red-300 to-red-400 dark:from-red-700 dark:to-red-600';
+  }
+
+  // If blocking criteria failed
+  if (status === 'NON_ELIGIBLE' && result.blocking_failed && result.blocking_failed.length > 0) {
+    gaugeColor = 'from-red-500 to-red-600 dark:from-red-800 dark:to-red-900';
+  }
+
+  scoreGauge.className = `score-gauge bg-gradient-to-br ${gaugeColor}`;
+}
+
+// Reset score display
+function resetScoreDisplay() {
+  document.getElementById('scoreValue').textContent = '-';
+  document.getElementById('rawScore').textContent = '-';
+  document.getElementById('scoreGauge').className = 'score-gauge bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800';
+}
+
+// Update user info dynamically
+function updateUserInfo() {
+  const user = sessionAPI.getUser();
+  const pmeCompanyNameEl = document.getElementById('pmeCompanyName');
+  const pmeEmailEl = document.getElementById('pmeEmail');
+  
+  if (user) {
+    if (pmeEmailEl && user.email) {
+      pmeEmailEl.textContent = user.email;
+    }
+    if (pmeCompanyNameEl) {
+      const pmeData = localStorage.getItem('pmeData');
+      if (pmeData) {
+        try {
+          const parsed = JSON.parse(pmeData);
+          if (parsed.company_name) {
+            pmeCompanyNameEl.textContent = parsed.company_name;
+          } else {
+            pmeCompanyNameEl.textContent = user.full_name || 'User';
+          }
+        } catch (e) {
+          pmeCompanyNameEl.textContent = user.full_name || 'User';
+        }
+      } else {
+        pmeCompanyNameEl.textContent = user.full_name || 'User';
+      }
+    }
+  }
+}
+
+// Load product on page load
+loadProduct();
+updateUserInfo();
+</script>
+
+<script>
+// Sidebar toggle functionality
+const sidebar = document.getElementById('sidebar');
+const sidebarToggle = document.getElementById('sidebarToggle');
+
+if (sidebarToggle) {
+  sidebarToggle.addEventListener('click', () => {
+    sidebar.classList.toggle('collapsed');
+  });
+}
+
+// Logout functionality
+const logoutBtn = document.getElementById('logoutBtn');
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', () => {
+    localStorage.removeItem('authToken');
+    window.location.href = './pme-login.html';
+  });
+}
+</script>
+</main>
+</div>
+</body>
+</html>

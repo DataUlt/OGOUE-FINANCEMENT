@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html class="light" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gestion des Modèles d'Octroi (Institution)</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13eca4",
+                        "primary-dark": "#0eb57d",
+                        "background-light": "#f6f8f7",
+                        "background-dark": "#10221c",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#162e26",
+                        "text-main": "#111816",
+                        "text-secondary": "#61897c",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        aside.collapsed {
+            width: 80px;
+        }
+        aside.collapsed .sidebar-text {
+            display: none;
+        }
+        aside.collapsed .sidebar-header {
+            flex-direction: column;
+            justify-content: center;
+            padding: 12px;
+        }
+        aside.collapsed .sidebar-header h1,
+        aside.collapsed .sidebar-header p {
+            display: none;
+        }
+        aside.collapsed .sidebar-header .size-10 {
+            margin: 0;
+        }
+        aside.collapsed .sidebar-nav {
+            padding: 8px;
+        }
+        aside.collapsed .sidebar-nav a {
+            padding: 12px;
+            justify-content: center;
+        }
+        aside.collapsed .sidebar-user {
+            padding: 8px;
+            flex-direction: column;
+            align-items: center;
+        }
+        aside.collapsed .sidebar-user > div:last-child {
+            display: none;
+        }
+        aside.collapsed #logoutBtn {
+            padding: 8px;
+            width: fit-content;
+            margin: 0 auto;
+        }
+        aside.collapsed #logoutBtn span:last-child {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-text-main dark:text-white font-display overflow-hidden">
+<div class="flex h-screen w-full">
+<aside id="sidebar" class="w-64 flex flex-col border-r border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark shrink-0 transition-all duration-300">
+<div class="sidebar-header p-6 flex items-center gap-3">
+<button id="sidebarToggle" class="flex-shrink-0 p-1.5 hover:bg-background-light dark:hover:bg-background-dark rounded-lg transition-colors">
+<span class="material-symbols-outlined text-xl">menu</span>
+</button>
+</div>
+<nav class="sidebar-nav flex-1 px-4 flex flex-col gap-2 mt-4">
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-background-light dark:hover:bg-background-dark hover:text-text-main transition-colors" href="institution-tableau-bord.html">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="sidebar-text">Vue d'Ensemble</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-background-light dark:hover:bg-background-dark hover:text-text-main transition-colors" href="institution-liste-produits.html">
+<span class="material-symbols-outlined">payments</span>
+<span class="sidebar-text">Produits</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-xl bg-primary/10 text-primary-dark dark:text-primary font-medium" href="institution-liste-modeles.html">
+<span class="material-symbols-outlined icon-filled">table_chart</span>
+<span class="sidebar-text">Modèles</span>
+</a>
+</nav>
+<div class="p-4 mt-auto border-t border-[#dbe6e2] dark:border-[#2a4038]">
+<div class="sidebar-user bg-[#f0f4f3] dark:bg-[#1c332b] rounded-xl p-4 flex items-center gap-3 mb-3">
+<div class="size-8 rounded-full bg-cover bg-center" data-alt="User profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCRIT7ff6v9rrUcAhYe0OOUrUpnKRPk116GNykQEkHvpkm8OcnbFIHebI_9s2BLSgjCDBIiCeTAyUqjsiPk6ByM9xta6qZ1RWzIhxls9I4Sk5sNcDyDiKiJf5ycTmKrqubfo50DZ8awUuPWSee77ZLhFpXooySZDpCEyN09_mGL6P3cfWBrKmY-W59JNITG3gg73Gcfexu3E4wl2e-ftUXVW2HngUX2vEFC-gITs_jcsGdd2m05m69kA6GmDheaVmMJx3vZ3B9VR24');"></div>
+<div class="overflow-hidden flex-1">
+<p class="text-sm font-semibold text-text-main dark:text-white truncate">Testbank5</p>
+<p class="text-xs text-text-secondary truncate">test5@gmail.com</p>
+</div>
+</div>
+<button id="logoutBtn" class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-red-500/10 text-red-600 hover:bg-red-500/20 transition-colors text-sm font-semibold">
+<span class="material-symbols-outlined text-sm">logout</span>
+<span class="sidebar-text">Déconnexion</span>
+</button>
+</div>
+</aside>
+<main class="flex-1 flex flex-col h-full overflow-hidden">
+<div class="flex-1 overflow-y-auto p-8">
+<div class="max-w-6xl mx-auto">
+<div class="flex flex-wrap justify-between items-center gap-3 p-4">
+<div class="flex min-w-72 flex-col gap-3">
+<p class="text-text-main dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">Gestion des Modèles de Crédit</p>
+<p class="text-text-secondary text-base font-normal leading-normal">Créez et gérez les modèles de scoring pour l'octroi de crédits.</p>
+</div>
+<a href="institution-creation-modele.html" class="flex min-w-[120px] max-w-[300px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-12 px-6 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-primary-dark">
+<span class="material-symbols-outlined">add</span>
+<span>Nouveau Modèle</span>
+</a>
+</div>
+<div class="mt-6 bg-surface-light dark:bg-surface-dark p-6 rounded-xl shadow-sm border border-[#dbe6e2] dark:border-[#2a4038]">
+<div class="mb-6">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary text-sm">search</span>
+<input id="searchInput" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 placeholder:text-text-secondary pl-10 pr-4 py-3 text-base font-normal leading-normal" placeholder="Rechercher un modèle..."/>
+</div>
+</div>
+<table class="w-full">
+<thead>
+<tr class="border-b border-[#dbe6e2] dark:border-[#2a4038]">
+<th class="px-4 py-3 text-left"><p class="text-text-secondary text-xs font-semibold uppercase tracking-wider">Nom du Modèle</p></th>
+<th class="px-4 py-3 text-left"><p class="text-text-secondary text-xs font-semibold uppercase tracking-wider">Variables</p></th>
+<th class="px-4 py-3 text-left"><p class="text-text-secondary text-xs font-semibold uppercase tracking-wider">Poids Total</p></th>
+<th class="px-4 py-3 text-left"><p class="text-text-secondary text-xs font-semibold uppercase tracking-wider">Produits Associés</p></th>
+<th class="px-4 py-3 text-center"><p class="text-text-secondary text-xs font-semibold uppercase tracking-wider">Actions</p></th>
+</tr>
+</thead>
+<tbody id="modelsTableBody">
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+</div>
+<script type="module">
+import { sessionAPI, modelsAPI, productsAPI } from './api.js';
+
+// Check authentication
+if (!sessionAPI.isLoggedIn()) {
+  window.location.href = './institution-login.html';
+}
+
+const sidebar = document.getElementById('sidebar');
+const sidebarToggle = document.getElementById('sidebarToggle');
+const navLinks = document.querySelectorAll('.sidebar-nav a');
+
+sidebarToggle.addEventListener('click', () => {
+  sidebar.classList.toggle('collapsed');
+  localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+});
+
+navLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    sidebar.classList.add('collapsed');
+    localStorage.setItem('sidebarCollapsed', 'true');
+  });
+});
+
+if (localStorage.getItem('sidebarCollapsed') === 'true') {
+  sidebar.classList.add('collapsed');
+}
+
+// Update sidebar with institution info
+const institution = sessionAPI.getInstitution();
+if (institution) {
+  const sidebarUserDiv = document.querySelector('.sidebar-user');
+  if (sidebarUserDiv) {
+    const textDiv = sidebarUserDiv.querySelector('div:last-child');
+    if (textDiv) {
+      textDiv.innerHTML = `
+        <p class="text-sm font-semibold text-text-main dark:text-white truncate">${institution.name || 'Institution'}</p>
+        <p class="text-xs text-text-secondary truncate">${institution.full_name || 'Contact'}</p>
+        <p class="text-xs text-text-secondary truncate">${institution.email || 'email@example.com'}</p>
+      `;
+    }
+  }
+}
+
+// Logout button handler
+const logoutBtn = document.getElementById('logoutBtn');
+if (logoutBtn) {
+  logoutBtn.addEventListener('click', () => {
+    sessionAPI.logout();
+    window.location.href = './institution-login.html';
+  });
+}
+
+// Load models
+async function loadModels() {
+  try {
+    const token = sessionAPI.getToken();
+    const modelsRes = await modelsAPI.getModels(token);
+    const productsRes = await productsAPI.getInstitutionProducts(token);
+    
+    const models = modelsRes.models || [];
+    const products = productsRes.products || [];
+    
+    console.log('📦 All products:', products);
+    if (products.length > 0) {
+      console.log('🔍 First product full details:', JSON.stringify(products[0], null, 2));
+      console.log('🔑 Product keys:', Object.keys(products[0]));
+    }
+    console.log('🎯 All models:', models);
+    
+    // Store data for filtering
+    allModels = models;
+    allProducts = products;
+    
+    // Display all models initially
+    displayModels(models, products);
+  } catch (error) {
+    console.error('Error loading models:', error);
+  }
+}
+
+async function deleteModel(modelId) {
+  if (!confirm('Êtes-vous sûr de vouloir supprimer ce modèle?')) return;
+  
+  try {
+    const token = sessionAPI.getToken();
+    await modelsAPI.deleteModel(token, modelId);
+    loadModels();
+  } catch (error) {
+    console.error('Error deleting model:', error);
+    alert('Erreur lors de la suppression du modèle');
+  }
+}
+
+// Make deleteModel globally accessible
+window.deleteModel = deleteModel;
+
+// Store models data for filtering
+let allModels = [];
+let allProducts = [];
+
+// Search/filter functionality
+const searchInput = document.getElementById('searchInput');
+if (searchInput) {
+  searchInput.addEventListener('input', (e) => {
+    const searchTerm = e.target.value.trim();
+    const tableBody = document.getElementById('modelsTableBody');
+    
+    if (searchTerm === '') {
+      // Show all models if search is empty
+      displayModels(allModels, allProducts);
+    } else {
+      // Filter models by name (case-sensitive)
+      const filteredModels = allModels.filter(model =>
+        model.name.includes(searchTerm)
+      );
+      displayModels(filteredModels, allProducts);
+    }
+  });
+}
+
+// Separate display logic for models
+function displayModels(models, products) {
+  const tableBody = document.getElementById('modelsTableBody');
+  tableBody.innerHTML = '';
+  
+  if (!models || models.length === 0) {
+    tableBody.innerHTML = `
+      <tr>
+        <td class="px-4 py-3 text-center text-text-secondary" colspan="5">
+          Aucun modèle trouvé. <a href="institution-creation-modele.html" class="text-primary font-semibold">Créer un modèle</a>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+  
+  models.forEach(model => {
+    // Find products associated with this model by matching scoring_model_id
+    const associatedProducts = products.filter(p => p.scoring_model_id === model.id);
+    const productNames = associatedProducts.map(p => p.name);
+    
+    const variableCount = model.model_variables?.length || 0;
+    
+    console.log(`Model: ${model.name}, ID: ${model.id}, Associated products:`, productNames);
+    
+    tableBody.innerHTML += `
+      <tr class="hover:bg-background-light dark:hover:bg-background-dark transition-colors">
+        <td class="px-4 py-3">
+          <p class="font-semibold text-text-main dark:text-white text-sm">${model.name}</p>
+        </td>
+        <td class="px-4 py-3">
+          <div class="flex flex-wrap gap-1">
+            ${model.model_variables?.map(v => `
+              <span class="inline-block px-2 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">${v.name || v}</span>
+            `).join('')}
+            ${variableCount === 0 ? '<span class="text-text-secondary text-sm">Aucune</span>' : ''}
+          </div>
+        </td>
+        <td class="px-4 py-3">
+          <p class="text-sm text-text-main dark:text-white font-medium whitespace-nowrap">100%</p>
+        </td>
+        <td class="px-4 py-3">
+          <div class="flex flex-wrap gap-1">
+            ${productNames.map(name => `
+              <span class="inline-block px-2 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary-dark dark:text-primary">${name.substring(0, 15)}${name.length > 15 ? '...' : ''}</span>
+            `).join('')}
+            ${productNames.length === 0 ? '<span class="text-text-secondary text-sm">Aucun</span>' : ''}
+          </div>
+        </td>
+        <td class="px-4 py-3 text-center">
+          <div class="flex justify-center gap-1">
+            <a href="institution-modification-modele.html?id=${model.id}" class="p-1.5 hover:bg-blue-500/10 rounded transition-colors inline-flex items-center justify-center" title="Modifier">
+              <span class="material-symbols-outlined text-sm text-blue-500">edit</span>
+            </a>
+            <button class="p-1.5 hover:bg-red-500/10 rounded transition-colors" title="Supprimer" onclick="deleteModel('${model.id}')">
+              <span class="material-symbols-outlined text-sm text-red-500">delete</span>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+loadModels();
+</script>
+</body>
+</html>
