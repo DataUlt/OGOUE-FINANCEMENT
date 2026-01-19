@@ -7,28 +7,25 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script>
       tailwind.config = {
-        darkMode: "class",
         theme: {
           extend: {
             colors: {
-              "primary": "#13eca4",
-              "primary-dark": "#0eb57d",
+              "primary": "#1de22e",
+              "primary-dark": "#1de22e",
               "background-light": "#f6f8f7",
-              "background-dark": "#10221c",
               "surface-light": "#ffffff",
-              "surface-dark": "#162e26",
-              "text-main": "#111816",
-              "text-secondary": "#61897c",
+              "text-light": "#0a0c0a",
+              "text-light-muted": "#5c6c60",
             },
             fontFamily: {
-              "display": ["Public Sans", "sans-serif"]
+              "display": ["Manrope", "sans-serif"]
             },
-            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "2xl": "2rem", "full": "9999px"},
           },
         },
       }
@@ -83,31 +80,31 @@
         }
     </style>
 </head>
-<body class="font-display bg-background-light dark:bg-background-dark text-text-main dark:text-white overflow-hidden">
+<body class="font-display bg-background-light text-text-light overflow-hidden">
 <div class="flex h-screen w-full">
 <!-- Sidebar -->
-<aside id="sidebar" class="w-64 flex flex-col border-r border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark shrink-0 transition-all duration-300">
+<aside id="sidebar" class="w-64 flex flex-col border-r border-black/10 bg-surface-light shrink-0 transition-all duration-300">
 <div class="sidebar-header p-6 flex items-center gap-3">
-<button id="sidebarToggle" class="flex-shrink-0 p-1.5 hover:bg-background-light dark:hover:bg-background-dark rounded-lg transition-colors">
+<button id="sidebarToggle" class="flex-shrink-0 p-1.5 hover:bg-background-light rounded-lg transition-colors">
 <span class="material-symbols-outlined text-xl">menu</span>
 </button>
 </div>
 <nav class="sidebar-nav flex-1 px-4 flex flex-col gap-2 mt-4">
-<a class="flex items-center gap-3 px-3 py-3 rounded-xl bg-primary/10 text-primary-dark dark:text-primary font-medium" href="pme-selection-institution.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary font-medium" href="pme-selection-institution.html">
 <span class="material-symbols-outlined icon-filled">home</span>
 <span class="sidebar-text">Accueil</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-background-light dark:hover:bg-background-dark hover:text-text-main transition-colors" href="pme-historique-scores.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="pme-historique-scores.html">
 <span class="material-symbols-outlined">analytics</span>
 <span class="sidebar-text">Résultats</span>
 </a>
 </nav>
-<div class="p-4 mt-auto border-t border-[#dbe6e2] dark:border-[#2a4038]">
-<div class="sidebar-user bg-[#f0f4f3] dark:bg-[#1c332b] rounded-xl p-4 flex items-center gap-3 mb-3">
+<div class="p-4 mt-auto border-t border-black/10">
+<div class="sidebar-user bg-[#f0f4f3] rounded-lg p-4 flex items-center gap-3 mb-3">
 <div class="size-8 rounded-full bg-cover bg-center" data-alt="User profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCsQLbKh2SkSv6u3K_uv_lh40ZRyn8vwTzctnhE088sEIQg91HuY0D9rdCA3skiTL2fbbtCcwx_Txn7sxWucWzWAjAeQVOyl6nPvfQkvQCQymIESsLKoBiWofqAJPcEGaBeR8TxGNJ4axeN0KA7LjcYmFy8d-Mp5E3YLGFPccbulsgaL05zdom16CWEYdo3arrNniw95UKXdBLaDWHCjip5hpkkkKEZHSmKYo8Cc_9Je1M7dO57qpCAI6Z2UbJEa41fvLae3QZkw38');"></div>
 <div class="overflow-hidden flex-1">
-<p id="pmeCompanyName" class="text-sm font-semibold text-text-main dark:text-white truncate">PME User</p>
-<p id="pmeEmail" class="text-xs text-text-secondary truncate">pme@example.com</p>
+<p id="pmeCompanyName" class="text-sm font-semibold text-text-light truncate">PME User</p>
+<p id="pmeEmail" class="text-xs text-text-light-muted truncate">pme@example.com</p>
 </div>
 </div>
 <button id="logoutBtn" class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-red-500/10 text-red-600 hover:bg-red-500/20 transition-colors text-sm font-semibold">
@@ -122,83 +119,29 @@
 <div class="max-w-5xl mx-auto">
 <div class="flex flex-wrap justify-between gap-3 mb-8">
 <div class="flex min-w-72 flex-col gap-2">
-<p class="text-text-main dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">Sélectionnez votre institution financière</p>
-<p class="text-text-secondary dark:text-gray-400 text-base font-normal leading-normal">Choisissez l'institution avec laquelle vous souhaitez monter votre dossier de financement.</p>
+<p class="text-text-light text-4xl font-black leading-tight tracking-[-0.033em]">Sélectionnez votre institution financière</p>
+<p class="text-text-light-muted text-base font-normal leading-normal">Choisissez l'institution avec laquelle vous souhaitez monter votre dossier de financement.</p>
 </div>
 </div>
 <div class="mb-8">
 <label class="flex flex-col min-w-40 h-12 w-full">
 <div class="flex w-full flex-1 items-stretch rounded-lg h-full">
-<div class="text-text-secondary dark:text-gray-400 flex border border-solid border-[#dbe6e2] dark:border-gray-700 bg-white dark:bg-background-dark items-center justify-center pl-4 rounded-l-lg border-r-0">
+<div class="text-text-light-muted flex border border-solid border-black/10 bg-white items-center justify-center pl-4 rounded-l-lg border-r-0">
 <span aria-hidden="true" class="material-symbols-outlined">search</span>
 </div>
-<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-r-lg text-text-main dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-solid border-[#dbe6e2] dark:border-gray-700 bg-white dark:bg-background-dark h-full placeholder:text-text-secondary dark:placeholder:text-gray-400 px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal" placeholder="Rechercher une institution" value=""/>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-r-lg text-text-light focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-solid border-black/10 bg-white h-full placeholder:text-text-light-muted px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal" placeholder="Rechercher une institution" value=""/>
 </div>
 </label>
 </div>
 <div class="flex flex-wrap gap-6 justify-center" id="institutionsGrid">
 <!-- Institutions will be loaded here dynamically -->
 <div class="w-full flex justify-center py-8">
-<div class="text-text-secondary dark:text-gray-400">Chargement des institutions...</div>
+<div class="text-text-light-muted">Chargement des institutions...</div>
 </div>
 </div>
 </div>
 </div>
 </main>
-</div>
-</body></html>
-<div class="w-full bg-center bg-no-repeat aspect-[2/1] bg-contain rounded-md" data-alt="Orabank company logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDPbtD8m2j1NM2RFk5cIVjOd0nF7_r3-v9JB6xvdR8KGQns3LSdYbrq7FLu6KXEndjo8u2utI7hPyEUdGfXgTYH5N2Q_mtXQeBKuIhaHDXhvSnrvDaibxcwMk2HOy_eVCHwW6DS_fUJy2pCFw8Es81ErjgcbpInjWdg2pirQrhyu-hHySFiVhgz84nQq4SGI4b72d2t7wBQsO0r_5BWmmbQMBikIsvDDTQPEsGODzX3eYnLW_UR28Aw32AQsX3GTC5h6Eeu_kb4kO8");'></div>
-<div class="flex-grow">
-<p class="text-gray-900 dark:text-white text-base font-medium leading-normal">Orabank</p>
-<p class="text-gray-500 dark:text-gray-400 text-sm font-normal leading-normal">Banque Commerciale</p>
-</div>
-<div class="w-full text-center py-2 px-4 rounded-lg bg-primary text-gray-900 font-bold hover:bg-opacity-80 transition-colors">Sélectionner</div>
-</a>
-<div class="flex flex-col gap-4 p-4 border border-solid border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-900/50 hover:shadow-lg hover:border-primary/50 transition-all duration-300">
-<div class="w-full bg-center bg-no-repeat aspect-[2/1] bg-contain rounded-md" data-alt="BGFI Bank company logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB-95X0-yCa7w0-KE0wRxBotV06zrmEOQhI_uFVE-y-woUka5PTZukiatpc-hVak5b2zcwIbntGKBTYTLGKCQmRdwIgx4YDPWrj8k9vlgY-XM1IHaOsA89Pq2o2NFDkkAmjMNqz6GSnG_q6A3F-eFeptCoIkJ8ex4xAn40DK7mwGXnWm0nQq6gOPohjPI3TUgbDV62d-M8HYdWOtmfde-o5PhCRXUVUXFgD0XM475fBQXcBaP0FVV7Y_RIRozr73HejIuDNLv98pE4");'></div>
-<div class="flex-grow">
-<p class="text-gray-900 dark:text-white text-base font-medium leading-normal">BGFI Bank</p>
-<p class="text-gray-500 dark:text-gray-400 text-sm font-normal leading-normal">Groupe Bancaire International</p>
-</div>
-<button class="w-full text-center py-2 px-4 rounded-lg bg-primary text-gray-900 font-bold hover:bg-opacity-80 transition-colors">Sélectionner</button>
-</div>
-<div class="flex flex-col gap-4 p-4 border border-solid border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-900/50 hover:shadow-lg hover:border-primary/50 transition-all duration-300">
-<div class="w-full bg-center bg-no-repeat aspect-[2/1] bg-contain rounded-md" data-alt="Société Générale company logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBUBPqQOCV5Nm8XBCsAidnYxUwE7zCExeIgSnTTTZv_L6MUwuSNmTT4m02Bslgew1lvSrIwQX4eMq2e1-Wq6xhnywvvQzKoBsTDIqkfAsSOq-1Zac2TAWSxSDTaqPY0-OWgBECnBvApFpJiOwvX3QD_V788gCDSUAjDQIvdV1hp5EAUjsXEegyXT94ra5kmRoTWBJ2rYTX8Z3mRVhRuPl-Gn3LTG9vHs_ONUiRk2kciWO7l_wTXZsGUT8koH6bTx4RKOXeEZBotaAo");'></div>
-<div class="flex-grow">
-<p class="text-gray-900 dark:text-white text-base font-medium leading-normal">Société Générale</p>
-<p class="text-gray-500 dark:text-gray-400 text-sm font-normal leading-normal">Banque de Détail</p>
-</div>
-<button class="w-full text-center py-2 px-4 rounded-lg bg-primary text-gray-900 font-bold hover:bg-opacity-80 transition-colors">Sélectionner</button>
-</div>
-<div class="flex flex-col gap-4 p-4 border border-solid border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-900/50 hover:shadow-lg hover:border-primary/50 transition-all duration-300">
-<div class="w-full bg-center bg-no-repeat aspect-[2/1] bg-contain rounded-md" data-alt="Ecobank company logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD0SBu0jF6Hd_IZmh39_YJGdtWZnItrQcLQaKkx482fymV90XLtq6XWdbbVHm8gjQasvikPqvgLZ7gGTCYM3MnXO1MsaCuhYIxD41uEG8OQTnv8nzqN0uP4UULU90bvdZME_sVJPyyqmRiRty5Ned330LcB7yqagd55xBUWdi0UJAPVhcg3jO8DKaiHfA0YlzQFQhFPFw8mhVg9igYJe2fYR44KC1nHJYFud8-XVoozRNGse5iOesCDzZiKGtxQc0IaKbYuTUdh_yY");'></div>
-<div class="flex-grow">
-<p class="text-gray-900 dark:text-white text-base font-medium leading-normal">Ecobank</p>
-<p class="text-gray-500 dark:text-gray-400 text-sm font-normal leading-normal">Banque Panafricaine</p>
-</div>
-<button class="w-full text-center py-2 px-4 rounded-lg bg-primary text-gray-900 font-bold hover:bg-opacity-80 transition-colors">Sélectionner</button>
-</div>
-<div class="flex flex-col gap-4 p-4 border border-solid border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-900/50 hover:shadow-lg hover:border-primary/50 transition-all duration-300">
-<div class="w-full bg-center bg-no-repeat aspect-[2/1] bg-contain rounded-md" data-alt="UBA Bank company logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAb6UAc28aiqv2CjnIfpXxLNpQoLr8YEs-35kP6YQe7KsBAD2LXeSvyb71QJPKl44VPQdQM_P9r0xvm0D4oHgLtveckOGwQ_dj6p7OfN_r7g1R31bdjhGZYCi1B_JuHdKNeZxdfDNO4FNClihlLEkE87SFhD6Pw-mjkJfeUNtC4ET19GTTLcKNcbK3AD3VB_xvww8eV9rr8JLyjrG-K1ULspy3W559YxXy4qKucFcXso5GYGbECJ4f3pdNmGx2qc-HgcM3HmrmXGhA");'></div>
-<div class="flex-grow">
-<p class="text-gray-900 dark:text-white text-base font-medium leading-normal">UBA</p>
-<p class="text-gray-500 dark:text-gray-400 text-sm font-normal leading-normal">United Bank for Africa</p>
-</div>
-<button class="w-full text-center py-2 px-4 rounded-lg bg-primary text-gray-900 font-bold hover:bg-opacity-80 transition-colors">Sélectionner</button>
-</div>
-<div class="flex flex-col gap-4 p-4 border border-solid border-gray-200 dark:border-gray-800 rounded-lg bg-white dark:bg-gray-900/50 hover:shadow-lg hover:border-primary/50 transition-all duration-300">
-<div class="w-full bg-center bg-no-repeat aspect-[2/1] bg-contain rounded-md" data-alt="BICIG company logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAo3Y8WIjyTJ1yXKwL4GmlCntCejcMnBzK5bgaUsxuxyxj3vt5ARGozxA3PJl5wI98gNtL-XYADDl8HjxfYLH1yhhN9X6ecHwW53Ws6EJB-00uLpVqmu-ZWxGGCL3OhVWq6mJEgHmS7bR_lTC0KngrfomUq4wOVZ9rQacR4CvDRdo48sR2yz-gzwh0sHXL4jpsarfvEYwpBWEtHt-B1je2QtbR3EZ3hRTEUp8Faa8abPUVL7zwpMFcUwtXTE2RpAjbFrL5FQSoCuxU");'></div>
-<div class="flex-grow">
-<p class="text-gray-900 dark:text-white text-base font-medium leading-normal">BICIG</p>
-<p class="text-gray-500 dark:text-gray-400 text-sm font-normal leading-normal">Banque Internationale</p>
-</div>
-<button class="w-full text-center py-2 px-4 rounded-lg bg-primary text-gray-900 font-bold hover:bg-opacity-80 transition-colors">Sélectionner</button>
-</div>
-</div>
-</main>
-</div>
-</div>
-</div>
 </div>
 
 <script type="module">
@@ -291,7 +234,7 @@ async function loadInstitutions() {
     allInstitutions = data.institutions || [];
 
     if (allInstitutions.length === 0) {
-      grid.innerHTML = '<div class="col-span-full text-center py-8 text-text-secondary dark:text-gray-400">Aucune institution disponible</div>';
+      grid.innerHTML = '<div class="col-span-full text-center py-8 text-text-light-muted">Aucune institution disponible</div>';
       return;
     }
 
@@ -299,7 +242,7 @@ async function loadInstitutions() {
     setupSearchListener();
   } catch (error) {
     console.error('Error loading institutions:', error);
-    grid.innerHTML = '<div class="col-span-full text-center py-8 text-red-500">Erreur lors du chargement des institutions</div>';
+    grid.innerHTML = '<div class="col-span-full text-center py-8 text-red-600">Erreur lors du chargement des institutions</div>';
   }
 }
 
@@ -308,7 +251,7 @@ function renderInstitutions(institutions) {
   const grid = document.getElementById('institutionsGrid');
 
   if (institutions.length === 0) {
-    grid.innerHTML = '<div class="col-span-full text-center py-8 text-text-secondary dark:text-gray-400">Aucune institution trouvée</div>';
+    grid.innerHTML = '<div class="col-span-full text-center py-8 text-text-light-muted">Aucune institution trouvée</div>';
     return;
   }
 
@@ -320,7 +263,7 @@ function renderInstitutions(institutions) {
       const websiteUrl = institution.website || '';
 
       return `
-        <div class="w-72 rounded-2xl border border-slate-200 bg-white shadow-sm overflow-hidden hover:shadow-lg transition-shadow">
+        <div class="w-72 rounded-lg border border-black/10 bg-white shadow-sm overflow-hidden hover:shadow-lg transition-shadow">
           <!-- Zone logo (hauteur fixe = logos alignés) -->
           <div class="h-32 flex items-center justify-center bg-slate-50">
             ${logoUrl ? `<img src="${logoUrl}" alt="${institution.name}" class="max-h-24 max-w-[75%] object-contain" onerror="this.style.display='none'" />` : '<div class="text-slate-400 text-sm">Logo non disponible</div>'}
@@ -341,7 +284,7 @@ function renderInstitutions(institutions) {
             </a>` : ''}
 
             <!-- Bouton -->
-            <a href="#" class="block w-full mt-4 rounded-xl bg-emerald-500 py-2 text-xs font-bold text-white hover:bg-emerald-600 transition text-center select-institution-btn" data-institution-id="${institution.id}">
+            <a href="#" class="block w-full mt-4 rounded-lg bg-emerald-500 py-2 text-xs font-bold text-white hover:bg-emerald-600 transition text-center select-institution-btn" data-institution-id="${institution.id}">
               Sélectionner
             </a>
           </div>

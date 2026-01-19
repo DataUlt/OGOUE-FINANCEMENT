@@ -5,28 +5,25 @@
 <title>Simulation de Score</title>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script id="tailwind-config">
         tailwind.config = {
-            darkMode: "class",
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#13eca4",
-                        "primary-dark": "#0eb57d",
+                        "primary": "#1de22e",
+                        "primary-dark": "#1de22e",
                         "background-light": "#f6f8f7",
-                        "background-dark": "#10221c",
                         "surface-light": "#ffffff",
-                        "surface-dark": "#162e26",
-                        "text-main": "#111816",
-                        "text-secondary": "#61897c",
+                        "text-light": "#0a0c0a",
+                        "text-light-muted": "#5c6c60",
                     },
                     fontFamily: {
-                        "display": ["Public Sans", "sans-serif"]
+                        "display": ["Manrope", "sans-serif"]
                     },
-                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "2xl": "2rem", "full": "9999px"},
                 },
             },
         }
@@ -92,31 +89,31 @@
         }
     </style>
 </head>
-<body class="font-display bg-background-light dark:bg-background-dark text-text-main dark:text-white overflow-hidden">
+<body class="font-display bg-background-light text-text-light overflow-hidden">
 <div class="flex h-screen w-full">
 <!-- Sidebar -->
-<aside id="sidebar" class="w-64 flex flex-col border-r border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark shrink-0 transition-all duration-300 collapsed">
+<aside id="sidebar" class="w-64 flex flex-col border-r border-black/10 bg-surface-light shrink-0 transition-all duration-300 collapsed">
 <div class="sidebar-header p-6 flex items-center gap-3">
-<button id="sidebarToggle" class="flex-shrink-0 p-1.5 hover:bg-background-light dark:hover:bg-background-dark rounded-lg transition-colors">
+<button id="sidebarToggle" class="flex-shrink-0 p-1.5 hover:bg-background-light rounded-lg transition-colors">
 <span class="material-symbols-outlined text-xl">menu</span>
 </button>
 </div>
 <nav class="sidebar-nav flex-1 px-4 flex flex-col gap-2 mt-4">
-<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-background-light dark:hover:bg-background-dark hover:text-text-main transition-colors" href="pme-selection-institution.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="pme-selection-institution.html">
 <span class="material-symbols-outlined icon-filled">home</span>
 <span class="sidebar-text">Accueil</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-background-light dark:hover:bg-background-dark hover:text-text-main transition-colors" href="pme-historique-scores.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="pme-historique-scores.html">
 <span class="material-symbols-outlined">analytics</span>
 <span class="sidebar-text">Résultats</span>
 </a>
 </nav>
-<div class="p-4 mt-auto border-t border-[#dbe6e2] dark:border-[#2a4038]">
-<div class="sidebar-user bg-[#f0f4f3] dark:bg-[#1c332b] rounded-xl p-4 flex items-center gap-3 mb-3">
+<div class="p-4 mt-auto border-t border-black/10">
+<div class="sidebar-user bg-[#f0f4f3] rounded-lg p-4 flex items-center gap-3 mb-3">
 <div class="size-8 rounded-full bg-cover bg-center" data-alt="User profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCsQLbKh2SkSv6u3K_uv_lh40ZRyn8vwTzctnhE088sEIQg91HuY0D9rdCA3skiTL2fbbtCcwx_Txn7sxWucWzWAjAeQVOyl6nPvfQkvQCQymIESsLKoBiWofqAJPcEGaBeR8TxGNJ4axeN0KA7LjcYmFy8d-Mp5E3YLGFPccbulsgaL05zdom16CWEYdo3arrNniw95UKXdBLaDWHCjip5hpkkkKEZHSmKYo8Cc_9Je1M7dO57qpCAI6Z2UbJEa41fvLae3QZkw38');"></div>
 <div class="overflow-hidden flex-1">
-<p id="pmeCompanyName" class="text-sm font-semibold text-text-main dark:text-white truncate">PME User</p>
-<p id="pmeEmail" class="text-xs text-text-secondary truncate">pme@example.com</p>
+<p id="pmeCompanyName" class="text-sm font-semibold text-text-light truncate">PME User</p>
+<p id="pmeEmail" class="text-xs text-text-light-muted truncate">pme@example.com</p>
 </div>
 </div>
 <button id="logoutBtn" class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-red-500/10 text-red-600 hover:bg-red-500/20 transition-colors text-sm font-semibold">
@@ -134,14 +131,14 @@
 <span>Retour au catalogue</span>
 </a>
 <div class="mb-8">
-<h1 class="text-4xl font-bold text-text-main dark:text-white mb-2">Simulation de Score</h1>
-<p class="text-text-secondary text-base">Entrez vos critères pour calculer votre score d'éligibilité.</p>
+<h1 class="text-4xl font-bold text-text-light mb-2">Simulation de Score</h1>
+<p class="text-text-light-muted text-base">Entrez vos critères pour calculer votre score d'éligibilité.</p>
 </div>
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 auto-rows-max">
 <!-- Formulaire de saisie -->
 <div class="lg:col-span-2">
-<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-[#dbe6e2] dark:border-[#2a4038] p-8">
-<h2 class="text-2xl font-bold text-text-main dark:text-white mb-6">Critères d'Évaluation</h2>
+<div class="bg-surface-light rounded-lg border border-black/10 p-8">
+<h2 class="text-2xl font-bold text-text-light mb-6">Critères d'Évaluation</h2>
 
 <!-- Variables du modèle -->
 <form id="simulationForm" class="space-y-6">
@@ -149,12 +146,12 @@
 <!-- Les variables seront générées ici dynamiquement -->
 </div>
 
-<div class="flex gap-4 pt-6 border-t border-[#dbe6e2] dark:border-[#2a4038]">
-<button type="submit" class="flex items-center gap-2 px-8 h-12 bg-primary text-white rounded-lg font-bold hover:bg-primary-dark transition-colors">
+<div class="flex gap-4 pt-6 border-t border-black/10">
+<button type="submit" class="flex items-center gap-2 px-8 h-12 bg-primary text-white rounded-lg font-bold hover:bg-opacity-90 transition-colors">
 <span class="material-symbols-outlined">calculate</span>
 <span>Calculer le Score</span>
 </button>
-<a href="#" id="resetBtn" class="flex items-center gap-2 px-8 h-12 bg-surface-light dark:bg-surface-dark border border-[#dbe6e2] dark:border-[#2a4038] text-text-main dark:text-white rounded-lg font-bold hover:bg-background-light dark:hover:bg-background-dark transition-colors">
+<a href="#" id="resetBtn" class="flex items-center gap-2 px-8 h-12 bg-surface-light border border-black/10 text-text-light rounded-lg font-bold hover:bg-background-light transition-colors">
 <span class="material-symbols-outlined">refresh</span>
 <span>Réinitialiser</span>
 </a>
@@ -165,22 +162,22 @@
 
 <!-- Affichage du score -->
 <div class="lg:col-span-1">
-<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-[#dbe6e2] dark:border-[#2a4038] p-8 sticky top-8 flex flex-col justify-between h-full">
+<div class="bg-surface-light rounded-lg border border-black/10 p-8 sticky top-8 flex flex-col justify-between h-full">
 <div>
-<h3 class="text-xl font-bold text-text-main dark:text-white mb-4">Score d'Éligibilité</h3>
+<h3 class="text-xl font-bold text-text-light mb-4">Score d'Éligibilité</h3>
 
 <!-- Score gauge -->
 <div class="flex justify-center mb-4">
-<div class="score-gauge bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800" id="scoreGauge">
+<div class="score-gauge bg-gradient-to-br from-gray-200 to-gray-300" id="scoreGauge">
 <span id="scoreValue">-</span>
 </div>
 </div>
 
 <!-- Score details -->
 <div class="space-y-3" id="scoreDetails">
-<div class="p-3 bg-background-light dark:bg-background-dark rounded-lg text-center">
-<p class="text-sm text-text-secondary mb-1">Score Brut</p>
-<p class="text-lg font-bold text-text-main dark:text-white" id="rawScore">-</p>
+<div class="p-3 bg-background-light rounded-lg text-center">
+<p class="text-sm text-text-light-muted mb-1">Score Brut</p>
+<p class="text-lg font-bold text-text-light" id="rawScore">-</p>
 </div>
 </div>
 </div>
@@ -279,7 +276,7 @@ function generateVariableFields(variables) {
   const container = document.getElementById('variablesContainer');
   
   if (!variables || variables.length === 0) {
-    container.innerHTML = '<p class="text-text-secondary">Aucune variable définie pour ce modèle.</p>';
+    container.innerHTML = '<p class="text-text-light-muted">Aucune variable définie pour ce modèle.</p>';
     return;
   }
 
@@ -300,7 +297,7 @@ function generateVariableFields(variables) {
       
       return `
         <div class="space-y-2">
-          <label for="${fieldId}" class="block text-sm font-semibold text-text-main dark:text-white">
+          <label for="${fieldId}" class="block text-sm font-semibold text-text-light">
             ${variable.name}
             <span class="text-primary text-xs font-normal">(Poids: ${variable.weight}%)</span>
           </label>
@@ -313,7 +310,7 @@ function generateVariableFields(variables) {
             data-variable-weight="${variable.weight}"
             data-variable-type="${variable.variable_type}"
             placeholder="${placeholder}"
-            class="w-full px-4 py-3 rounded-lg border border-[#dbe6e2] dark:border-[#2a4038] bg-background-light dark:bg-background-dark text-text-main dark:text-white placeholder:text-text-secondary focus:outline-0 focus:ring-2 focus:ring-primary/50"
+            class="w-full px-4 py-3 rounded-lg border border-black/10 bg-background-light text-text-light placeholder:text-text-light-muted focus:outline-0 focus:ring-2 focus:ring-primary/50"
             ${isNumeric ? 'step="0.01"' : ''}
           />
         </div>
@@ -460,24 +457,24 @@ function displayScore(result) {
 
   switch (classification) {
     case 'EXCELLENT':
-      gaugeColor = 'from-green-300 to-green-400 dark:from-green-700 dark:to-green-600';
+      gaugeColor = 'from-green-300 to-green-400';
       break;
     case 'BON':
-      gaugeColor = 'from-blue-300 to-blue-400 dark:from-blue-700 dark:to-blue-600';
+      gaugeColor = 'from-blue-300 to-blue-400';
       break;
     case 'MOYEN':
-      gaugeColor = 'from-yellow-300 to-yellow-400 dark:from-yellow-700 dark:to-yellow-600';
+      gaugeColor = 'from-yellow-300 to-yellow-400';
       break;
     case 'RISQUE':
-      gaugeColor = 'from-red-300 to-red-400 dark:from-red-700 dark:to-red-600';
+      gaugeColor = 'from-red-300 to-red-400';
       break;
     default:
-      gaugeColor = 'from-red-300 to-red-400 dark:from-red-700 dark:to-red-600';
+      gaugeColor = 'from-red-300 to-red-400';
   }
 
   // If blocking criteria failed
   if (status === 'NON_ELIGIBLE' && result.blocking_failed && result.blocking_failed.length > 0) {
-    gaugeColor = 'from-red-500 to-red-600 dark:from-red-800 dark:to-red-900';
+    gaugeColor = 'from-red-500 to-red-600';
   }
 
   scoreGauge.className = `score-gauge bg-gradient-to-br ${gaugeColor}`;
@@ -487,7 +484,7 @@ function displayScore(result) {
 function resetScoreDisplay() {
   document.getElementById('scoreValue').textContent = '-';
   document.getElementById('rawScore').textContent = '-';
-  document.getElementById('scoreGauge').className = 'score-gauge bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800';
+  document.getElementById('scoreGauge').className = 'score-gauge bg-gradient-to-br from-gray-200 to-gray-300';
 }
 
 // Update user info dynamically

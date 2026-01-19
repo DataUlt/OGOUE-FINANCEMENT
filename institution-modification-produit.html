@@ -5,35 +5,30 @@
 <title>Modification Produit de Crédit (Institution)</title>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script id="tailwind-config">
         tailwind.config = {
-            darkMode: "class",
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#13eca4",
-                        "primary-dark": "#0eb57d",
-                        "background-light": "#f6f8f7",
-                        "background-dark": "#10221c",
-                        "surface-light": "#ffffff",
-                        "surface-dark": "#162e26",
-                        "text-main": "#111816",
-                        "text-secondary": "#61897c",
+                        "primary": "#1de22e",
+                        "background-light": "#f6f8f6",
+                        "text-light": "#0a0c0a",
+                        "text-light-muted": "#5c6c60",
                     },
                     fontFamily: {
-                        "display": ["Public Sans", "sans-serif"]
+                        "display": ["Manrope", "sans-serif"]
                     },
-                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
                 },
             },
         }
     </script>
 <style>
         .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
         }
         .icon-filled {
             font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -73,91 +68,91 @@
         }
     </style>
 </head>
-<body class="bg-background-light dark:bg-background-dark text-text-main dark:text-white font-display overflow-hidden">
+<body class="bg-background-light text-text-light font-display overflow-hidden">
 <div class="flex h-screen w-full">
-<aside id="sidebar" class="w-64 flex flex-col border-r border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark shrink-0 transition-all duration-300">
+<aside id="sidebar" class="w-64 flex flex-col border-r border-black/10 bg-white shrink-0 transition-all duration-300">
 <div class="sidebar-header p-6 flex items-center gap-3">
-<button id="sidebarToggle" class="flex-shrink-0 p-1.5 hover:bg-background-light dark:hover:bg-background-dark rounded-lg transition-colors">
+<button id="sidebarToggle" class="flex-shrink-0 p-1.5 hover:bg-gray-50 rounded-lg transition-colors">
 <span class="material-symbols-outlined text-xl">menu</span>
 </button>
 </div>
 <nav class="sidebar-nav flex-1 px-4 flex flex-col gap-2 mt-4">
-<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-background-light dark:hover:bg-background-dark hover:text-text-main transition-colors" href="institution-tableau-bord.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-gray-50 hover:text-text-light transition-colors" href="institution-tableau-bord.html">
 <span class="material-symbols-outlined">dashboard</span>
 <span class="sidebar-text">Vue d'Ensemble</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-xl bg-primary/10 text-primary-dark dark:text-primary font-medium" href="institution-liste-produits.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary font-medium" href="institution-liste-produits.html">
 <span class="material-symbols-outlined icon-filled">payments</span>
 <span class="sidebar-text">Produits</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-background-light dark:hover:bg-background-dark hover:text-text-main transition-colors" href="institution-liste-modeles.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-gray-50 hover:text-text-light transition-colors" href="institution-liste-modeles.html">
 <span class="material-symbols-outlined">table_chart</span>
 <span class="sidebar-text">Modèles</span>
 </a>
 </nav>
 <div class="p-4 mt-auto">
-<div class="sidebar-user bg-[#f0f4f3] dark:bg-[#1c332b] rounded-xl p-4 flex items-center gap-3">
+<div class="sidebar-user bg-white rounded-lg p-4 flex items-center gap-3 border border-black/10">
 <div class="size-8 rounded-full bg-cover bg-center" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCRIT7ff6v9rrUcAhYe0OOUrUpnKRPk116GNykQEkHvpkm8OcnbFIHebI_9s2BLSgjCDBIiCeTAyUqjsiPk6ByM9xta6qZ1RWzIhxls9I4Sk5sNcDyDiKiJf5ycTmKrqubfo50DZ8awUuPWSee77ZLhFpXooySZDpCEyN09_mGL6P3cfWBrKmY-W59JNITG3gg73Gcfexu3E4wl2e-ftUXVW2HngUX2vEFC-gITs_jcsGdd2m05m69kA6GmDheaVmMJx3vZ3B9VR24');"></div>
 <div class="overflow-hidden">
-<p class="text-sm font-semibold text-text-main dark:text-white truncate" id="sidebarOrgName">Institution</p>
-<p class="text-xs text-text-secondary truncate" id="sidebarContactName">Contact</p>
-<p class="text-xs text-text-secondary truncate" id="sidebarOrgEmail">email@example.com</p>
+<p class="text-sm font-semibold text-text-light truncate" id="sidebarOrgName">Institution</p>
+<p class="text-xs text-text-light-muted truncate" id="sidebarContactName">Contact</p>
+<p class="text-xs text-text-light-muted truncate" id="sidebarOrgEmail">email@example.com</p>
 </div>
 </div>
-<button id="logoutBtn" class="w-full mt-3 flex items-center justify-center gap-2 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors text-sm font-semibold">
+<button id="logoutBtn" class="w-full mt-3 flex items-center justify-center gap-2 h-10 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 transition-colors text-sm font-semibold">
 <span class="material-symbols-outlined text-[18px]">logout</span>
 <span class="sidebar-text">Déconnexion</span>
 </button>
 </div>
 </aside>
-<main class="flex-1 overflow-auto bg-background-light dark:bg-background-dark">
+<main class="flex-1 overflow-auto bg-background-light">
 <div class="max-w-4xl mx-auto p-6">
-<a href="institution-liste-produits.html" class="flex items-center gap-2 text-primary hover:text-primary-dark transition-colors w-fit mb-4">
+<a href="institution-liste-produits.html" class="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors w-fit mb-4">
 <span class="material-symbols-outlined text-[20px]">arrow_back</span>
 <span class="text-sm font-semibold">Retour</span>
 </a>
-<h1 class="text-text-main dark:text-white text-3xl font-bold tracking-tight mb-2">Modification du Produit de Crédit</h1>
-<p class="text-text-secondary text-base mb-6">Mettez à jour les paramètres et conditions de votre produit de crédit</p>
+<h1 class="text-text-light text-3xl font-bold tracking-tight mb-2">Modification du Produit de Crédit</h1>
+<p class="text-text-light-muted text-base mb-6">Mettez à jour les paramètres et conditions de votre produit de crédit</p>
 
 <form id="productForm" class="space-y-6">
 <!-- Informations Générales -->
-<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-6">
-<h2 class="text-text-main dark:text-white text-xl font-bold mb-4">Informations Générales</h2>
+<div class="bg-white rounded-lg p-6 border border-black/10">
+<h2 class="text-text-light text-xl font-bold mb-4">Informations Générales</h2>
 <div class="space-y-4">
 <label class="flex flex-col">
-<p class="text-text-main dark:text-white text-sm font-medium mb-2">Nom du Produit</p>
-<input class="form-input w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-text-main dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 px-4" placeholder="Ex: Crédit d'Investissement PME" type="text" id="name" name="name" required/>
+<p class="text-text-light text-sm font-medium mb-2">Nom du Produit</p>
+<input class="form-input w-full rounded-lg border border-black/10 bg-white text-text-light focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 px-4" placeholder="Ex: Crédit d'Investissement PME" type="text" id="name" name="name" required/>
 </label>
 <label class="flex flex-col">
-<p class="text-text-main dark:text-white text-sm font-medium mb-2">Objectif</p>
-<textarea class="form-textarea w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-text-main dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 min-h-[100px] px-4 py-3" placeholder="Décrivez l'objectif principal..." id="objective" name="objective" required></textarea>
+<p class="text-text-light text-sm font-medium mb-2">Objectif</p>
+<textarea class="form-textarea w-full rounded-lg border border-black/10 bg-white text-text-light focus:border-primary focus:ring-2 focus:ring-primary/20 min-h-[100px] px-4 py-3" placeholder="Décrivez l'objectif principal..." id="objective" name="objective" required></textarea>
 </label>
 </div>
 </div>
 
 <!-- Conditions du Crédit -->
-<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-6">
-<h2 class="text-text-main dark:text-white text-xl font-bold mb-4">Conditions du Crédit</h2>
+<div class="bg-white rounded-lg p-6 border border-black/10">
+<h2 class="text-text-light text-xl font-bold mb-4">Conditions du Crédit</h2>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <label class="flex flex-col">
-<p class="text-text-main dark:text-white text-sm font-medium mb-2">Montant Minimum (FCFA)</p>
-<input class="form-input w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-text-main dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 px-4" placeholder="5000" type="number" id="amount_min" name="amount_min" required/>
+<p class="text-text-light text-sm font-medium mb-2">Montant Minimum (FCFA)</p>
+<input class="form-input w-full rounded-lg border border-black/10 bg-white text-text-light focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 px-4" placeholder="5000" type="number" id="amount_min" name="amount_min" required/>
 </label>
 <label class="flex flex-col">
-<p class="text-text-main dark:text-white text-sm font-medium mb-2">Montant Maximum (FCFA)</p>
-<input class="form-input w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-text-main dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 px-4" placeholder="50000" type="number" id="amount_max" name="amount_max" required/>
+<p class="text-text-light text-sm font-medium mb-2">Montant Maximum (FCFA)</p>
+<input class="form-input w-full rounded-lg border border-black/10 bg-white text-text-light focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 px-4" placeholder="50000" type="number" id="amount_max" name="amount_max" required/>
 </label>
 <label class="flex flex-col">
-<p class="text-text-main dark:text-white text-sm font-medium mb-2">Durée Minimum (mois)</p>
-<input class="form-input w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-text-main dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 px-4" placeholder="12" type="number" id="duration_min_months" name="duration_min_months"/>
+<p class="text-text-light text-sm font-medium mb-2">Durée Minimum (mois)</p>
+<input class="form-input w-full rounded-lg border border-black/10 bg-white text-text-light focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 px-4" placeholder="12" type="number" id="duration_min_months" name="duration_min_months"/>
 </label>
 <label class="flex flex-col">
-<p class="text-text-main dark:text-white text-sm font-medium mb-2">Durée Maximum (mois)</p>
-<input class="form-input w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-text-main dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 px-4" placeholder="60" type="number" id="duration_max_months" name="duration_max_months"/>
+<p class="text-text-light text-sm font-medium mb-2">Durée Maximum (mois)</p>
+<input class="form-input w-full rounded-lg border border-black/10 bg-white text-text-light focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 px-4" placeholder="60" type="number" id="duration_max_months" name="duration_max_months"/>
 </label>
 <label class="flex flex-col">
-<p class="text-text-main dark:text-white text-sm font-medium mb-2">Taux d'Intérêt (optionnel)</p>
-<select class="form-select w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-text-main dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 px-4" id="interest_type" name="interest_type">
+<p class="text-text-light text-sm font-medium mb-2">Taux d'Intérêt (optionnel)</p>
+<select class="form-select w-full rounded-lg border border-black/10 bg-white text-text-light focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 px-4" id="interest_type" name="interest_type">
 <option value="">Aucun</option>
 <option value="fixed">Taux Fixe</option>
 <option value="variable">Taux Variable</option>
@@ -167,17 +162,17 @@
 </div>
 
 <!-- Typologie et Cible -->
-<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-6">
-<h2 class="text-text-main dark:text-white text-xl font-bold mb-4">Typologie et Cible</h2>
+<div class="bg-white rounded-lg p-6 border border-black/10">
+<h2 class="text-text-light text-xl font-bold mb-4">Typologie et Cible</h2>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <label class="flex flex-col">
-<p class="text-text-main dark:text-white text-sm font-medium mb-2">Typologie de Produit</p>
+<p class="text-text-light text-sm font-medium mb-2">Typologie de Produit</p>
 
 <!-- Input for first usage (when no typologies exist) -->
-<input id="typology_input" type="text" class="form-input w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-text-main dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 px-4" placeholder="Saisissez une nouvelle typologie..."/>
+<input id="typology_input" type="text" class="form-input w-full rounded-lg border border-black/10 bg-white text-text-light focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 px-4" placeholder="Saisissez une nouvelle typologie..."/>
 
 <!-- Select for subsequent usage (when typologies exist) -->
-<select id="typology_select" class="form-select w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-text-main dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 px-4 hidden">
+<select id="typology_select" class="form-select w-full rounded-lg border border-black/10 bg-white text-text-light focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 px-4 hidden">
 <option value="">Sélectionner une typologie...</option>
 <option value="__other__">Autre...</option>
 </select>
@@ -185,21 +180,21 @@
 
 <div id="typology_other_container" class="hidden">
 <label class="flex flex-col">
-<p class="text-text-main dark:text-white text-sm font-medium mb-2">Nouvelle Typologie</p>
-<input class="form-input w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-text-main dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 px-4" placeholder="Ex: Affacturage" type="text" id="typology_new_value"/>
+<p class="text-text-light text-sm font-medium mb-2">Nouvelle Typologie</p>
+<input class="form-input w-full rounded-lg border border-black/10 bg-white text-text-light focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 px-4" placeholder="Ex: Affacturage" type="text" id="typology_new_value"/>
 </label>
 </div>
 
 <label class="flex flex-col">
-<p class="text-text-main dark:text-white text-sm font-medium mb-2">Cible</p>
-<input class="form-input w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-text-main dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 px-4" placeholder="Ex: PME, Start-up, Artisan" type="text" id="target"/>
+<p class="text-text-light text-sm font-medium mb-2">Cible</p>
+<input class="form-input w-full rounded-lg border border-black/10 bg-white text-text-light focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 px-4" placeholder="Ex: PME, Start-up, Artisan" type="text" id="target"/>
 </label>
 </div>
 </div>
 
 <!-- Documents Requis -->
-<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-6">
-<h2 class="text-text-main dark:text-white text-xl font-bold mb-4">Documents Requis</h2>
+<div class="bg-white rounded-lg p-6 border border-black/10">
+<h2 class="text-text-light text-xl font-bold mb-4">Documents Requis</h2>
 <div class="space-y-4">
 <div id="documentsListContainer" class="grid grid-cols-2 md:grid-cols-3 gap-2 min-h-[2rem]">
 <!-- Les documents ajoutés s'affichent ici -->
@@ -210,14 +205,14 @@
   type="text" 
   id="documentInput" 
   placeholder="Ajouter un document requis" 
-  class="form-input flex-1 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-text-main dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 px-4"
+  class="form-input flex-1 rounded-lg border border-black/10 bg-white text-text-light focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 px-4"
   list="suggestedDocuments"
 />
 <datalist id="suggestedDocuments"></datalist>
 <button 
   type="button" 
   id="addDocumentBtn"
-  class="flex items-center justify-center gap-2 px-6 h-12 bg-primary text-text-main rounded-lg hover:bg-primary-dark font-semibold whitespace-nowrap transition-colors"
+  class="flex items-center justify-center gap-2 px-6 h-12 bg-primary text-text-light rounded-lg hover:bg-primary/90 font-semibold whitespace-nowrap transition-colors"
 >
 <span class="material-symbols-outlined text-[20px]">add</span>
 <span>Ajouter</span>
@@ -227,29 +222,29 @@
 </div>
 
 <!-- Modèle d'Octroi -->
-<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-6">
-<h2 class="text-text-main dark:text-white text-xl font-bold mb-4">Modèle d'Octroi</h2>
+<div class="bg-white rounded-lg p-6 border border-black/10">
+<h2 class="text-text-light text-xl font-bold mb-4">Modèle d'Octroi</h2>
 <label class="flex flex-col">
-<p class="text-text-main dark:text-white text-sm font-medium mb-2">Associer à un Modèle d'Octroi</p>
-<select class="form-select w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-text-main dark:text-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 px-4" id="scoring_model_id">
+<p class="text-text-light text-sm font-medium mb-2">Associer à un Modèle d'Octroi</p>
+<select class="form-select w-full rounded-lg border border-black/10 bg-white text-text-light focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 px-4" id="scoring_model_id">
 <option value="">Aucun modèle</option>
 </select>
-<p class="text-text-secondary text-xs mt-2">Le modèle d'octroi définit les règles et le score d'éligibilité.</p>
+<p class="text-text-light-muted text-xs mt-2">Le modèle d'octroi définit les règles et le score d'éligibilité.</p>
 </label>
-<div id="modelError" class="mt-2 hidden bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 px-3 py-2 rounded text-xs flex items-center gap-2">
+<div id="modelError" class="mt-2 hidden bg-red-100 text-red-700 px-3 py-2 rounded text-xs flex items-center gap-2">
 <span class="material-symbols-outlined text-sm">error</span>
-<span>At least one variable is required</span>
+<span>Au moins une variable est requise</span>
 </div>
 </div>
 
 <!-- Messages -->
-<div id="errorMessage" class="hidden bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 px-4 py-3 rounded-lg text-sm"></div>
-<div id="successMessage" class="hidden bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-200 px-4 py-3 rounded-lg text-sm"></div>
+<div id="errorMessage" class="hidden bg-red-100 text-red-700 px-4 py-3 rounded-lg text-sm"></div>
+<div id="successMessage" class="hidden bg-green-100 text-green-700 px-4 py-3 rounded-lg text-sm"></div>
 
 <!-- Boutons -->
-<div class="flex justify-end gap-3 pt-6 border-t border-gray-200 dark:border-gray-700">
-<button type="button" class="px-6 h-12 bg-transparent text-text-main dark:text-white border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 font-medium" onclick="window.history.back()">Annuler</button>
-<button type="submit" class="px-6 h-12 bg-primary text-white rounded-lg hover:bg-primary/90 font-medium" id="submitBtn">Enregistrer les modifications</button>
+<div class="flex justify-end gap-3 pt-6 border-t border-black/10">
+<button type="button" class="px-6 h-12 bg-white text-text-light border border-black/10 rounded-lg hover:bg-gray-50 font-medium transition-colors" onclick="window.history.back()">Annuler</button>
+<button type="submit" class="px-6 h-12 bg-primary text-text-light rounded-lg hover:bg-primary/90 font-medium transition-colors" id="submitBtn">Mettre à jour le Produit</button>
 </div>
 </form>
 </div>
@@ -414,18 +409,18 @@ if (logoutBtn) {
       addedDocuments.push(trimmedName);
 
       const documentCard = document.createElement('div');
-      documentCard.className = 'flex items-center gap-1.5 px-2 py-1.5 rounded border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark hover:border-primary/50 transition-colors';
+      documentCard.className = 'flex items-center gap-1.5 px-2 py-1.5 rounded border border-black/10 bg-white hover:border-primary/50 transition-colors';
       documentCard.innerHTML = `
         <input 
           type="checkbox" 
-          class="form-checkbox h-4 w-4 rounded text-primary focus:ring-primary/50 border-gray-300 dark:border-gray-600 dark:bg-gray-800 document-checkbox"
+          class="form-checkbox h-4 w-4 rounded text-primary focus:ring-primary/50 border-black/10 bg-white document-checkbox"
           data-doc-name="${trimmedName}"
           checked
         />
-        <span class="text-text-main dark:text-white text-xs font-medium flex-1 min-w-0 truncate">${trimmedName}</span>
+        <span class="text-text-light text-xs font-medium flex-1 min-w-0 truncate">${trimmedName}</span>
         <button 
           type="button" 
-          class="p-0.5 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 rounded transition-colors remove-doc-btn flex-shrink-0"
+          class="p-0.5 text-red-600 hover:bg-red-100 rounded transition-colors remove-doc-btn flex-shrink-0"
           data-doc-name="${trimmedName}"
         >
           <span class="material-symbols-outlined text-[14px]">close</span>
@@ -579,18 +574,18 @@ if (logoutBtn) {
           addedDocuments.push(doc.name);
           
           const documentCard = document.createElement('div');
-          documentCard.className = 'flex items-center gap-1.5 px-2 py-1.5 rounded border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark hover:border-primary/50 transition-colors';
+          documentCard.className = 'flex items-center gap-1.5 px-2 py-1.5 rounded border border-black/10 bg-white hover:border-primary/50 transition-colors';
           documentCard.innerHTML = `
             <input 
               type="checkbox" 
-              class="form-checkbox h-4 w-4 rounded text-primary focus:ring-primary/50 border-gray-300 dark:border-gray-600 dark:bg-gray-800 document-checkbox"
+              class="form-checkbox h-4 w-4 rounded text-primary focus:ring-primary/50 border-black/10 bg-white document-checkbox"
               data-doc-name="${doc.name}"
               checked
             />
-            <span class="text-text-main dark:text-white text-xs font-medium flex-1 min-w-0 truncate">${doc.name}</span>
+            <span class="text-text-light text-xs font-medium flex-1 min-w-0 truncate">${doc.name}</span>
             <button 
               type="button" 
-              class="p-0.5 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 rounded transition-colors remove-doc-btn flex-shrink-0"
+              class="p-0.5 text-red-600 hover:bg-red-100 rounded transition-colors remove-doc-btn flex-shrink-0"
               data-doc-name="${doc.name}"
             >
               <span class="material-symbols-outlined text-[14px]">close</span>

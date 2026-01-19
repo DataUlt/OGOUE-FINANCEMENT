@@ -1,324 +1,483 @@
 <!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>S'inscrire - Institution - OGOUE</title>
 
-<html class="light" lang="fr"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Inscription Institution Financière - OGOUÉ</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script>
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" crossorigin href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script>
     tailwind.config = {
-        darkMode: "class",
-        theme: {
-            extend: {
-                colors: {
-                    "primary": "#13eca4",
-                    "background-light": "#f6f8f7",
-                    "background-dark": "#10221c",
-                },
-                fontFamily: {
-                    "display": ["Public Sans", "sans-serif"]
-                },
-                borderRadius: {
-                    "DEFAULT": "0.25rem",
-                    "lg": "0.5rem",
-                    "xl": "0.75rem",
-                    "full": "9999px"
-                },
-            },
+      theme: {
+        extend: {
+          colors: {
+            primary: "#1de22e",
+            "background-light": "#f6f8f6",
+            "background-dark": "#111712",
+            "text-light": "#0a0c0a",
+            "text-light-muted": "#5c6c60",
+            secondary: "#1E3A5F",
+          },
+          fontFamily: {
+            display: ["Manrope", "sans-serif"],
+          },
+          borderRadius: {
+            DEFAULT: "1rem",
+            lg: "2rem",
+            xl: "3rem",
+            full: "9999px",
+          },
         },
+      },
+    };
+  </script>
+
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
     }
-    </script>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-    </style>
+  </style>
 </head>
-<body class="bg-background-light dark:bg-background-dark font-display text-[#111816] dark:text-gray-200">
-<div class="relative flex min-h-screen w-full flex-col items-center group/design-root">
-<div class="w-full max-w-5xl px-4 py-8 md:px-8 md:py-12">
-<!-- TopNavBar -->
-<header class="flex w-full items-center justify-center whitespace-nowrap py-3">
-<a href="institution-register.html" class="flex items-center gap-4 text-[#111816] dark:text-white">
-<div class="h-6 w-6 text-primary">
-<svg fill="currentColor" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-<path d="M44 11.2727C44 14.0109 39.8386 16.3957 33.69 17.6364C39.8386 18.877 44 21.2618 44 24C44 26.7382 39.8386 29.123 33.69 30.3636C39.8386 31.6043 44 33.9891 44 36.7273C44 40.7439 35.0457 44 24 44C12.9543 44 4 40.7439 4 36.7273C4 33.9891 8.16144 31.6043 14.31 30.3636C8.16144 29.123 4 26.7382 4 24C4 21.2618 8.16144 18.877 14.31 17.6364C8.16144 16.3957 4 14.0109 4 11.2727C4 7.25611 12.9543 4 24 4C35.0457 4 44 7.25611 44 11.2727Z"></path>
-</svg>
-</div>
-<h2 class="text-[#111816] dark:text-white text-xl font-bold leading-tight tracking-[-0.015em]">OGOUÉ</h2>
-</a>
-</header>
-<main class="mt-8 flex w-full flex-col items-center">
-<div class="w-full max-w-lg">
-<!-- PageHeading -->
-<div class="flex flex-col gap-3 text-center">
-<h1 class="text-[#111816] dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">Inscription pour les Institutions Financières</h1>
-<p class="text-[#61897c] dark:text-gray-400 text-base font-normal leading-normal">Rejoignez OGOUÉ pour qualifier vos dossiers de financement et accompagner les PME.</p>
-</div>
-<!-- Form Container -->
-<div class="mt-10 flex w-full flex-col gap-6">
-<!-- TextField: Nom de l'institution -->
-<div class="flex w-full flex-col">
-<label class="flex flex-col">
-<p class="text-[#111816] dark:text-gray-200 text-base font-medium leading-normal pb-2">Nom de l'institution</p>
-<input class="form-input flex w-full resize-none overflow-hidden rounded-lg border border-[#dbe6e2] dark:border-gray-700 bg-white dark:bg-background-dark text-[#111816] dark:text-white dark:placeholder:text-gray-500 placeholder:text-[#61897c] focus:border-primary focus:ring-2 focus:ring-primary/30 h-14 p-[15px] text-base font-normal leading-normal" placeholder="Entrez le nom de votre institution" type="text" id="institutionName"/>
-</label>
-</div>
-<!-- TextField: Type d'institution -->
-<div class="flex w-full flex-col">
-<label class="flex flex-col">
-<p class="text-[#111816] dark:text-gray-200 text-base font-medium leading-normal pb-2">Type d'institution</p>
-<select class="form-input flex w-full resize-none overflow-hidden rounded-lg border border-[#dbe6e2] dark:border-gray-700 bg-white dark:bg-background-dark text-[#111816] dark:text-white dark:placeholder:text-gray-500 placeholder:text-[#61897c] focus:border-primary focus:ring-2 focus:ring-primary/30 h-14 p-[15px] text-base font-normal leading-normal" id="institutionType">
-<option value="">Sélectionnez un type</option>
-<option value="Microfinance">Microfinance</option>
-<option value="Banque">Banque</option>
-</select>
-</label>
-</div>
-<!-- TextField: Mission de l'entreprise -->
-<div class="flex w-full flex-col">
-<label class="flex flex-col">
-<p class="text-[#111816] dark:text-gray-200 text-base font-medium leading-normal pb-2">Mission de l'institution</p>
-<textarea class="form-input flex w-full resize-none overflow-hidden rounded-lg border border-[#dbe6e2] dark:border-gray-700 bg-white dark:bg-background-dark text-[#111816] dark:text-white dark:placeholder:text-gray-500 placeholder:text-[#61897c] focus:border-primary focus:ring-2 focus:ring-primary/30 h-20 p-[15px] text-base font-normal leading-normal" placeholder="Décrivez la mission et les objectifs de votre institution" id="mission"></textarea>
-</label>
-</div>
-<!-- TextField: Nom du contact principal -->
-<div class="flex w-full flex-col">
-<label class="flex flex-col">
-<p class="text-[#111816] dark:text-gray-200 text-base font-medium leading-normal pb-2">Nom du contact principal</p>
-<input class="form-input flex w-full resize-none overflow-hidden rounded-lg border border-[#dbe6e2] dark:border-gray-700 bg-white dark:bg-background-dark text-[#111816] dark:text-white dark:placeholder:text-gray-500 placeholder:text-[#61897c] focus:border-primary focus:ring-2 focus:ring-primary/30 h-14 p-[15px] text-base font-normal leading-normal" placeholder="Entrez le nom du contact" type="text" id="contactName"/>
-</label>
-</div>
-<!-- TextField: Email professionnel -->
-<div class="flex w-full flex-col">
-<label class="flex flex-col">
-<p class="text-[#111816] dark:text-gray-200 text-base font-medium leading-normal pb-2">Email professionnel</p>
-<input class="form-input flex w-full resize-none overflow-hidden rounded-lg border border-[#dbe6e2] dark:border-gray-700 bg-white dark:bg-background-dark text-[#111816] dark:text-white dark:placeholder:text-gray-500 placeholder:text-[#61897c] focus:border-primary focus:ring-2 focus:ring-primary/30 h-14 p-[15px] text-base font-normal leading-normal" placeholder="Entrez votre email professionnel" type="email" id="email"/>
-</label>
-</div>
-<!-- TextField: Site Web (optionnel) -->
-<div class="flex w-full flex-col">
-<label class="flex flex-col">
-<p class="text-[#111816] dark:text-gray-200 text-base font-medium leading-normal pb-2">Site Web <span class="text-xs text-[#61897c]">(optionnel)</span></p>
-<input class="form-input flex w-full resize-none overflow-hidden rounded-lg border border-[#dbe6e2] dark:border-gray-700 bg-white dark:bg-background-dark text-[#111816] dark:text-white dark:placeholder:text-gray-500 placeholder:text-[#61897c] focus:border-primary focus:ring-2 focus:ring-primary/30 h-14 p-[15px] text-base font-normal leading-normal" placeholder="https://www.votresite.com" type="url" id="website"/>
-</label>
-</div>
-<!-- File Input: Logo -->
-<div class="flex w-full flex-col">
-<label class="flex flex-col">
-<p class="text-[#111816] dark:text-gray-200 text-base font-medium leading-normal pb-2">Logo de l'institution <span class="text-xs text-[#61897c]">(optionnel)</span></p>
-<input class="form-input flex w-full resize-none overflow-hidden rounded-lg border border-[#dbe6e2] dark:border-gray-700 bg-white dark:bg-background-dark text-[#111816] dark:text-white dark:placeholder:text-gray-500 placeholder:text-[#61897c] focus:border-primary focus:ring-2 focus:ring-primary/30 h-14 p-[15px] text-base font-normal leading-normal" type="file" id="logo" accept="image/*"/>
-<p class="text-xs text-[#61897c] dark:text-gray-400 mt-1">Formats acceptés: PNG, JPG, SVG (max 2MB)</p>
-</label>
-</div>
-<!-- Password Field -->
-<div class="flex w-full flex-col">
-<label class="flex flex-col">
-<p class="text-[#111816] dark:text-gray-200 text-base font-medium leading-normal pb-2">Mot de passe</p>
-<div class="relative flex w-full items-center">
-<input class="form-input flex w-full resize-none overflow-hidden rounded-lg border border-[#dbe6e2] dark:border-gray-700 bg-white dark:bg-background-dark text-[#111816] dark:text-white dark:placeholder:text-gray-500 placeholder:text-[#61897c] focus:border-primary focus:ring-2 focus:ring-primary/30 h-14 p-[15px] text-base font-normal leading-normal pr-12" placeholder="Créez un mot de passe sécurisé" type="password" id="password"/>
-<button class="absolute inset-y-0 right-0 flex items-center pr-4 text-[#61897c] dark:text-gray-400" type="button" id="togglePassword">
-<span class="material-symbols-outlined text-xl">visibility</span>
-</button>
-</div>
-</label>
-</div>
-<!-- Messages -->
-<div id="errorMessage" class="hidden bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 px-4 py-3 rounded-lg text-sm"></div>
-<div id="successMessage" class="hidden bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-200 px-4 py-3 rounded-lg text-sm"></div>
-<!-- Checkbox -->
-<div class="flex items-center gap-3">
-<input class="form-checkbox h-5 w-5 rounded border-[#dbe6e2] dark:border-gray-700 bg-white dark:bg-background-dark text-primary focus:ring-primary/50" id="termsCheckbox" type="checkbox"/>
-<label class="text-sm text-[#61897c] dark:text-gray-400" for="termsCheckbox">J'accepte les <a class="font-medium text-primary hover:underline" href="#">Conditions Générales d'Utilisation</a></label>
-</div>
-<!-- Primary Button -->
-<button id="registerBtn" class="flex h-14 w-full items-center justify-center rounded-lg bg-primary px-4 py-2 text-base font-bold text-background-dark transition-colors hover:bg-opacity-90">
-                            Créer mon compte
-                        </button>
-<!-- Secondary Link -->
-<p class="text-center text-sm text-[#61897c] dark:text-gray-400">
-                            Déjà un compte ? <a href="institution-login.html" class="font-medium text-primary hover:underline">Se connecter</a>
-</p>
-</div>
-</div>
-</main>
-</div>
-</div>
-</body>
 
-<script type="module">
-import { authAPI, sessionAPI } from './api.js';
+<body class="bg-background-light font-display text-text-light antialiased">
+  <div class="relative w-full overflow-x-hidden">
 
-const institutionNameInput = document.getElementById('institutionName');
-const institutionTypeInput = document.getElementById('institutionType');
-const missionInput = document.getElementById('mission');
-const contactNameInput = document.getElementById('contactName');
-const emailInput = document.getElementById('email');
-const websiteInput = document.getElementById('website');
-const logoInput = document.getElementById('logo');
-const passwordInput = document.getElementById('password');
-const termsCheckbox = document.getElementById('termsCheckbox');
-const registerBtn = document.getElementById('registerBtn');
-const togglePasswordBtn = document.getElementById('togglePassword');
-const errorMessage = document.getElementById('errorMessage');
-const successMessage = document.getElementById('successMessage');
+    <!-- HEADER -->
+    <header class="sticky top-0 z-50 w-full bg-background-light/80 backdrop-blur-md">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20 border-b border-black/10">
+          <div class="flex items-center gap-4">
+            <div class="size-6 text-primary">
+              <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M44 11.2727C44 14.0109 39.8386 16.3957 33.69 17.6364C39.8386 18.877 44 21.2618 44 24C44 26.7382 39.8386 29.123 33.69 30.3636C39.8386 31.6043 44 33.9891 44 36.7273C44 40.7439 35.0457 44 24 44C12.9543 44 4 40.7439 4 36.7273C4 33.9891 8.16144 31.6043 14.31 30.3636C8.16144 29.123 4 26.7382 4 24C4 21.2618 8.16144 18.877 14.31 17.6364C8.16144 16.3957 4 14.0109 4 11.2727C4 7.25611 12.9543 4 24 4C35.0457 4 44 7.25611 44 11.2727Z" fill="currentColor"></path>
+              </svg>
+            </div>
+            <a href="/index.html" class="text-text-light text-xl font-bold tracking-tight">OGOUE</a>
+          </div>
 
-// Toggle password visibility
-togglePasswordBtn.addEventListener('click', () => {
-  const type = passwordInput.type === 'password' ? 'text' : 'password';
-  passwordInput.type = type;
-});
+          <nav class="hidden md:flex items-center gap-8">
+            <a class="text-text-light-muted hover:text-text-light text-sm font-medium transition-colors" href="/index.html">Accueil</a>
+            <a class="text-text-light-muted hover:text-text-light text-sm font-medium transition-colors" href="/index.html#features">Fonctionnalités</a>
+            <a class="text-text-light-muted hover:text-text-light text-sm font-medium transition-colors" href="/index.html#benefits">Avantages</a>
+            <a class="text-text-light-muted hover:text-text-light text-sm font-medium transition-colors" href="/apropos.html">À propos</a>
+          </nav>
 
-// Handle logo file upload to Supabase Storage
-let logoUrl = null;
-logoInput.addEventListener('change', async (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    // Validate file size (2MB max)
-    if (file.size > 2 * 1024 * 1024) {
-      errorMessage.textContent = '❌ Le fichier doit faire moins de 2MB';
-      errorMessage.classList.remove('hidden');
-      logoInput.value = '';
-      return;
-    }
-    
-    // Validate file type
-    if (!['image/png', 'image/jpeg', 'image/svg+xml', 'image/webp'].includes(file.type)) {
-      errorMessage.textContent = '❌ Format non supporté. Utilisez PNG, JPG, SVG ou WebP';
-      errorMessage.classList.remove('hidden');
-      logoInput.value = '';
-      return;
-    }
-    
-    // Store file reference for upload later
-    logoInput.dataset.fileReady = 'true';
-  }
-});
+          <!-- Mobile menu button -->
+          <button id="mobile-menu-btn" class="md:hidden text-text-light">
+            <span class="material-symbols-outlined text-2xl">menu</span>
+          </button>
 
-// Register form submission
-registerBtn.addEventListener('click', async () => {
-  errorMessage.classList.add('hidden');
-  successMessage.classList.add('hidden');
-  registerBtn.disabled = true;
-  const originalText = registerBtn.textContent;
-  registerBtn.textContent = '⏳ Inscription en cours...';
+          <div class="hidden md:flex items-center gap-3">
+            <a href="/institution-login.html"
+               class="flex min-w-[84px] items-center justify-center overflow-hidden rounded-full h-10 px-6 bg-primary text-background-dark text-sm font-bold tracking-wide hover:bg-opacity-90 transition-colors">
+              <span class="truncate">Se connecter</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
 
-  try {
-    const institutionName = institutionNameInput.value.trim();
-    const institutionType = institutionTypeInput.value.trim();
-    const mission = missionInput.value.trim();
-    const contactName = contactNameInput.value.trim();
-    const email = emailInput.value.trim();
-    const website = websiteInput.value.trim();
-    const password = passwordInput.value;
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden fixed inset-0 top-20 z-40 md:hidden bg-background-light border-t border-black/10">
+      <nav class="flex flex-col p-6 space-y-4">
+        <a href="/index.html" class="text-text-light font-medium hover:text-primary transition-colors">Accueil</a>
+        <a href="/index.html#features" class="text-text-light font-medium hover:text-primary transition-colors">Fonctionnalités</a>
+        <a href="/index.html#benefits" class="text-text-light font-medium hover:text-primary transition-colors">Avantages</a>
+        <a href="/apropos.html" class="text-text-light font-medium hover:text-primary transition-colors">À propos</a>
+        <hr class="border-black/10" />
+        <a href="/institution-login.html" class="text-primary font-bold hover:text-text-light transition-colors">Se connecter</a>
+      </nav>
+    </div>
 
-    // Validation
-    if (!institutionName || !institutionType || !mission || !contactName || !email || !password) {
-      throw new Error('Veuillez remplir tous les champs obligatoires');
-    }
+    <main>
 
-    if (!termsCheckbox.checked) {
-      throw new Error('Vous devez accepter les conditions générales');
-    }
+      <!-- FORM SECTION -->
+      <section class="py-24 sm:py-32">
+        <div class="max-w-2xl mx-auto px-6 lg:px-8">
+          <div class="text-center mb-12">
+            <h1 class="text-3xl font-black tracking-tighter text-text-light sm:text-4xl">
+              Inscription - Institution Financière
+            </h1>
+            <p class="mt-3 text-text-light-muted">
+              Rejoignez OGOUÉ pour qualifier vos dossiers et accompagner les PME
+            </p>
+          </div>
 
-    // Prepare institution data object
-    const institutionData = {
-      institution_type: institutionType,
-      mission: mission,
-      website: website || null,
-      logo_url: null // Will be updated after upload
+          <div id="errorMessage" class="hidden p-4 mb-6 bg-red-100/80 border border-red-300 text-red-700 rounded-lg text-sm"></div>
+          <div id="successMessage" class="hidden p-4 mb-6 bg-green-100/80 border border-green-300 text-green-700 rounded-lg text-sm"></div>
+
+          <form class="space-y-6" id="registerForm">
+            <!-- Nom de l'institution -->
+            <div>
+              <label class="block text-sm font-semibold text-text-light mb-2" for="institutionName">
+                Nom de l'institution
+              </label>
+              <input
+                class="w-full px-4 py-3 rounded-lg border border-black/10 bg-white text-text-light placeholder-text-light-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+                id="institutionName"
+                name="institutionName"
+                placeholder="Entrez le nom de votre institution"
+                type="text"
+                required
+              />
+            </div>
+
+            <!-- Type d'institution -->
+            <div>
+              <label class="block text-sm font-semibold text-text-light mb-2" for="institutionType">
+                Type d'institution
+              </label>
+              <select
+                class="w-full px-4 py-3 rounded-lg border border-black/10 bg-white text-text-light placeholder-text-light-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+                id="institutionType"
+                required
+              >
+                <option value="">Sélectionnez un type</option>
+                <option value="Microfinance">Microfinance</option>
+                <option value="Banque">Banque</option>
+              </select>
+            </div>
+
+            <!-- Mission de l'institution -->
+            <div>
+              <label class="block text-sm font-semibold text-text-light mb-2" for="mission">
+                Mission de l'institution
+              </label>
+              <textarea
+                class="w-full px-4 py-3 rounded-lg border border-black/10 bg-white text-text-light placeholder-text-light-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+                id="mission"
+                name="mission"
+                placeholder="Décrivez la mission et les objectifs de votre institution"
+                rows="4"
+                required
+              ></textarea>
+            </div>
+
+            <!-- Nom du contact principal -->
+            <div>
+              <label class="block text-sm font-semibold text-text-light mb-2" for="contactName">
+                Nom du contact principal
+              </label>
+              <input
+                class="w-full px-4 py-3 rounded-lg border border-black/10 bg-white text-text-light placeholder-text-light-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+                id="contactName"
+                name="contactName"
+                placeholder="Entrez le nom du contact"
+                type="text"
+                required
+              />
+            </div>
+
+            <!-- Email professionnel -->
+            <div>
+              <label class="block text-sm font-semibold text-text-light mb-2" for="email">
+                Email professionnel
+              </label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <span class="material-symbols-outlined text-text-light-muted">mail</span>
+                </div>
+                <input
+                  class="w-full pl-10 pr-4 py-3 rounded-lg border border-black/10 bg-white text-text-light placeholder-text-light-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+                  id="email"
+                  name="email"
+                  placeholder="votre.email@institution.com"
+                  type="email"
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- Site Web (optionnel) -->
+            <div>
+              <label class="block text-sm font-semibold text-text-light mb-2" for="website">
+                Site Web <span class="text-xs text-text-light-muted">(optionnel)</span>
+              </label>
+              <input
+                class="w-full px-4 py-3 rounded-lg border border-black/10 bg-white text-text-light placeholder-text-light-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+                id="website"
+                name="website"
+                placeholder="https://www.votresite.com"
+                type="url"
+              />
+            </div>
+
+            <!-- Logo (optionnel) -->
+            <div>
+              <label class="block text-sm font-semibold text-text-light mb-2" for="logo">
+                Logo de l'institution <span class="text-xs text-text-light-muted">(optionnel)</span>
+              </label>
+              <input
+                class="w-full px-4 py-3 rounded-lg border border-black/10 bg-white text-text-light placeholder-text-light-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+                id="logo"
+                name="logo"
+                type="file"
+                accept="image/*"
+              />
+              <p class="text-xs text-text-light-muted mt-2">Formats acceptés: PNG, JPG, SVG (max 2MB)</p>
+            </div>
+
+            <!-- Mot de passe -->
+            <div>
+              <label class="block text-sm font-semibold text-text-light mb-2" for="password">
+                Mot de passe
+              </label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <span class="material-symbols-outlined text-text-light-muted">lock</span>
+                </div>
+                <input
+                  class="w-full pl-10 pr-12 py-3 rounded-lg border border-black/10 bg-white text-text-light placeholder-text-light-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+                  id="password"
+                  name="password"
+                  placeholder="Créez un mot de passe sécurisé"
+                  type="password"
+                  required
+                />
+                <button
+                  class="absolute inset-y-0 right-0 pr-3 flex items-center text-text-light-muted hover:text-text-light transition-colors"
+                  id="togglePassword"
+                  type="button"
+                  onclick="togglePasswordVisibility()"
+                >
+                  <span class="material-symbols-outlined text-base" id="visibilityIcon">visibility</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Checkbox Terms -->
+            <div class="flex items-center gap-3">
+              <input
+                class="w-5 h-5 rounded border border-black/10 bg-white text-primary focus:ring-1 focus:ring-primary"
+                id="termsCheckbox"
+                name="termsCheckbox"
+                type="checkbox"
+                required
+              />
+              <label class="text-sm text-text-light-muted" for="termsCheckbox">
+                J'accepte les <a class="font-semibold text-primary hover:text-text-light transition-colors" href="#">Conditions Générales d'Utilisation</a>
+              </label>
+            </div>
+
+            <!-- Submit Button -->
+            <button
+              class="w-full py-3 px-4 rounded-lg bg-primary text-background-dark font-bold text-sm hover:bg-opacity-90 transition-colors"
+              type="submit"
+              id="registerBtn">
+              Créer mon compte
+            </button>
+
+            <!-- Sign In Link -->
+            <div class="pt-4 border-t border-black/10 text-center">
+              <p class="text-sm text-text-light-muted">
+                Déjà un compte ?
+                <a class="font-semibold text-primary hover:text-text-light transition-colors" href="/institution-login.html">
+                  Se connecter
+                </a>
+              </p>
+            </div>
+          </form>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-black/10">
+      <div class="max-w-7xl mx-auto px-6 lg:px-8 py-8">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+          <div class="flex items-center gap-4">
+            <div class="size-6 text-primary">
+              <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M44 11.2727C44 14.0109 39.8386 16.3957 33.69 17.6364C39.8386 18.877 44 21.2618 44 24C44 26.7382 39.8386 29.123 33.69 30.3636C39.8386 31.6043 44 33.9891 44 36.7273C44 40.7439 35.0457 44 24 44C12.9543 44 4 40.7439 4 36.7273C4 33.9891 8.16144 31.6043 14.31 30.3636C8.16144 29.123 4 26.7382 4 24C4 21.2618 8.16144 18.877 14.31 17.6364C8.16144 16.3957 4 14.0109 4 11.2727C4 7.25611 12.9543 4 24 4C35.0457 4 44 7.25611 44 11.2727Z" fill="currentColor"></path>
+              </svg>
+            </div>
+            <span class="text-text-light text-lg font-bold tracking-tight">OGOUE</span>
+          </div>
+
+          <p class="text-sm text-text-light-muted">© 2026 OGOUE. Tous droits réservés.</p>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script type="module">
+    import { authAPI, sessionAPI } from './api.js';
+
+    const institutionNameInput = document.getElementById('institutionName');
+    const institutionTypeInput = document.getElementById('institutionType');
+    const missionInput = document.getElementById('mission');
+    const contactNameInput = document.getElementById('contactName');
+    const emailInput = document.getElementById('email');
+    const websiteInput = document.getElementById('website');
+    const logoInput = document.getElementById('logo');
+    const passwordInput = document.getElementById('password');
+    const termsCheckbox = document.getElementById('termsCheckbox');
+    const registerBtn = document.getElementById('registerBtn');
+    const errorMessage = document.getElementById('errorMessage');
+    const successMessage = document.getElementById('successMessage');
+
+    // Toggle password visibility
+    window.togglePasswordVisibility = function() {
+      const icon = document.getElementById('visibilityIcon');
+      const isPassword = passwordInput.type === 'password';
+      passwordInput.type = isPassword ? 'text' : 'password';
+      icon.textContent = isPassword ? 'visibility' : 'visibility_off';
     };
 
-    // Upload logo if file is selected
-    if (logoInput.files.length > 0) {
-      const file = logoInput.files[0];
-      const fileName = `${Date.now()}_${file.name}`;
-      
-      try {
-        // Create FormData for multipart upload to backend
-        const uploadResponse = await fetch('http://localhost:3001/api/auth/upload-logo', {
-          method: 'POST',
-          body: (() => {
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append('fileName', fileName);
-            return formData;
-          })()
-        });
-
-        const uploadData = await uploadResponse.json();
-        
-        if (uploadResponse.ok && uploadData.logoUrl) {
-          institutionData.logo_url = uploadData.logoUrl;
-          console.log('✅ Logo uploaded:', uploadData.logoUrl);
-        } else {
-          console.warn('⚠️ Logo upload failed, continuing without logo');
+    // Handle logo file upload validation
+    logoInput.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        if (file.size > 2 * 1024 * 1024) {
+          errorMessage.textContent = '❌ Le fichier doit faire moins de 2MB';
+          errorMessage.classList.remove('hidden');
+          logoInput.value = '';
+          return;
         }
-      } catch (uploadError) {
-        console.warn('⚠️ Logo upload error:', uploadError);
-        // Continue without logo
+        
+        if (!['image/png', 'image/jpeg', 'image/svg+xml', 'image/webp'].includes(file.type)) {
+          errorMessage.textContent = '❌ Format non supporté. Utilisez PNG, JPG, SVG ou WebP';
+          errorMessage.classList.remove('hidden');
+          logoInput.value = '';
+          return;
+        }
+        
+        logoInput.dataset.fileReady = 'true';
       }
-    }
-
-    // Direct API call with all institution data
-    const response = await fetch('http://localhost:3001/api/auth/register', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-        user_type: 'institution',
-        full_name: contactName,
-        institution_name: institutionName,
-        institution_data: institutionData
-      })
     });
 
-    const data = await response.json();
-    
-    if (!response.ok) {
-      throw new Error(data.error || 'Registration failed');
-    }
+    // Register form submission
+    registerBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      errorMessage.classList.add('hidden');
+      successMessage.classList.add('hidden');
+      registerBtn.disabled = true;
+      const originalText = registerBtn.textContent;
+      registerBtn.textContent = '⏳ Inscription en cours...';
 
-    console.log('📝 Register response:', data);
+      try {
+        const institutionName = institutionNameInput.value.trim();
+        const institutionType = institutionTypeInput.value.trim();
+        const mission = missionInput.value.trim();
+        const contactName = contactNameInput.value.trim();
+        const email = emailInput.value.trim();
+        const website = websiteInput.value.trim();
+        const password = passwordInput.value;
 
-    // Store token and user data
-    sessionAPI.setToken(data.token);
-    sessionAPI.setUser(data.user);
+        if (!institutionName || !institutionType || !mission || !contactName || !email || !password) {
+          throw new Error('Veuillez remplir tous les champs obligatoires');
+        }
 
-    // Store institution data if present
-    if (data.institution) {
-      console.log('✅ Institution data found:', data.institution);
-      const institutionFullData = {
-        ...data.institution,
-        email: data.user.email,
-        full_name: data.user.full_name,
-      };
-      console.log('💾 Saving to localStorage:', institutionFullData);
-      sessionAPI.setInstitution(institutionFullData);
-      console.log('✅ Institution saved!');
-    }
+        if (!termsCheckbox.checked) {
+          throw new Error('Vous devez accepter les conditions générales');
+        }
 
-    // Show success message
-    successMessage.textContent = '✅ Inscription réussie! Redirection...';
-    successMessage.classList.remove('hidden');
+        const institutionData = {
+          institution_type: institutionType,
+          mission: mission,
+          website: website || null,
+          logo_url: null
+        };
 
-    // Redirect to dashboard after 1.5 seconds
-    setTimeout(() => {
-      window.location.href = './institution-tableau-bord.html';
-    }, 1500);
+        if (logoInput.files.length > 0) {
+          const file = logoInput.files[0];
+          const fileName = `${Date.now()}_${file.name}`;
+          
+          try {
+            const uploadResponse = await fetch('http://localhost:3001/api/auth/upload-logo', {
+              method: 'POST',
+              body: (() => {
+                const formData = new FormData();
+                formData.append('file', file);
+                formData.append('fileName', fileName);
+                return formData;
+              })()
+            });
 
-  } catch (error) {
-    console.error('Register error:', error);
-    errorMessage.textContent = `❌ ${error.message}`;
-    errorMessage.classList.remove('hidden');
-    registerBtn.disabled = false;
-    registerBtn.textContent = originalText;
-  }
-});
-</script>
+            const uploadData = await uploadResponse.json();
+            
+            if (uploadResponse.ok && uploadData.logoUrl) {
+              institutionData.logo_url = uploadData.logoUrl;
+            }
+          } catch (uploadError) {
+            console.warn('Logo upload error:', uploadError);
+          }
+        }
 
+        const response = await fetch('http://localhost:3001/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+            user_type: 'institution',
+            full_name: contactName,
+            institution_name: institutionName,
+            institution_data: institutionData
+          })
+        });
+
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.error || 'Registration failed');
+        }
+
+        sessionAPI.setToken(data.token);
+        sessionAPI.setUser(data.user);
+
+        if (data.institution) {
+          const institutionFullData = {
+            ...data.institution,
+            email: data.user.email,
+            full_name: data.user.full_name,
+          };
+          sessionAPI.setInstitution(institutionFullData);
+        }
+
+        successMessage.textContent = '✅ Inscription réussie! Redirection...';
+        successMessage.classList.remove('hidden');
+
+        setTimeout(() => {
+          window.location.href = './institution-tableau-bord.html';
+        }, 1500);
+
+      } catch (error) {
+        console.error('Register error:', error);
+        errorMessage.textContent = `❌ ${error.message}`;
+        errorMessage.classList.remove('hidden');
+        registerBtn.disabled = false;
+        registerBtn.textContent = originalText;
+      }
+    });
+
+    // Mobile menu toggle
+    document.addEventListener('DOMContentLoaded', () => {
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      
+      if (mobileMenuBtn && mobileMenu) {
+        mobileMenuBtn.addEventListener('click', () => {
+          mobileMenu.classList.toggle('hidden');
+        });
+
+        mobileMenu.querySelectorAll('a').forEach(link => {
+          link.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+          });
+        });
+      }
+    });
+  </script>
+</body>
 </html>

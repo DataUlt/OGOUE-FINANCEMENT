@@ -5,38 +5,35 @@
 <title>OGOUÉ - Analyse des Dossiers</title>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script id="tailwind-config">
         tailwind.config = {
-            darkMode: "class",
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#13eca4",
-                        "primary-dark": "#0eb57d",
-                        "background-light": "#f6f8f7",
-                        "background-dark": "#10221c",
+                        "primary": "#1de22e",
+                        "primary-dark": "#19b823",
+                        "background-light": "#f6f8f6",
                         "surface-light": "#ffffff",
-                        "surface-dark": "#162e26",
-                        "text-main": "#111816",
-                        "text-secondary": "#61897c",
+                        "text-light": "#0a0c0a",
+                        "text-light-muted": "#5c6c60",
                     },
                     fontFamily: {
-                        "display": ["Public Sans", "sans-serif"]
+                        "display": ["Manrope", "sans-serif"]
                     },
-                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
                 },
             },
         }
     </script>
 <style>
         .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
         }
         .icon-filled {
-            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24;
         }
         aside.collapsed {
             width: 80px;
@@ -73,50 +70,50 @@
         }
     </style>
 </head>
-<body class="bg-background-light dark:bg-background-dark text-text-main dark:text-white font-display overflow-hidden">
+<body class="bg-background-light text-text-light font-display overflow-hidden">
 <div class="flex h-screen w-full">
-<aside id="sidebar" class="w-64 flex flex-col border-r border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark shrink-0 transition-all duration-300">
+<aside id="sidebar" class="w-64 flex flex-col border-r border-black/10 bg-white shrink-0 transition-all duration-300">
 <div class="sidebar-header p-6 flex items-center gap-3">
-<button id="sidebarToggle" class="flex-shrink-0 p-1.5 hover:bg-background-light dark:hover:bg-background-dark rounded-lg transition-colors">
+<button id="sidebarToggle" class="flex-shrink-0 p-1.5 hover:bg-gray-50 rounded-lg transition-colors">
 <span class="material-symbols-outlined text-xl">menu</span>
 </button>
 </div>
 <nav class="sidebar-nav flex-1 px-4 flex flex-col gap-2 mt-4">
-<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-background-light dark:hover:bg-background-dark hover:text-text-main transition-colors" href="institution-tableau-bord.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-gray-50 hover:text-text-light transition-colors" href="institution-tableau-bord.html">
 <span class="material-symbols-outlined">dashboard</span>
 <span class="sidebar-text">Vue d'Ensemble</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-background-light dark:hover:bg-background-dark hover:text-text-main transition-colors" href="institution-liste-produits.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-gray-50 hover:text-text-light transition-colors" href="institution-liste-produits.html">
 <span class="material-symbols-outlined">payments</span>
 <span class="sidebar-text">Produits</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-background-light dark:hover:bg-background-dark hover:text-text-main transition-colors" href="institution-liste-modeles.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-gray-50 hover:text-text-light transition-colors" href="institution-liste-modeles.html">
 <span class="material-symbols-outlined">table_chart</span>
 <span class="sidebar-text">Modèles</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-xl bg-primary/10 text-primary-dark dark:text-primary font-medium" href="institution-analyse-dossier.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary font-medium" href="institution-analyse-dossier.html">
 <span class="material-symbols-outlined icon-filled">folder_open</span>
 <span class="sidebar-text">Dossiers</span>
 </a>
 </nav>
 <div class="p-4 mt-auto">
-<div class="sidebar-user bg-[#f0f4f3] dark:bg-[#1c332b] rounded-xl p-4 flex items-center gap-3">
-<div class="size-8 rounded-full bg-cover bg-center" style="background: linear-gradient(135deg, #13eca4 0%, #0eb57d 100%);"></div>
+<div class="sidebar-user bg-gray-50 rounded-lg p-4 flex items-center gap-3">
+<div class="size-8 rounded-full bg-cover bg-center" style="background: linear-gradient(135deg, #1de22e 0%, #19b823 100%);"></div>
 <div class="overflow-hidden">
-<p class="text-sm font-semibold text-text-main dark:text-white truncate" id="userEmail">-</p>
-<p class="text-xs text-text-secondary truncate">Institution</p>
+<p class="text-sm font-semibold text-text-light truncate" id="userEmail">-</p>
+<p class="text-xs text-text-light-muted truncate">Institution</p>
 </div>
 </div>
 </div>
 </aside>
 <main class="flex-1 flex flex-col h-full overflow-hidden">
-<header class="px-8 py-6 border-b border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark flex flex-wrap justify-between items-end gap-4 shrink-0 z-10">
+<header class="px-8 py-6 border-b border-black/10 bg-white flex flex-wrap justify-between items-end gap-4 shrink-0 z-10">
 <div class="flex flex-col gap-1">
-<h2 class="text-3xl font-black tracking-tight text-text-main dark:text-white">Analyse des Dossiers</h2>
-<p class="text-text-secondary dark:text-gray-400">Revue et gestion des demandes de crédit des PME.</p>
+<h2 class="text-3xl font-black tracking-tight text-text-light">Analyse des Dossiers</h2>
+<p class="text-text-light-muted">Revue et gestion des demandes de crédit des PME.</p>
 </div>
 <div class="flex items-center gap-3">
-<a href="institution-tableau-bord.html" class="flex items-center gap-2 h-10 px-4 rounded-lg border border-[#dbe6e2] dark:border-[#2a4038] bg-white dark:bg-background-dark hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-sm font-semibold text-text-main dark:text-white">
+<a href="institution-tableau-bord.html" class="flex items-center gap-2 h-10 px-4 rounded-lg border border-black/10 bg-white hover:bg-gray-50 transition-colors text-sm font-semibold text-text-light">
 <span class="material-symbols-outlined text-[20px]">arrow_back</span>
 <span>Retour</span>
 </a>
@@ -126,24 +123,24 @@
 <div class="max-w-7xl mx-auto">
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 <div class="lg:col-span-2">
-<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-[#dbe6e2] dark:border-[#2a4038] shadow-sm">
-<div class="px-6 py-5 border-b border-[#dbe6e2] dark:border-[#2a4038]">
-<h3 class="text-lg font-bold text-text-main dark:text-white">Tous les Dossiers</h3>
+<div class="bg-white rounded-lg border border-black/10 shadow-sm">
+<div class="px-6 py-5 border-b border-black/10">
+<h3 class="text-lg font-bold text-text-light">Tous les Dossiers</h3>
 </div>
 <div class="overflow-x-auto">
 <table class="w-full text-left border-collapse">
-<thead class="bg-[#f8fafa] dark:bg-[#1c332b]/50">
+<thead class="bg-gray-50">
 <tr>
-<th class="px-6 py-4 text-xs font-semibold uppercase text-text-secondary tracking-wider">Entreprise</th>
-<th class="px-6 py-4 text-xs font-semibold uppercase text-text-secondary tracking-wider text-center">Montant</th>
-<th class="px-6 py-4 text-xs font-semibold uppercase text-text-secondary tracking-wider text-center">Score</th>
-<th class="px-6 py-4 text-xs font-semibold uppercase text-text-secondary tracking-wider text-center">Statut</th>
-<th class="px-6 py-4 text-xs font-semibold uppercase text-text-secondary tracking-wider text-center">Actions</th>
+<th class="px-6 py-4 text-xs font-semibold uppercase text-text-light-muted tracking-wider">Entreprise</th>
+<th class="px-6 py-4 text-xs font-semibold uppercase text-text-light-muted tracking-wider text-center">Montant</th>
+<th class="px-6 py-4 text-xs font-semibold uppercase text-text-light-muted tracking-wider text-center">Score</th>
+<th class="px-6 py-4 text-xs font-semibold uppercase text-text-light-muted tracking-wider text-center">Statut</th>
+<th class="px-6 py-4 text-xs font-semibold uppercase text-text-light-muted tracking-wider text-center">Actions</th>
 </tr>
 </thead>
-<tbody class="divide-y divide-[#dbe6e2] dark:divide-[#2a4038]" id="applicationsTableBody">
+<tbody class="divide-y divide-black/10" id="applicationsTableBody">
 <tr>
-<td class="px-6 py-4 text-center text-text-secondary" colspan="5">Chargement...</td>
+<td class="px-6 py-4 text-center text-text-light-muted" colspan="5">Chargement...</td>
 </tr>
 </tbody>
 </table>
@@ -151,12 +148,12 @@
 </div>
 </div>
 <div class="lg:col-span-1">
-<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-[#dbe6e2] dark:border-[#2a4038] shadow-sm p-6">
-<h3 class="text-lg font-bold text-text-main dark:text-white mb-4">Filtres</h3>
+<div class="bg-white rounded-lg border border-black/10 shadow-sm p-6">
+<h3 class="text-lg font-bold text-text-light mb-4">Filtres</h3>
 <div class="space-y-4">
 <div>
-<label class="block text-sm font-semibold text-text-main dark:text-white mb-2">Statut</label>
-<select id="statusFilter" class="w-full px-3 py-2 rounded-lg border border-[#dbe6e2] dark:border-[#2a4038] bg-white dark:bg-background-dark text-text-main dark:text-white">
+<label class="block text-sm font-semibold text-text-light mb-2">Statut</label>
+<select id="statusFilter" class="w-full px-3 py-2 rounded-lg border border-black/10 bg-white text-text-light">
 <option value="">Tous</option>
 <option value="draft">Brouillon</option>
 <option value="submitted">En révision</option>
@@ -165,12 +162,12 @@
 </select>
 </div>
 <div>
-<label class="block text-sm font-semibold text-text-main dark:text-white mb-2">Produit</label>
-<select id="productFilter" class="w-full px-3 py-2 rounded-lg border border-[#dbe6e2] dark:border-[#2a4038] bg-white dark:bg-background-dark text-text-main dark:text-white">
+<label class="block text-sm font-semibold text-text-light mb-2">Produit</label>
+<select id="productFilter" class="w-full px-3 py-2 rounded-lg border border-black/10 bg-white text-text-light">
 <option value="">Tous les produits</option>
 </select>
 </div>
-<button id="filterBtn" class="w-full mt-4 h-10 px-4 rounded-lg bg-primary text-text-main font-bold text-sm hover:bg-primary/90 transition-colors">
+<button id="filterBtn" class="w-full mt-4 h-10 px-4 rounded-lg bg-primary text-white font-bold text-sm hover:bg-primary/90 transition-colors">
 Appliquer les filtres
 </button>
 </div>
@@ -239,7 +236,7 @@ function renderApplications(applications) {
   if (applications.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td class="px-6 py-4 text-center text-text-secondary" colspan="5">Aucun dossier trouvé</td>
+        <td class="px-6 py-4 text-center text-text-light-muted" colspan="5">Aucun dossier trouvé</td>
       </tr>
     `;
     return;
@@ -247,11 +244,11 @@ function renderApplications(applications) {
   
   applications.forEach(app => {
     const statusColor = {
-      'draft': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
-      'submitted': 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
-      'review_needed': 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
-      'approved': 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
-      'rejected': 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400'
+      'draft': 'bg-yellow-100 text-yellow-800',
+      'submitted': 'bg-blue-100 text-blue-800',
+      'review_needed': 'bg-blue-100 text-blue-800',
+      'approved': 'bg-green-100 text-green-800',
+      'rejected': 'bg-red-100 text-red-800'
     };
     
     const statusLabel = {
@@ -269,19 +266,19 @@ function renderApplications(applications) {
     const amount = app.simulation_data?.requested_amount ? `${Math.round(app.simulation_data.requested_amount).toLocaleString('fr-FR')} FCFA` : '-';
     
     tbody.innerHTML += `
-      <tr class="hover:bg-gray-50 dark:hover:bg-[#1c332b]/30 transition-colors">
+      <tr class="hover:bg-gray-50 transition-colors">
         <td class="px-6 py-4">
           <div class="flex items-center gap-3">
-            <div class="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg p-2.5 flex items-center justify-center shrink-0">
+            <div class="bg-blue-100 text-blue-600 rounded-lg p-2.5 flex items-center justify-center shrink-0">
               <span class="material-symbols-outlined text-lg">business</span>
             </div>
             <div>
-              <p class="font-semibold text-text-main dark:text-white text-sm">${app.pme?.business_name || 'PME'}</p>
-              <p class="text-xs text-text-secondary">ID: ${app.id.substring(0, 8)}</p>
+              <p class="font-semibold text-text-light text-sm">${app.pme?.business_name || 'PME'}</p>
+              <p class="text-xs text-text-light-muted">ID: ${app.id.substring(0, 8)}</p>
             </div>
           </div>
         </td>
-        <td class="px-6 py-4 text-sm text-text-main dark:text-white font-medium text-center">${amount}</td>
+        <td class="px-6 py-4 text-sm text-text-light font-medium text-center">${amount}</td>
         <td class="px-6 py-4 text-center">
           <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${colorClass}">${score}</span>
         </td>

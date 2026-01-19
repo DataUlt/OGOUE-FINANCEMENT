@@ -5,38 +5,35 @@
 <title>Modification Modèle d'Octroi (Institution)</title>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script id="tailwind-config">
         tailwind.config = {
-            darkMode: "class",
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#13eca4",
-                        "primary-dark": "#0eb57d",
-                        "background-light": "#f6f8f7",
-                        "background-dark": "#10221c",
+                        "primary": "#1de22e",
+                        "primary-dark": "#19b823",
+                        "background-light": "#f6f8f6",
                         "surface-light": "#ffffff",
-                        "surface-dark": "#162e26",
-                        "text-main": "#111816",
-                        "text-secondary": "#61897c",
+                        "text-light": "#0a0c0a",
+                        "text-light-muted": "#5c6c60",
                     },
                     fontFamily: {
-                        "display": ["Public Sans", "sans-serif"]
+                        "display": ["Manrope", "sans-serif"]
                     },
-                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                    borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
                 },
             },
         }
     </script>
 <style>
         .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
         }
         .icon-filled {
-            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24;
         }
         aside.collapsed {
             width: 80px;
@@ -73,40 +70,40 @@
         }
     </style>
 </head>
-<body class="bg-background-light dark:bg-background-dark text-text-main dark:text-white font-display overflow-hidden">
+<body class="bg-background-light text-text-light font-display overflow-hidden">
 <div class="flex h-screen w-full">
-<aside id="sidebar" class="w-64 flex flex-col border-r border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark shrink-0 transition-all duration-300">
+<aside id="sidebar" class="w-64 flex flex-col border-r border-black/10 bg-white shrink-0 transition-all duration-300">
 <div class="sidebar-header p-6 flex items-center gap-3">
-<button id="sidebarToggle" class="flex-shrink-0 p-1.5 hover:bg-background-light dark:hover:bg-background-dark rounded-lg transition-colors">
+<button id="sidebarToggle" class="flex-shrink-0 p-1.5 hover:bg-gray-50 rounded-lg transition-colors">
 <span class="material-symbols-outlined text-xl">menu</span>
 </button>
 </div>
 <nav class="sidebar-nav flex-1 px-4 flex flex-col gap-2 mt-4">
-<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-background-light dark:hover:bg-background-dark hover:text-text-main transition-colors" href="institution-tableau-bord.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-gray-50 hover:text-text-light transition-colors" href="institution-tableau-bord.html">
 <span class="material-symbols-outlined">dashboard</span>
 <span class="sidebar-text">Vue d'Ensemble</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-background-light dark:hover:bg-background-dark hover:text-text-main transition-colors" href="institution-liste-produits.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-gray-50 hover:text-text-light transition-colors" href="institution-liste-produits.html">
 <span class="material-symbols-outlined">payments</span>
 <span class="sidebar-text">Produits</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-xl bg-primary/10 text-primary-dark dark:text-primary font-medium" href="institution-liste-modeles.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary font-medium" href="institution-liste-modeles.html">
 <span class="material-symbols-outlined icon-filled">table_chart</span>
 <span class="sidebar-text">Modèles</span>
 </a>
 </nav>
 <div class="p-4 mt-auto">
-<div class="sidebar-user bg-[#f0f4f3] dark:bg-[#1c332b] rounded-xl p-4 flex items-center gap-3">
-<div class="size-8 rounded-full bg-gradient-to-br from-primary to-[#0eb57d] flex items-center justify-center text-white font-bold text-sm" id="userAvatarInitials">
+<div class="sidebar-user bg-gray-50 rounded-lg p-4 flex items-center gap-3">
+<div class="size-8 rounded-full bg-gradient-to-br from-primary to-[#13a024] flex items-center justify-center text-white font-bold text-sm" id="userAvatarInitials">
                     ?
                 </div>
 <div class="overflow-hidden flex-1">
-<p class="text-sm font-semibold text-text-main dark:text-white truncate" id="institutionDisplayName">Institution</p>
-<p class="text-xs text-text-secondary truncate" id="contactDisplayName">Contact</p>
-<p class="text-xs text-text-secondary truncate" id="institutionDisplayEmail">email@example.com</p>
+<p class="text-sm font-semibold text-text-light truncate" id="institutionDisplayName">Institution</p>
+<p class="text-xs text-text-light-muted truncate" id="contactDisplayName">Contact</p>
+<p class="text-xs text-text-light-muted truncate" id="institutionDisplayEmail">email@example.com</p>
 </div>
 </div>
-<button id="logoutBtn" class="w-full mt-4 flex items-center justify-center gap-2 rounded-lg h-10 px-4 text-red-500 dark:text-red-400 text-sm font-bold bg-red-500/10 dark:bg-red-500/20 hover:bg-red-500/20 dark:hover:bg-red-500/30 transition-colors">
+<button id="logoutBtn" class="w-full mt-4 flex items-center justify-center gap-2 rounded-lg h-10 px-4 text-red-500 text-sm font-bold bg-red-500/10 hover:bg-red-500/20 transition-colors">
 <span class="material-symbols-outlined text-sm">logout</span>
 <span class="sidebar-text">Déconnexion</span>
 </button>
@@ -121,72 +118,72 @@
 </a>
 <div class="flex flex-wrap justify-between gap-3 p-4">
 <div class="flex min-w-72 flex-col gap-3">
-<p class="text-text-main dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">Modification du Modèle de Crédit</p>
-<p class="text-text-secondary text-base font-normal leading-normal">Mettez à jour les variables, les poids et les critères d'acceptation.</p>
+<p class="text-text-light text-4xl font-black leading-tight tracking-[-0.033em]">Modification du Modèle de Crédit</p>
+<p class="text-text-light-muted text-base font-normal leading-normal">Mettez à jour les variables, les poids et les critères d'acceptation.</p>
 </div>
 </div>
-<div class="mt-8 bg-surface-light dark:bg-surface-dark p-8 rounded-xl shadow-sm border border-[#dbe6e2] dark:border-[#2a4038]">
+<div class="mt-8 bg-white p-8 rounded-lg shadow-sm border border-black/10">
 <div class="flex flex-col gap-8">
 <div>
-<h2 class="text-text-main dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3">Informations Générales</h2>
+<h2 class="text-text-light text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3">Informations Générales</h2>
 <div class="grid grid-cols-1 gap-6">
 <label class="flex flex-col">
-<p class="text-text-main dark:text-white text-base font-medium leading-normal pb-2">Nom du Modèle</p>
-<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 h-14 placeholder:text-text-secondary p-[15px] text-base font-normal leading-normal" placeholder="Ex: Modèle PME Standard 2024" value="Modèle PME Standard"/>
+<p class="text-text-light text-base font-medium leading-normal pb-2">Nom du Modèle</p>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-14 placeholder:text-text-light-muted p-[15px] text-base font-normal leading-normal" placeholder="Ex: Modèle PME Standard 2024" value="Modèle PME Standard"/>
 </label>
 <label class="flex flex-col">
-<p class="text-text-main dark:text-white text-base font-medium leading-normal pb-2">Description</p>
-<textarea class="form-textarea flex w-full min-w-0 flex-1 resize-y overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 min-h-[120px] placeholder:text-text-secondary p-[15px] text-base font-normal leading-normal">Modèle standard pour l'évaluation des PME en fonction de leur rentabilité, stabilité et perspectives de croissance.</textarea>
+<p class="text-text-light text-base font-medium leading-normal pb-2">Description</p>
+<textarea class="form-textarea flex w-full min-w-0 flex-1 resize-y overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 min-h-[120px] placeholder:text-text-light-muted p-[15px] text-base font-normal leading-normal">Modèle standard pour l'évaluation des PME en fonction de leur rentabilité, stabilité et perspectives de croissance.</textarea>
 </label>
 </div>
 </div>
 <div>
-<h2 class="text-text-main dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] pt-5 pb-3">Variables du Modèle</h2>
+<h2 class="text-text-light text-[22px] font-bold leading-tight tracking-[-0.015em] pt-5 pb-3">Variables du Modèle</h2>
 <div class="overflow-x-auto">
 <table class="w-full text-sm">
 <thead>
-<tr class="border-b border-[#dbe6e2] dark:border-[#2a4038]">
-<th class="px-4 py-3 text-left"><p class="text-text-secondary text-xs font-semibold">Variable</p></th>
-<th class="px-4 py-3 text-left"><p class="text-text-secondary text-xs font-semibold">Poids (%)</p></th>
-<th class="px-4 py-3 text-left"><p class="text-text-secondary text-xs font-semibold">Min</p></th>
-<th class="px-4 py-3 text-left"><p class="text-text-secondary text-xs font-semibold">Max</p></th>
-<th class="px-4 py-3 text-left"><p class="text-text-secondary text-xs font-semibold">Unité</p></th>
-<th class="px-4 py-3 text-left"><p class="text-text-secondary text-xs font-semibold">Sens Favorable</p></th>
-<th class="px-4 py-3 text-left"><p class="text-text-secondary text-xs font-semibold">Critère Bloquant</p></th>
-<th class="px-4 py-3 text-center"><p class="text-text-secondary text-xs font-semibold">Action</p></th>
+<tr class="border-b border-black/10">
+<th class="px-4 py-3 text-left"><p class="text-text-light-muted text-xs font-semibold">Variable</p></th>
+<th class="px-4 py-3 text-left"><p class="text-text-light-muted text-xs font-semibold">Poids (%)</p></th>
+<th class="px-4 py-3 text-left"><p class="text-text-light-muted text-xs font-semibold">Min</p></th>
+<th class="px-4 py-3 text-left"><p class="text-text-light-muted text-xs font-semibold">Max</p></th>
+<th class="px-4 py-3 text-left"><p class="text-text-light-muted text-xs font-semibold">Unité</p></th>
+<th class="px-4 py-3 text-left"><p class="text-text-light-muted text-xs font-semibold">Sens Favorable</p></th>
+<th class="px-4 py-3 text-left"><p class="text-text-light-muted text-xs font-semibold">Critère Bloquant</p></th>
+<th class="px-4 py-3 text-center"><p class="text-text-light-muted text-xs font-semibold">Action</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="border-b border-[#dbe6e2] dark:border-[#2a4038] hover:bg-background-light dark:hover:bg-background-dark">
-<td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-secondary p-2 text-sm font-normal leading-normal" value="CA" type="text"/></td>
-<td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-secondary p-2 text-sm font-normal leading-normal" value="100" type="number"/></td>
-<td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-secondary p-2 text-sm font-normal leading-normal" value="100" type="number"/></td>
-<td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-secondary p-2 text-sm font-normal leading-normal" value="300" type="number"/></td>
-<td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-secondary p-2 text-sm font-normal leading-normal" placeholder="%, mois, millions FCFA" type="text"/></td>
-<td class="px-4 py-3"><select class="form-select flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main dark:text-white focus:outline-0 border border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 p-2 text-sm font-normal leading-normal"><option selected>Croissant</option><option>Décroissant</option></select></td>
-<td class="px-4 py-3"><label class="flex"><input class="form-checkbox h-4 w-4 rounded text-primary focus:ring-primary/50 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark dark:checked:bg-primary" type="checkbox"/></label></td>
+<tr class="border-b border-black/10 hover:bg-gray-50">
+<td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-light-muted p-2 text-sm font-normal leading-normal" value="CA" type="text"/></td>
+<td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-light-muted p-2 text-sm font-normal leading-normal" value="100" type="number"/></td>
+<td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-light-muted p-2 text-sm font-normal leading-normal" value="100" type="number"/></td>
+<td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-light-muted p-2 text-sm font-normal leading-normal" value="300" type="number"/></td>
+<td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-light-muted p-2 text-sm font-normal leading-normal" placeholder="%, mois, millions FCFA" type="text"/></td>
+<td class="px-4 py-3"><select class="form-select flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 p-2 text-sm font-normal leading-normal"><option selected>Croissant</option><option>Décroissant</option></select></td>
+<td class="px-4 py-3"><label class="flex"><input class="form-checkbox h-4 w-4 rounded text-primary focus:ring-primary/50 border-black/10 bg-white checked:bg-primary" type="checkbox"/></label></td>
 <td class="px-4 py-3 text-center"><button class="p-1 hover:bg-red-500/10 rounded transition-colors delete-btn"><span class="material-symbols-outlined text-sm text-red-500">delete</span></button></td>
 </tr>
 </tbody>
 </table>
 </div>
-<div class="mt-6 p-4 bg-blue-50 dark:bg-blue-950/30 rounded-lg border border-blue-200 dark:border-blue-900">
+<div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
 <div class="flex items-start gap-3">
-<span class="material-symbols-outlined text-blue-600 dark:text-blue-400 mt-1">info</span>
+<span class="material-symbols-outlined text-blue-600 mt-1">info</span>
 <div>
-<p class="text-sm font-medium text-blue-900 dark:text-blue-200">Pour valider votre modèle</p>
-<p class="text-sm text-blue-800 dark:text-blue-300">La somme des poids de chaque variable doit être égale à 100%</p>
-<p class="text-sm font-bold text-blue-900 dark:text-blue-200 mt-2">Poids actuel : <span id="totalWeightDisplay">0</span>%</p>
+<p class="text-sm font-medium text-blue-900">Pour valider votre modèle</p>
+<p class="text-sm text-blue-800">La somme des poids de chaque variable doit être égale à 100%</p>
+<p class="text-sm font-bold text-blue-900 mt-2">Poids actuel : <span id="totalWeightDisplay">0</span>%</p>
 </div>
 </div>
 </div>
-<button class="mt-4 flex min-w-[100px] max-w-[200px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-10 px-4 bg-background-light dark:bg-background-dark text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/10 disabled:opacity-50 disabled:cursor-not-allowed" id="addVariableBtn">
+<button class="mt-4 flex min-w-[100px] max-w-[200px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-10 px-4 bg-gray-100 text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/10 disabled:opacity-50 disabled:cursor-not-allowed" id="addVariableBtn">
 <span class="material-symbols-outlined">add</span>
 <span>Ajouter une Variable</span>
 </button>
 </div>
-<div class="flex justify-end items-center gap-4 pt-8 border-t border-[#dbe6e2] dark:border-[#2a4038] mt-4">
-<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-transparent text-text-main dark:text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-background-light dark:hover:bg-background-dark">
+<div class="flex justify-end items-center gap-4 pt-8 border-t border-black/10 mt-4">
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-white border border-black/10 text-text-light text-base font-bold leading-normal tracking-[0.015em] hover:bg-gray-50">
 <span class="truncate">Annuler</span>
 </button>
 <button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-primary-dark">
@@ -236,8 +233,8 @@ if (institution) {
   const institutionInfo = document.getElementById('institutionInfo');
   if (institutionInfo) {
     institutionInfo.innerHTML = `
-      <h1 class="text-text-main dark:text-white text-sm font-bold tracking-tight">${institution.name || 'Institution'}</h1>
-      <p class="text-text-secondary text-xs font-medium">${user?.full_name || 'Contact'}</p>
+      <h1 class="text-text-light text-sm font-bold tracking-tight">${institution.name || 'Institution'}</h1>
+      <p class="text-text-light-muted text-xs font-medium">${user?.full_name || 'Contact'}</p>
     `;
   }
 }
@@ -306,22 +303,22 @@ if (modelId) {
       
       model.model_variables.forEach(variable => {
         const row = document.createElement('tr');
-        row.className = 'border-b border-[#dbe6e2] dark:border-[#2a4038] hover:bg-background-light dark:hover:bg-background-dark';
+        row.className = 'border-b border-black/10 hover:bg-gray-50';
         row.innerHTML = `
-          <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:ring-primary/50 focus:border-primary w-full" type="text" value="${variable.name || ''}"/></td>
-          <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:ring-primary/50 focus:border-primary w-full" type="number" value="${variable.weight || 0}"/></td>
-          <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:ring-primary/50 focus:border-primary w-full" type="number" value="${variable.min_value || 0}"/></td>
-          <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:ring-primary/50 focus:border-primary w-full" type="number" value="${variable.max_value || 0}"/></td>
-          <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:ring-primary/50 focus:border-primary w-full" type="text" value="${variable.unit || ''}"/></td>
-          <td class="px-4 py-3"><select class="form-select rounded-md h-10 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:ring-primary/50 focus:border-primary w-full">
+          <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-black/10 bg-white focus:ring-primary/50 focus:border-primary w-full" type="text" value="${variable.name || ''}"/></td>
+          <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-black/10 bg-white focus:ring-primary/50 focus:border-primary w-full" type="number" value="${variable.weight || 0}"/></td>
+          <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-black/10 bg-white focus:ring-primary/50 focus:border-primary w-full" type="number" value="${variable.min_value || 0}"/></td>
+          <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-black/10 bg-white focus:ring-primary/50 focus:border-primary w-full" type="number" value="${variable.max_value || 0}"/></td>
+          <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-black/10 bg-white focus:ring-primary/50 focus:border-primary w-full" type="text" value="${variable.unit || ''}"/></td>
+          <td class="px-4 py-3"><select class="form-select rounded-md h-10 border-black/10 bg-white focus:ring-primary/50 focus:border-primary w-full">
             <option ${(variable.favorable_direction || 'Croissant') === 'Croissant' ? 'selected' : ''}>Croissant</option>
             <option ${(variable.favorable_direction || 'Croissant') === 'Décroissant' ? 'selected' : ''}>Décroissant</option>
           </select></td>
           <td class="px-4 py-3 text-center"><label class="relative inline-flex cursor-pointer items-center">
             <input class="peer sr-only" type="checkbox" ${variable.is_blocking ? 'checked' : ''}/>
-            <div class="peer h-6 w-11 rounded-full bg-gray-200 dark:bg-gray-600 after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 dark:after:border-gray-500 after:bg-white after:transition-all after:content-[''] peer-checked:bg-primary/70 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50"></div>
+            <div class="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-primary peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50"></div>
           </label></td>
-          <td class="px-4 py-3 text-center"><button class="flex items-center justify-center text-text-secondary dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 delete-btn" type="button"><span class="material-symbols-outlined">delete</span></button></td>
+          <td class="px-4 py-3 text-center"><button class="flex items-center justify-center text-text-light-muted hover:text-red-500 delete-btn" type="button"><span class="material-symbols-outlined">delete</span></button></td>
         `;
         tbody.appendChild(row);
         
@@ -378,11 +375,11 @@ function updateWeightDisplay() {
     
     // Change color based on total
     if (totalWeight > 100) {
-      display.className = 'font-bold text-red-600 dark:text-red-400';
+      display.className = 'font-bold text-red-600';
     } else if (totalWeight < 100) {
-      display.className = 'font-bold text-yellow-600 dark:text-yellow-400';
+      display.className = 'font-bold text-yellow-600';
     } else {
-      display.className = 'font-bold text-green-600 dark:text-green-400';
+      display.className = 'font-bold text-green-600';
     }
   }
   
@@ -401,22 +398,22 @@ if (addVariableBtn) {
   addVariableBtn.addEventListener('click', () => {
     const tbody = document.querySelector('table tbody');
     const newRow = document.createElement('tr');
-    newRow.className = 'border-b border-[#dbe6e2] dark:border-[#2a4038] hover:bg-background-light dark:hover:bg-background-dark';
+    newRow.className = 'border-b border-black/10 hover:bg-gray-50';
     newRow.innerHTML = `
-      <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:ring-primary/50 focus:border-primary w-full" type="text" placeholder="Nom de la variable"/></td>
-      <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:ring-primary/50 focus:border-primary w-full" type="number" value="0"/></td>
-      <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:ring-primary/50 focus:border-primary w-full" type="number" value="0"/></td>
-      <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:ring-primary/50 focus:border-primary w-full" type="number" value="0"/></td>
-      <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:ring-primary/50 focus:border-primary w-full" type="text" placeholder="%, mois, millions FCFA"/></td>
-      <td class="px-4 py-3"><select class="form-select rounded-md h-10 border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark focus:ring-primary/50 focus:border-primary w-full">
+      <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-black/10 bg-white focus:ring-primary/50 focus:border-primary w-full" type="text" placeholder="Nom de la variable"/></td>
+      <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-black/10 bg-white focus:ring-primary/50 focus:border-primary w-full" type="number" value="0"/></td>
+      <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-black/10 bg-white focus:ring-primary/50 focus:border-primary w-full" type="number" value="0"/></td>
+      <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-black/10 bg-white focus:ring-primary/50 focus:border-primary w-full" type="number" value="0"/></td>
+      <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-black/10 bg-white focus:ring-primary/50 focus:border-primary w-full" type="text" placeholder="%, mois, millions FCFA"/></td>
+      <td class="px-4 py-3"><select class="form-select rounded-md h-10 border-black/10 bg-white focus:ring-primary/50 focus:border-primary w-full">
         <option selected="">Croissant</option>
         <option>Décroissant</option>
       </select></td>
       <td class="px-4 py-3 text-center"><label class="relative inline-flex cursor-pointer items-center">
         <input class="peer sr-only" type="checkbox"/>
-        <div class="peer h-6 w-11 rounded-full bg-gray-200 dark:bg-gray-600 after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 dark:after:border-gray-500 after:bg-white after:transition-all after:content-[''] peer-checked:bg-primary/70 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50"></div>
+        <div class="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-primary peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50"></div>
       </label></td>
-      <td class="px-4 py-3 text-center"><button class="flex items-center justify-center text-text-secondary dark:text-gray-400 hover:text-red-500 dark:hover:text-red-400 delete-btn" type="button"><span class="material-symbols-outlined">delete</span></button></td>
+      <td class="px-4 py-3 text-center"><button class="flex items-center justify-center text-text-light-muted hover:text-red-500 delete-btn" type="button"><span class="material-symbols-outlined">delete</span></button></td>
     `;
     tbody.appendChild(newRow);
     

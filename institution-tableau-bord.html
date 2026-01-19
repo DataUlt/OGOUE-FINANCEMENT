@@ -1,42 +1,46 @@
 <!DOCTYPE html>
-<html class="light" lang="fr"><head>
+<html lang="fr">
+<head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>OGOUÉ - Dashboard POC</title>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script id="tailwind-config">
         tailwind.config = {
-            darkMode: "class",
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#13eca4",
-                        "primary-dark": "#0eb57d",
-                        "background-light": "#f6f8f7",
-                        "background-dark": "#10221c",
-                        "surface-light": "#ffffff",
-                        "surface-dark": "#162e26",
-                        "text-main": "#111816",
-                        "text-secondary": "#61897c",
+                        "primary": "#1de22e",
+                        "background-light": "#f6f8f6",
+                        "background-dark": "#111712",
+                        "text-light": "#0a0c0a",
+                        "text-light-muted": "#5c6c60",
+                        secondary: "#1E3A5F",
                     },
                     fontFamily: {
-                        "display": ["Public Sans", "sans-serif"]
+                        "display": ["Manrope", "sans-serif"]
                     },
-                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                    borderRadius: {
+                        DEFAULT: "1rem",
+                        lg: "2rem",
+                        xl: "3rem",
+                        "2xl": "3rem",
+                        "full": "9999px"
+                    },
                 },
             },
         }
     </script>
 <style>
         .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
         }
         .icon-filled {
-            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24;
         }
         aside.collapsed {
             width: 80px;
@@ -73,71 +77,71 @@
         }
     </style>
 </head>
-<body class="bg-background-light dark:bg-background-dark text-text-main dark:text-white font-display overflow-hidden">
+<body class="bg-background-light text-text-light font-display overflow-hidden">
 <div class="flex h-screen w-full">
-<aside id="sidebar" class="w-64 flex flex-col border-r border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark shrink-0 transition-all duration-300">
+<aside id="sidebar" class="w-64 flex flex-col border-r border-black/10 bg-white shrink-0 transition-all duration-300">
 <div class="sidebar-header p-6 flex items-center gap-3">
-<button id="sidebarToggle" class="flex-shrink-0 p-1.5 hover:bg-background-light dark:hover:bg-background-dark rounded-lg transition-colors">
+<button id="sidebarToggle" class="flex-shrink-0 p-1.5 hover:bg-background-light rounded-lg transition-colors">
 <span class="material-symbols-outlined text-xl">menu</span>
 </button>
 </div>
 <nav class="sidebar-nav flex-1 px-4 flex flex-col gap-2 mt-4">
-<a class="flex items-center gap-3 px-3 py-3 rounded-xl bg-primary/10 text-primary-dark dark:text-primary font-medium" href="institution-tableau-bord.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary font-medium" href="institution-tableau-bord.html">
 <span class="material-symbols-outlined icon-filled">dashboard</span>
 <span class="sidebar-text">Vue d'Ensemble</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-background-light dark:hover:bg-background-dark hover:text-text-main transition-colors" href="institution-liste-produits.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="institution-liste-produits.html">
 <span class="material-symbols-outlined">payments</span>
 <span class="sidebar-text">Produits</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-xl text-text-secondary hover:bg-background-light dark:hover:bg-background-dark hover:text-text-main transition-colors" href="institution-liste-modeles.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="institution-liste-modeles.html">
 <span class="material-symbols-outlined">table_chart</span>
 <span class="sidebar-text">Modèles</span>
 </a>
 </nav>
 <div class="p-4 mt-auto">
-<div class="sidebar-user bg-[#f0f4f3] dark:bg-[#1c332b] rounded-xl p-4 flex items-center gap-3">
+<div class="sidebar-user bg-background-light rounded-lg p-4 flex items-center gap-3">
 <div class="size-8 rounded-full bg-cover bg-center" data-alt="User profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCRIT7ff6v9rrUcAhYe0OOUrUpnKRPk116GNykQEkHvpkm8OcnbFIHebI_9s2BLSgjCDBIiCeTAyUqjsiPk6ByM9xta6qZ1RWzIhxls9I4Sk5sNcDyDiKiJf5ycTmKrqubfo50DZ8awUuPWSee77ZLhFpXooySZDpCEyN09_mGL6P3cfWBrKmY-W59JNITG3gg73Gcfexu3E4wl2e-ftUXVW2HngUX2vEFC-gITs_jcsGdd2m05m69kA6GmDheaVmMJx3vZ3B9VR24');"></div>
 <div class="overflow-hidden">
-<p class="text-sm font-semibold text-text-main dark:text-white truncate" id="sidebarOrgName">Institution</p>
-<p class="text-xs text-text-secondary truncate" id="sidebarContactName">Contact</p>
-<p class="text-xs text-text-secondary truncate" id="sidebarOrgEmail">email@example.com</p>
+<p class="text-sm font-semibold text-text-light truncate" id="sidebarOrgName">Institution</p>
+<p class="text-xs text-text-light-muted truncate" id="sidebarContactName">Contact</p>
+<p class="text-xs text-text-light-muted truncate" id="sidebarOrgEmail">email@example.com</p>
 </div>
 </div>
-<button id="logoutBtn" class="w-full mt-3 flex items-center justify-center gap-2 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50 transition-colors text-sm font-semibold">
+<button id="logoutBtn" class="w-full mt-3 flex items-center justify-center gap-2 h-10 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 transition-colors text-sm font-semibold">
 <span class="material-symbols-outlined text-[18px]">logout</span>
 <span class="sidebar-text">Déconnexion</span>
 </button>
 </div>
 </aside>
 <main class="flex-1 flex flex-col h-full overflow-hidden">
-<header class="px-8 py-6 border-b border-[#dbe6e2] dark:border-[#2a4038] bg-surface-light dark:bg-surface-dark flex flex-wrap justify-between items-end gap-4 shrink-0 z-10">
+<header class="px-8 py-6 border-b border-black/10 bg-white flex flex-wrap justify-between items-end gap-4 shrink-0 z-10">
 <div class="flex flex-col gap-1">
-<h2 class="text-3xl font-black tracking-tight text-text-main dark:text-white">Vue d'ensemble des simulations de financement</h2>
-<p class="text-text-secondary dark:text-gray-400">Suivi global des scores et du positionnement des PME vis-à-vis de vos produits.</p>
+<h2 class="text-3xl font-bold tracking-tight text-text-light">Vue d'ensemble des simulations de financement</h2>
+<p class="text-text-light-muted">Suivi global des scores et du positionnement des PME vis-à-vis de vos produits.</p>
 </div>
 </header>
 <div class="flex-1 overflow-y-auto p-8">
 <div class="max-w-7xl mx-auto flex flex-col gap-8">
 <!-- Date Range Picker Button -->
 <div class="relative">
-<button id="dateRangeBtn" class="flex items-center gap-2 h-10 px-4 rounded-lg border border-[#dbe6e2] dark:border-[#2a4038] bg-white dark:bg-background-dark hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors text-sm font-semibold text-text-main dark:text-white">
+<button id="dateRangeBtn" class="flex items-center gap-2 h-10 px-4 rounded-lg border border-black/10 bg-white hover:bg-background-light transition-colors text-sm font-semibold text-text-light">
 <span class="material-symbols-outlined text-[20px]">calendar_month</span>
 <span id="dateRangeDisplay">01/01/2026 - 04/01/2026</span>
 </button>
 
 <!-- Date Range Picker Modal -->
 <div id="dateRangeModal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
-<div class="fixed inset-0 bg-black/30 dark:bg-black/60" id="dateRangeBackdrop"></div>
-<div class="relative bg-surface-light dark:bg-surface-dark rounded-xl shadow-2xl border border-[#dbe6e2] dark:border-[#2a4038] p-6 w-96">
+<div class="fixed inset-0 bg-black/30" id="dateRangeBackdrop"></div>
+<div class="relative bg-white rounded-lg shadow-2xl border border-black/10 p-6 w-96">
 <!-- Header -->
 <div class="flex justify-between items-center mb-4">
 <div class="flex items-center gap-2">
-<button id="prevMonthBtn" class="p-1.5 hover:bg-background-light dark:hover:bg-background-dark rounded transition-colors">
+<button id="prevMonthBtn" class="p-1.5 hover:bg-background-light rounded transition-colors">
 <span class="material-symbols-outlined">chevron_left</span>
 </button>
 <div class="flex items-center gap-2 min-w-[180px]">
-<select id="monthSelect" class="flex-1 px-2 py-1 rounded border border-[#dbe6e2] dark:border-[#2a4038] bg-white dark:bg-gray-800 text-text-main dark:text-white text-sm">
+<select id="monthSelect" class="flex-1 px-2 py-1 rounded border border-black/10 bg-white text-text-light text-sm">
 <option value="0">Janvier</option>
 <option value="1">Février</option>
 <option value="2">Mars</option>
@@ -151,13 +155,13 @@
 <option value="10">Novembre</option>
 <option value="11">Décembre</option>
 </select>
-<input type="number" id="yearInput" min="1900" max="2200" class="w-20 px-2 py-1 rounded border border-[#dbe6e2] dark:border-[#2a4038] bg-white dark:bg-gray-800 text-text-main dark:text-white text-sm" />
+<input type="number" id="yearInput" min="1900" max="2200" class="w-20 px-2 py-1 rounded border border-black/10 bg-white text-text-light text-sm" />
 </div>
-<button id="nextMonthBtn" class="p-1.5 hover:bg-background-light dark:hover:bg-background-dark rounded transition-colors">
+<button id="nextMonthBtn" class="p-1.5 hover:bg-background-light rounded transition-colors">
 <span class="material-symbols-outlined">chevron_right</span>
 </button>
 </div>
-<button id="resetDateRangeBtn" class="ml-auto p-1.5 hover:bg-background-light dark:hover:bg-background-dark rounded transition-colors text-primary" title="Réinitialiser">
+<button id="resetDateRangeBtn" class="ml-auto p-1.5 hover:bg-background-light rounded transition-colors text-primary" title="Réinitialiser">
 <span class="material-symbols-outlined text-sm">refresh</span>
 </button>
 </div>
@@ -165,13 +169,13 @@
 <!-- Calendar Grid -->
 <div class="mb-4">
 <div class="grid grid-cols-7 gap-1 mb-2">
-<div class="text-center text-xs font-semibold text-text-secondary p-1">Lun</div>
-<div class="text-center text-xs font-semibold text-text-secondary p-1">Mar</div>
-<div class="text-center text-xs font-semibold text-text-secondary p-1">Mer</div>
-<div class="text-center text-xs font-semibold text-text-secondary p-1">Jeu</div>
-<div class="text-center text-xs font-semibold text-text-secondary p-1">Ven</div>
-<div class="text-center text-xs font-semibold text-text-secondary p-1">Sam</div>
-<div class="text-center text-xs font-semibold text-text-secondary p-1">Dim</div>
+<div class="text-center text-xs font-semibold text-text-light-muted p-1">Lun</div>
+<div class="text-center text-xs font-semibold text-text-light-muted p-1">Mar</div>
+<div class="text-center text-xs font-semibold text-text-light-muted p-1">Mer</div>
+<div class="text-center text-xs font-semibold text-text-light-muted p-1">Jeu</div>
+<div class="text-center text-xs font-semibold text-text-light-muted p-1">Ven</div>
+<div class="text-center text-xs font-semibold text-text-light-muted p-1">Sam</div>
+<div class="text-center text-xs font-semibold text-text-light-muted p-1">Dim</div>
 </div>
 <div id="calendarDays" class="grid grid-cols-7 gap-1">
 <!-- Days will be inserted here -->
@@ -180,66 +184,66 @@
 
 <!-- Actions -->
 <div class="flex gap-3">
-<button id="closeDateRangeBtn" class="flex-1 px-4 h-10 rounded-lg border border-[#dbe6e2] dark:border-[#2a4038] bg-white dark:bg-gray-800 text-text-main dark:text-white font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">Annuler</button>
-<button id="confirmDateRangeBtn" class="flex-1 px-4 h-10 rounded-lg bg-primary text-text-main font-medium hover:bg-primary/90 transition-colors">Confirmer</button>
+<button id="closeDateRangeBtn" class="flex-1 px-4 h-10 rounded-lg border border-black/10 bg-white text-text-light font-medium hover:bg-background-light transition-colors">Annuler</button>
+<button id="confirmDateRangeBtn" class="flex-1 px-4 h-10 rounded-lg bg-primary text-background-dark font-medium hover:bg-primary/90 transition-colors">Confirmer</button>
 </div>
 </div>
 </div>
 </div>
 
 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-6 border border-[#dbe6e2] dark:border-[#2a4038] shadow-sm flex items-center gap-5">
+<div class="bg-white rounded-lg p-6 border border-black/10 shadow-sm flex items-center gap-5">
 <div>
-<p class="text-sm text-text-secondary dark:text-gray-400 font-medium mb-1">Simulations totales</p>
-<p class="text-3xl font-bold text-text-main dark:text-white" id="totalSimulations">-</p>
+<p class="text-sm text-text-light-muted font-medium mb-1">Simulations totales</p>
+<p class="text-3xl font-bold text-text-light" id="totalSimulations">-</p>
 </div>
 </div>
-<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-6 border border-[#dbe6e2] dark:border-[#2a4038] shadow-sm flex items-center gap-5">
+<div class="bg-white rounded-lg p-6 border border-black/10 shadow-sm flex items-center gap-5">
 <div>
-<p class="text-sm text-text-secondary dark:text-gray-400 font-medium mb-1">Score moyen</p>
-<p class="text-3xl font-bold text-text-main dark:text-white" id="averageScore">-<span class="text-xl text-gray-400 font-medium">/100</span></p>
+<p class="text-sm text-text-light-muted font-medium mb-1">Score moyen</p>
+<p class="text-3xl font-bold text-text-light" id="averageScore">-<span class="text-xl text-text-light-muted font-medium">/100</span></p>
 </div>
 </div>
-<div class="bg-surface-light dark:bg-surface-dark rounded-xl p-6 border border-[#dbe6e2] dark:border-[#2a4038] shadow-sm flex items-center gap-5">
+<div class="bg-white rounded-lg p-6 border border-black/10 shadow-sm flex items-center gap-5">
 <div>
-<p class="text-sm text-text-secondary dark:text-gray-400 font-medium mb-1">Produits actifs</p>
-<p class="text-3xl font-bold text-text-main dark:text-white" id="activeProducts">-</p>
+<p class="text-sm text-text-light-muted font-medium mb-1">Produits actifs</p>
+<p class="text-3xl font-bold text-text-light" id="activeProducts">-</p>
 </div>
 </div>
 </div>
 <div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
 <div class="lg:col-span-3 flex flex-col gap-6">
-<div class="bg-surface-light dark:bg-surface-dark rounded-xl border border-[#dbe6e2] dark:border-[#2a4038] shadow-sm flex flex-col h-full">
-<div class="px-6 py-5 border-b border-[#dbe6e2] dark:border-[#2a4038] flex justify-between items-center">
-<h3 class="text-lg font-bold text-text-main dark:text-white">Performance par Produit</h3>
+<div class="bg-white rounded-lg border border-black/10 shadow-sm flex flex-col h-full">
+<div class="px-6 py-5 border-b border-black/10 flex justify-between items-center">
+<h3 class="text-lg font-bold text-text-light">Performance par Produit</h3>
 <a href="institution-tous-produits.html" class="text-primary text-sm font-semibold hover:underline">Voir tout</a>
 </div>
-<div class="overflow-x-auto rounded-b-xl">
+<div class="overflow-x-auto rounded-b-lg">
 <table class="w-full text-left border-collapse">
-<thead class="bg-[#f8fafa] dark:bg-[#1c332b]/50">
+<thead class="bg-background-light">
 <tr>
-<th class="px-6 py-4 text-xs font-semibold uppercase text-text-secondary tracking-wider">Nom du Produit</th>
-<th class="px-6 py-4 text-xs font-semibold uppercase text-text-secondary tracking-wider text-center">Simulations</th>
-<th class="px-6 py-4 text-xs font-semibold uppercase text-text-secondary tracking-wider text-center">Score Moyen</th>
+<th class="px-6 py-4 text-xs font-semibold uppercase text-text-light-muted tracking-wider">Nom du Produit</th>
+<th class="px-6 py-4 text-xs font-semibold uppercase text-text-light-muted tracking-wider text-center">Simulations</th>
+<th class="px-6 py-4 text-xs font-semibold uppercase text-text-light-muted tracking-wider text-center">Score Moyen</th>
 </tr>
 </thead>
-<tbody class="divide-y divide-[#dbe6e2] dark:divide-[#2a4038]" id="productsTableBody">
-<tr class="hover:bg-gray-50 dark:hover:bg-[#1c332b]/30 transition-colors">
-<td class="px-6 py-4 text-center text-text-secondary" colspan="3">Chargement...</td>
+<tbody class="divide-y divide-black/10" id="productsTableBody">
+<tr class="hover:bg-background-light transition-colors">
+<td class="px-6 py-4 text-center text-text-light-muted" colspan="3">Chargement...</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 </div>
-<div class="lg:col-span-2 bg-surface-light dark:bg-surface-dark rounded-xl border border-[#dbe6e2] dark:border-[#2a4038] shadow-sm flex flex-col">
-<div class="px-6 py-5 border-b border-[#dbe6e2] dark:border-[#2a4038] flex justify-between items-center">
+<div class="lg:col-span-2 bg-white rounded-lg border border-black/10 shadow-sm flex flex-col">
+<div class="px-6 py-5 border-b border-black/10 flex justify-between items-center">
 <div>
-<h3 class="text-lg font-bold text-text-main dark:text-white">Distribution des Scores</h3>
-<p class="text-text-secondary text-sm mt-1">Répartition des scores de simulation par catégorie</p>
+<h3 class="text-lg font-bold text-text-light">Distribution des Scores</h3>
+<p class="text-text-light-muted text-sm mt-1">Répartition des scores de simulation par catégorie</p>
 </div>
-<button class="p-2 hover:bg-background-light dark:hover:bg-background-dark rounded-lg transition-colors">
-<span class="material-symbols-outlined text-text-secondary">more_horiz</span>
+<button class="p-2 hover:bg-background-light rounded-lg transition-colors">
+<span class="material-symbols-outlined text-text-light-muted">more_horiz</span>
 </button>
 </div>
 <div class="p-6 md:p-8 flex flex-col justify-center gap-6 h-full">
@@ -248,11 +252,11 @@
 <div class="flex justify-between items-end mb-1">
 <div class="flex items-center gap-2">
 <div class="size-3 rounded-full bg-red-400"></div>
-<span class="text-sm font-semibold text-text-main dark:text-white">Critique (< 40)</span>
+<span class="text-sm font-semibold text-text-light">Critique (< 40)</span>
 </div>
-<span class="text-sm font-bold text-text-main dark:text-white"><span id="count-risque">0</span> <span class="text-text-secondary font-normal text-xs ml-1" id="percent-risque">(0%)</span></span>
+<span class="text-sm font-bold text-text-light"><span id="count-risque">0</span> <span class="text-text-light-muted font-normal text-xs ml-1" id="percent-risque">(0%)</span></span>
 </div>
-<div class="w-full h-4 bg-background-light dark:bg-background-dark/50 rounded-full overflow-hidden relative">
+<div class="w-full h-4 bg-background-light rounded-full overflow-hidden relative">
 <div class="absolute top-0 left-0 h-full bg-red-400 rounded-full" id="bar-risque" style="width: 0%"></div>
 </div>
 </div>
@@ -261,11 +265,11 @@
 <div class="flex justify-between items-end mb-1">
 <div class="flex items-center gap-2">
 <div class="size-3 rounded-full bg-yellow-400"></div>
-<span class="text-sm font-semibold text-text-main dark:text-white">Moyen (40-60)</span>
+<span class="text-sm font-semibold text-text-light">Moyen (40-60)</span>
 </div>
-<span class="text-sm font-bold text-text-main dark:text-white"><span id="count-moyen">0</span> <span class="text-text-secondary font-normal text-xs ml-1" id="percent-moyen">(0%)</span></span>
+<span class="text-sm font-bold text-text-light"><span id="count-moyen">0</span> <span class="text-text-light-muted font-normal text-xs ml-1" id="percent-moyen">(0%)</span></span>
 </div>
-<div class="w-full h-4 bg-background-light dark:bg-background-dark/50 rounded-full overflow-hidden relative">
+<div class="w-full h-4 bg-background-light rounded-full overflow-hidden relative">
 <div class="absolute top-0 left-0 h-full bg-yellow-400 rounded-full" id="bar-moyen" style="width: 0%"></div>
 </div>
 </div>
@@ -274,11 +278,11 @@
 <div class="flex justify-between items-end mb-1">
 <div class="flex items-center gap-2">
 <div class="size-3 rounded-full bg-primary"></div>
-<span class="text-sm font-semibold text-text-main dark:text-white">Bon (60-80)</span>
+<span class="text-sm font-semibold text-text-light">Bon (60-80)</span>
 </div>
-<span class="text-sm font-bold text-text-main dark:text-white"><span id="count-bon">0</span> <span class="text-text-secondary font-normal text-xs ml-1" id="percent-bon">(0%)</span></span>
+<span class="text-sm font-bold text-text-light"><span id="count-bon">0</span> <span class="text-text-light-muted font-normal text-xs ml-1" id="percent-bon">(0%)</span></span>
 </div>
-<div class="w-full h-4 bg-background-light dark:bg-background-dark/50 rounded-full overflow-hidden relative">
+<div class="w-full h-4 bg-background-light rounded-full overflow-hidden relative">
 <div class="absolute top-0 left-0 h-full bg-primary rounded-full" id="bar-bon" style="width: 0%"></div>
 </div>
 </div>
@@ -287,11 +291,11 @@
 <div class="flex justify-between items-end mb-1">
 <div class="flex items-center gap-2">
 <div class="size-3 rounded-full bg-green-600"></div>
-<span class="text-sm font-semibold text-text-main dark:text-white">Excellent (> 80)</span>
+<span class="text-sm font-semibold text-text-light">Excellent (> 80)</span>
 </div>
-<span class="text-sm font-bold text-text-main dark:text-white"><span id="count-excellent">0</span> <span class="text-text-secondary font-normal text-xs ml-1" id="percent-excellent">(0%)</span></span>
+<span class="text-sm font-bold text-text-light"><span id="count-excellent">0</span> <span class="text-text-light-muted font-normal text-xs ml-1" id="percent-excellent">(0%)</span></span>
 </div>
-<div class="w-full h-4 bg-background-light dark:bg-background-dark/50 rounded-full overflow-hidden relative">
+<div class="w-full h-4 bg-background-light rounded-full overflow-hidden relative">
 <div class="absolute top-0 left-0 h-full bg-green-600 rounded-full" id="bar-excellent" style="width: 0%"></div>
 </div>
 </div>
@@ -304,16 +308,16 @@
 
 <!-- Simulations Modal -->
 <div id="simulationsModal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
-<div class="fixed inset-0 bg-black/30 dark:bg-black/60" id="simulationsModalBackdrop"></div>
-<div class="relative bg-surface-light dark:bg-surface-dark rounded-xl shadow-2xl border border-[#dbe6e2] dark:border-[#2a4038] w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+<div class="fixed inset-0 bg-black/30" id="simulationsModalBackdrop"></div>
+<div class="relative bg-white rounded-lg shadow-2xl border border-black/10 w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
 <!-- Header -->
-<div class="px-6 py-5 border-b border-[#dbe6e2] dark:border-[#2a4038] flex justify-between items-center shrink-0">
+<div class="px-6 py-5 border-b border-black/10 flex justify-between items-center shrink-0">
 <div>
-<h3 class="text-lg font-bold text-text-main dark:text-white" id="simulationsModalTitle">Simulations</h3>
-<p class="text-text-secondary text-sm mt-1">Détails des simulations et variables saisies</p>
+<h3 class="text-lg font-bold text-text-light" id="simulationsModalTitle">Simulations</h3>
+<p class="text-text-light-muted text-sm mt-1">Détails des simulations et variables saisies</p>
 </div>
-<button id="closeSimulationsModalBtn" class="p-2 hover:bg-background-light dark:hover:bg-background-dark rounded-lg transition-colors">
-<span class="material-symbols-outlined text-text-secondary">close</span>
+<button id="closeSimulationsModalBtn" class="p-2 hover:bg-background-light rounded-lg transition-colors">
+<span class="material-symbols-outlined text-text-light-muted">close</span>
 </button>
 </div>
 <!-- Content -->
@@ -531,8 +535,8 @@ async function loadDashboardData() {
     
     if (products.length === 0) {
       tableBody.innerHTML = `
-        <tr class="hover:bg-gray-50 dark:hover:bg-[#1c332b]/30 transition-colors">
-          <td class="px-6 py-4 text-center text-text-secondary" colspan="3">Aucun produit pour le moment</td>
+        <tr class="hover:bg-background-light transition-colors">
+          <td class="px-6 py-4 text-center text-text-light-muted" colspan="3">Aucun produit pour le moment</td>
         </tr>
       `;
     } else {
@@ -563,16 +567,16 @@ async function loadDashboardData() {
         const simulationCount = product.simulation_count || 0;
         
         // Determine score badge color
-        let badgeColor = 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400';
+        let badgeColor = 'bg-background-light text-text-light-muted';
         if (product.average_score) {
           if (product.average_score < 40) {
-            badgeColor = 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400';
+            badgeColor = 'bg-red-100 text-red-800';
           } else if (product.average_score < 60) {
-            badgeColor = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400';
+            badgeColor = 'bg-yellow-100 text-yellow-800';
           } else if (product.average_score < 80) {
-            badgeColor = 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400';
+            badgeColor = 'bg-blue-100 text-blue-800';
           } else {
-            badgeColor = 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400';
+            badgeColor = 'bg-green-100 text-green-800';
           }
         }
         
@@ -584,24 +588,24 @@ async function loadDashboardData() {
         };
         
         const iconColors = {
-          'Prêt Équipement': 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400',
-          'Trésorerie Court Terme': 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400',
-          'Crédit Bail': 'bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400',
-          'Découvert Autorisé': 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300'
+          'Prêt Équipement': 'bg-blue-100 text-blue-600',
+          'Trésorerie Court Terme': 'bg-purple-100 text-purple-600',
+          'Crédit Bail': 'bg-orange-100 text-orange-600',
+          'Découvert Autorisé': 'bg-background-light text-text-light-muted'
         };
         
         const iconName = icons[product.name] || 'payments';
-        const iconColor = iconColors[product.name] || 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300';
+        const iconColor = iconColors[product.name] || 'bg-background-light text-text-light-muted';
         
         tableBody.innerHTML += `
-          <tr class="hover:bg-gray-50 dark:hover:bg-[#1c332b]/30 transition-colors cursor-pointer product-row" data-product-id="${product.id}" data-product-name="${product.name}">
+          <tr class="hover:bg-background-light transition-colors cursor-pointer product-row" data-product-id="${product.id}" data-product-name="${product.name}">
             <td class="px-6 py-4">
               <div>
-                <p class="font-semibold text-text-main dark:text-white text-sm">${product.name}</p>
-                <p class="text-xs text-text-secondary">${product.description || ''}</p>
+                <p class="font-semibold text-text-light text-sm">${product.name}</p>
+                <p class="text-xs text-text-light-muted">${product.description || ''}</p>
               </div>
             </td>
-            <td class="px-6 py-4 text-sm text-text-main dark:text-white font-medium text-center">${simulationCount}</td>
+            <td class="px-6 py-4 text-sm text-text-light font-medium text-center">${simulationCount}</td>
             <td class="px-6 py-4 text-center">
               <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${badgeColor}">${score}</span>
             </td>
@@ -681,7 +685,7 @@ document.addEventListener('click', async (e) => {
     const contentDiv = document.getElementById('simulationsModalContent');
     
     if (productSimulations.length === 0) {
-      contentDiv.innerHTML = '<p class="text-text-secondary text-center py-8">Aucune simulation disponible</p>';
+      contentDiv.innerHTML = '<p class="text-text-light-muted text-center py-8">Aucune simulation disponible</p>';
       return;
     }
     
@@ -736,9 +740,9 @@ document.addEventListener('click', async (e) => {
             // Get display name from map, or use the key directly
             const displayLabel = variableNameMap[key] || key;
             return `
-              <div class="flex justify-between py-2 px-3 bg-background-light dark:bg-background-dark/50 rounded">
-                <span class="text-sm text-text-secondary font-medium">${displayLabel}</span>
-                <span class="text-sm font-semibold text-text-main dark:text-white break-words">${displayValue}</span>
+              <div class="flex justify-between py-2 px-3 bg-background-light rounded">
+                <span class="text-sm text-text-light-muted font-medium">${displayLabel}</span>
+                <span class="text-sm font-semibold text-text-light break-words">${displayValue}</span>
               </div>
             `;
           })
@@ -746,29 +750,29 @@ document.addEventListener('click', async (e) => {
       } else {
         // If no variables found
         variables = `
-          <div class="text-xs text-text-secondary p-3 bg-gray-100 dark:bg-gray-800 rounded">
+          <div class="text-xs text-text-light-muted p-3 bg-background-light rounded">
             <p class="text-center">Aucune variable disponible pour cette simulation</p>
           </div>
         `;
       }
       
       // Determine score badge color
-      let scoreBadgeColor = 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400';
+      let scoreBadgeColor = 'bg-background-light text-text-light-muted';
       const score = sim.calculated_score || 0;
       if (score < 40) {
-        scoreBadgeColor = 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400';
+        scoreBadgeColor = 'bg-red-100 text-red-800';
       } else if (score < 60) {
-        scoreBadgeColor = 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400';
+        scoreBadgeColor = 'bg-yellow-100 text-yellow-800';
       } else if (score < 80) {
-        scoreBadgeColor = 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400';
+        scoreBadgeColor = 'bg-blue-100 text-blue-800';
       } else {
-        scoreBadgeColor = 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400';
+        scoreBadgeColor = 'bg-green-100 text-green-800';
       }
       
       return `
-        <div class="bg-white dark:bg-surface-dark border border-[#dbe6e2] dark:border-[#2a4038] rounded-lg p-4">
+        <div class="bg-white border border-black/10 rounded-lg p-4">
           <div class="flex justify-between items-center mb-4">
-            <h4 class="font-semibold text-text-main dark:text-white">Simulation ${index + 1}</h4>
+            <h4 class="font-semibold text-text-light">Simulation ${index + 1}</h4>
             <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${scoreBadgeColor}">${score.toFixed(2)}/100</span>
           </div>
           <div class="space-y-2">
@@ -781,7 +785,7 @@ document.addEventListener('click', async (e) => {
   } catch (error) {
     console.error('Error loading simulations:', error);
     const contentDiv = document.getElementById('simulationsModalContent');
-    contentDiv.innerHTML = '<p class="text-red-600 dark:text-red-400 text-center py-8">Erreur lors du chargement des simulations</p>';
+    contentDiv.innerHTML = '<p class="text-red-600 text-center py-8">Erreur lors du chargement des simulations</p>';
   }
 });
 
@@ -875,11 +879,11 @@ document.addEventListener('click', async (e) => {
       }
       
       if (isStart || isEnd) {
-        dayCell.className += ' bg-primary text-text-main font-bold';
+        dayCell.className += ' bg-primary text-background-dark font-bold';
       } else if (isInRange) {
-        dayCell.className += ' bg-primary/20 dark:bg-primary/10 text-text-main';
+        dayCell.className += ' bg-primary/20 text-text-light';
       } else {
-        dayCell.className += ' text-text-main dark:text-white hover:bg-background-light dark:hover:bg-gray-700';
+        dayCell.className += ' text-text-light hover:bg-background-light';
       }
       
       dayCell.addEventListener('click', () => {
