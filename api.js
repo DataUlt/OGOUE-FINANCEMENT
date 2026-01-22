@@ -12,11 +12,20 @@ const API_BASE_URL = (() => {
     return 'http://localhost:3001/api';
   }
   
-  // Production - use same domain as frontend
+  // Production - construct API URL
+  // If on financement.ogoue.com, backend is at financement.ogoue.com/api
+  // If on other domains, use same domain
+  const isProductionApp = hostname.includes('ogoue.com');
+  if (isProductionApp) {
+    return `https://${hostname}/api`;
+  }
+  
+  // Fallback for other domains
   return `https://${hostname}/api`;
 })();
 
 console.log('🔌 API Base URL:', API_BASE_URL);
+console.log('🌍 Current hostname:', window.location.hostname);
 
 // ============================================
 // AUTHENTICATION
@@ -51,14 +60,31 @@ export const authAPI = {
   },
 
   login: async (email, password) => {
-    const response = await fetch(`${API_BASE_URL}/auth/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "Login failed");
-    return data;
+    try {
+      console.log('🔐 Login request to:', `${API_BASE_URL}/auth/login`);
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      
+      console.log('📊 Response status:', response.status);
+      console.log('📊 Response headers:', response.headers.get('content-type'));
+      
+      const text = await response.text();
+      console.log('📊 Response text:', text.substring(0, 200));
+      
+      if (!text) {
+        throw new Error('Empty response from server');
+      }
+      
+      const data = JSON.parse(text);
+      if (!response.ok) throw new Error(data.error || `Login failed (${response.status})`);
+      return data;
+    } catch (error) {
+      console.error('❌ Login error:', error.message);
+      throw error;
+    }
   },
 
   getCurrentUser: async (token) => {
