@@ -476,7 +476,7 @@ document.addEventListener('click', async (e) => {
     const institution = sessionAPI.getInstitution();
     
     // Fetch all simulations
-    const simsRes = await fetch(`http://localhost:3001/api/simulations/institution/${institution.id}`, {
+    const simsRes = await fetch(`${API_BASE_URL}/simulations/institution/${institution.id}`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     const allSimulations = await simsRes.json();
