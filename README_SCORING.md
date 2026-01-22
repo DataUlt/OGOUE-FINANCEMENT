@@ -82,7 +82,7 @@ PME → Sélectionner Institution → Voir Produits → Simuler Score → Résul
 📊 EXEMPLE RÉSULTAT
 
 Données:
-  CA = 150 000€
+  CA = 150 000 FCFA
   Ancienneté = 5 ans
   Ratio d'endettement = 45%
 
