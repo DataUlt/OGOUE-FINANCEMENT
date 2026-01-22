@@ -1,5 +1,4 @@
 import { Response } from "express";
-import bcryptjs from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { supabase } from "../lib/supabase.js";
 import { AuthRequest } from "../middleware/auth.js";
@@ -76,23 +75,37 @@ export const authController = {
         throw new AppError("pme_name is required for PME registration", 400);
       }
 
-      // Hash password
-      const hashedPassword = await bcryptjs.hash(password, 10);
       const userId = uuidv4();
 
-      // 1. Create user
+      // 1. Create user in Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.admin.createUser({
+        email,
+        password,
+        email_confirm: true, // Auto-confirm email for now
+      });
+
+      if (authError) {
+        console.error('❌ Auth user creation error:', authError);
+        throw new AppError("Email already exists or invalid input", 400);
+      }
+
+      const authId = authData.user.id;
+
+      // 2. Create user in users table linked to auth
       const { error: userError } = await supabase.from("users").insert({
         id: userId,
         email,
-        password_hash: hashedPassword,
         role,
         full_name,
         is_active: true,
+        auth_id: authId,
       });
 
       if (userError) {
         console.error('❌ User insert error:', userError);
-        throw new AppError("Email already exists or invalid input", 400);
+        // Clean up auth user if profile creation fails
+        await supabase.auth.admin.deleteUser(authId);
+        throw new AppError("Failed to create user profile", 400);
       }
 
       // 2. Create institution profile
@@ -131,14 +144,22 @@ export const authController = {
         }
       }
 
-      // 4. Generate JWT token
+      // 4. Generate JWT token from Supabase session
+      const { data: sessionData, error: sessionError } = await supabase.auth.admin.getUserById(authId);
+
+      if (sessionError) {
+        console.error('❌ Session error:', sessionError);
+        throw new AppError("Failed to create session", 500);
+      }
+
+      // Generate our own JWT for consistency with existing system
       const token = jwt.sign(
-        { userId, email, role },
+        { userId, email, role, authId },
         JWT_SECRET,
         { expiresIn: JWT_EXPIRATION }
       );
 
-      console.log('✅ Registration successful:', { userId, email, role });
+      console.log('✅ Registration successful:', { userId, email, role, authId });
 
       // Return institution data if registered as institution
       let institutionData = null;
@@ -180,43 +201,45 @@ export const authController = {
         throw new AppError("Email and password required", 400);
       }
 
-      // Get user
-      const { data: user, error } = await supabase
+      // 1. Authenticate with Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (authError) {
+        console.warn('⚠️  Authentication failed:', authError.message);
+        throw new AppError("Invalid email or password", 401);
+      }
+
+      if (!authData.user) {
+        throw new AppError("Authentication failed", 401);
+      }
+
+      // 2. Get user profile from users table
+      const { data: user, error: userError } = await supabase
         .from("users")
         .select("*")
-        .eq("email", email)
+        .eq("auth_id", authData.user.id)
         .single();
 
-      if (error) {
-        console.error('❌ User query error:', error);
+      if (userError || !user) {
+        console.error('❌ User profile not found:', userError);
+        throw new AppError("User profile not found", 404);
       }
 
-      if (!user) {
-        console.warn('⚠️  User not found for email:', email);
-        throw new AppError("Invalid email or password", 401);
-      }
+      console.log('✅ User authenticated:', { userId: user.id, email: user.email, role: user.role });
 
-      console.log('✅ User found:', { userId: user.id, email: user.email, role: user.role });
-
-      // Verify password
-      const isValidPassword = await bcryptjs.compare(password, user.password_hash);
-      if (!isValidPassword) {
-        console.warn('⚠️  Invalid password for user:', email);
-        throw new AppError("Invalid email or password", 401);
-      }
-
-      console.log('✅ Password verified for user:', email);
-
-      // Generate JWT token
+      // 3. Generate JWT token
       const token = jwt.sign(
-        { userId: user.id, email: user.email, role: user.role },
+        { userId: user.id, email: user.email, role: user.role, authId: authData.user.id },
         JWT_SECRET,
         { expiresIn: JWT_EXPIRATION }
       );
 
       console.log('✅ Login successful:', { email, role: user.role });
 
-      // If institution, fetch institution details
+      // 4. If institution, fetch institution details
       let institutionData = null;
       if (user.role === 'institution') {
         const { data: institution } = await supabase
@@ -236,7 +259,7 @@ export const authController = {
         }
       }
 
-      // If PME, fetch PME details
+      // 5. If PME, fetch PME details
       let pmeData = null;
       if (user.role === 'pme') {
         const { data: pme } = await supabase
