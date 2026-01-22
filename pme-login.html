@@ -163,7 +163,9 @@
                 }, 1500);
 
             } catch (error) {
-                errorMessage.textContent = '❌ ' + (error.message || 'Erreur de connexion');
+                console.error('Login error:', error);
+                const errorMsg = error.message || 'Erreur de connexion';
+                errorMessage.textContent = '❌ ' + errorMsg;
                 errorMessage.classList.remove('hidden');
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = 'Se connecter';

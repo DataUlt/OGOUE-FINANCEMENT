@@ -14,14 +14,58 @@ export const authController = {
   // Register a new user (Institution or PME)
   register: async (req: any, res: Response) => {
     try {
-      const { email, password, user_type, full_name, institution_name, pme_name, pme_data, institution_data } = req.body;
+      // Support both old format and new PME format
+      let {
+        email,
+        password,
+        user_type,
+        full_name,
+        institution_name,
+        pme_name,
+        pme_data,
+        institution_data,
+        // New PME format
+        firstName,
+        lastName,
+        organizationName,
+        rccmNumber,
+        nifNumber,
+        activity,
+        activityDescription
+      } = req.body;
 
-      const role = user_type || 'institution'; // Default to institution
-      console.log('📝 Register request:', { email, role, institution_name, pme_name, full_name, institution_data });
+      // Build role and full_name from new format if provided
+      let role = user_type || 'institution';
+      if (!full_name && (firstName || lastName)) {
+        full_name = `${firstName || ''} ${lastName || ''}`.trim();
+        role = 'pme'; // If using new format, it's PME
+      }
+
+      // Build pme_name from new format
+      if (!pme_name && organizationName) {
+        pme_name = organizationName;
+      }
+
+      // Build pme_data from new format
+      if (!pme_data && (rccmNumber || nifNumber || activity || activityDescription)) {
+        pme_data = {
+          company_name: organizationName,
+          rccm_number: rccmNumber,
+          nif_number: nifNumber,
+          sector: activity,
+          activity_description: activityDescription
+        };
+      }
+
+      console.log('📝 Register request:', { email, role, institution_name, pme_name, full_name, institution_data, organizationName });
 
       // Validation
-      if (!email || !password || !full_name) {
-        throw new AppError("Email, password, and full_name are required", 400);
+      if (!email || !password) {
+        throw new AppError("Email and password are required", 400);
+      }
+
+      if (!full_name && !organizationName) {
+        throw new AppError("Full name or organization name is required", 400);
       }
 
       if (role === 'institution' && !institution_name) {
@@ -130,6 +174,8 @@ export const authController = {
     try {
       const { email, password }: LoginRequest = req.body;
 
+      console.log('🔐 Login attempt:', { email, hasPassword: !!password });
+
       if (!email || !password) {
         throw new AppError("Email and password required", 400);
       }
@@ -141,15 +187,25 @@ export const authController = {
         .eq("email", email)
         .single();
 
-      if (error || !user) {
+      if (error) {
+        console.error('❌ User query error:', error);
+      }
+
+      if (!user) {
+        console.warn('⚠️  User not found for email:', email);
         throw new AppError("Invalid email or password", 401);
       }
+
+      console.log('✅ User found:', { userId: user.id, email: user.email, role: user.role });
 
       // Verify password
       const isValidPassword = await bcryptjs.compare(password, user.password_hash);
       if (!isValidPassword) {
+        console.warn('⚠️  Invalid password for user:', email);
         throw new AppError("Invalid email or password", 401);
       }
+
+      console.log('✅ Password verified for user:', email);
 
       // Generate JWT token
       const token = jwt.sign(
@@ -180,6 +236,30 @@ export const authController = {
         }
       }
 
+      // If PME, fetch PME details
+      let pmeData = null;
+      if (user.role === 'pme') {
+        const { data: pme } = await supabase
+          .from('pmes')
+          .select('*')
+          .eq('user_id', user.id)
+          .single();
+        
+        if (pme) {
+          pmeData = {
+            id: pme.id,
+            company_name: pme.company_name,
+            user_id: pme.user_id,
+            email: user.email,
+            full_name: user.full_name,
+            rccm_number: pme.rccm_number,
+            nif_number: pme.nif_number,
+            sector: pme.sector,
+            activity_description: pme.activity_description,
+          };
+        }
+      }
+
       res.json({
         message: "Login successful",
         token,
@@ -190,6 +270,7 @@ export const authController = {
           full_name: user.full_name,
         },
         institution: institutionData,
+        pme: pmeData,
       });
     } catch (error) {
       if (error instanceof AppError) {
