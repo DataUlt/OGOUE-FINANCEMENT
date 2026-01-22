@@ -564,7 +564,102 @@ async function loadDashboardData() {
       updateBar('count-bon', 'percent-bon', 'bar-bon', distribution.bon);
       updateBar('count-excellent', 'percent-excellent', 'bar-excellent', distribution.excellent);
       
+      // Update products table with filtered data
+      updateProductsTableWithFilteredData(filteredSimulations);
+      
       console.log('✅ Dashboard updated with filtered data:', distribution);
+    }
+    
+    // Function to update products table with filtered simulations
+    function updateProductsTableWithFilteredData(filteredSimulations) {
+      const tableBody = document.getElementById('productsTableBody');
+      tableBody.innerHTML = '';
+      
+      if (products.length === 0) {
+        tableBody.innerHTML = `
+          <tr class="hover:bg-background-light transition-colors">
+            <td class="px-6 py-4 text-center text-text-light-muted" colspan="3">Aucun produit pour le moment</td>
+          </tr>
+        `;
+        return;
+      }
+      
+      // Calculate stats for each product from filtered simulations
+      const productStats = {};
+      products.forEach(product => {
+        productStats[product.id] = {
+          simulation_count: 0,
+          total_score: 0,
+          score_count: 0,
+          average_score: 0
+        };
+      });
+      
+      // Aggregate stats from filtered simulations
+      filteredSimulations.forEach(sim => {
+        const productId = sim.credit_product_id;
+        if (productStats[productId]) {
+          productStats[productId].simulation_count++;
+          if (sim.calculated_score !== null) {
+            productStats[productId].total_score += sim.calculated_score;
+            productStats[productId].score_count++;
+          }
+        }
+      });
+      
+      // Calculate averages
+      Object.keys(productStats).forEach(productId => {
+        const stats = productStats[productId];
+        if (stats.score_count > 0) {
+          stats.average_score = stats.total_score / stats.score_count;
+        }
+      });
+      
+      // Update products with filtered stats
+      const updatedProducts = products.map(product => ({
+        ...product,
+        simulation_count: productStats[product.id]?.simulation_count || 0,
+        average_score: productStats[product.id]?.average_score || 0
+      }));
+      
+      // Sort by average score descending
+      const sortedProducts = [...updatedProducts].sort((a, b) => 
+        (b.average_score || 0) - (a.average_score || 0)
+      ).slice(0, 10);
+      
+      sortedProducts.forEach(product => {
+        const score = product.average_score ? Math.round(product.average_score) : '-';
+        const simulationCount = product.simulation_count || 0;
+        
+        // Determine score badge color
+        let badgeColor = 'bg-background-light text-text-light-muted';
+        if (product.average_score) {
+          if (product.average_score < 40) {
+            badgeColor = 'bg-red-100 text-red-800';
+          } else if (product.average_score < 60) {
+            badgeColor = 'bg-yellow-100 text-yellow-800';
+          } else if (product.average_score < 80) {
+            badgeColor = 'bg-blue-100 text-blue-800';
+          } else {
+            badgeColor = 'bg-green-100 text-green-800';
+          }
+        }
+        
+        tableBody.innerHTML += `
+          <tr class="hover:bg-background-light transition-colors cursor-pointer product-row" data-product-id="${product.id}" data-product-name="${product.name}">
+            <td class="px-6 py-4">
+              <div>
+                <p class="font-semibold text-text-light text-sm">${product.name}</p>
+                <p class="text-xs text-text-light-muted">${product.description || ''}</p>
+              </div>
+            </td>
+            <td class="px-6 py-4 text-sm text-text-light font-medium text-center">${simulationCount}</td>
+            <td class="px-6 py-4 text-center">
+              <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${badgeColor}">${score}</span>
+            </td>
+          </tr>
+        `;
+      });
     }
     
     // Update score distribution chart (initial load with all simulations)
