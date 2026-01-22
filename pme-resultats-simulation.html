@@ -332,19 +332,14 @@ function generateVariableFields(variables) {
       const isNumeric = variable.variable_type === 'numeric' || variable.variable_type === 'number';
       const inputType = isNumeric ? 'number' : 'text';
       
-      // Create placeholder with min and max bounds
-      let placeholder = "Entrez une valeur...";
-      if (isNumeric && (variable.min_value !== null || variable.max_value !== null)) {
-        const min = variable.min_value ?? '?';
-        const max = variable.max_value ?? '?';
-        placeholder = `Entrez une valeur entre ${min} et ${max}`;
-      }
+      // Always use generic placeholder
+      let placeholder = "Entrez une valeur";
       
       return `
         <div class="space-y-2">
           <label for="${fieldId}" class="block text-sm font-semibold text-text-light">
             ${variable.name}
-            <span class="text-primary text-xs font-normal">(Poids: ${variable.weight}%)</span>
+            ${variable.unite ? `<span class="text-text-light-muted text-xs font-normal"> - ${variable.unite}</span>` : ''}
           </label>
           <input 
             type="${inputType}" 

@@ -97,21 +97,21 @@ Classification: RISQUE(<40), MOYEN(40-60), BON(60-80), EXCELLENT(≥80)
 
 ### Test 1: PME Éligible (Scoring Risque)
 ```
-Données: CA=150k€, Ancienneté=5 ans, Ratio=45%
+Données: CA=150k FCFA, Ancienneté=5 ans, Ratio=45%
 Résultat: Score=28.33/100 (RISQUE)
 Statut: ELIGIBLE ✅
 ```
 
 ### Test 2: PME Non-Éligible (Critère Bloquant)
 ```
-Données: CA=150k€, Ancienneté=0 an (!), Ratio=45%
+Données: CA=150k FCFA, Ancienneté=0 an (!), Ratio=45%
 Résultat: Score=0/100, Status=NON_ELIGIBLE
 Raison: "Ancienneté" est inférieur au minimum ✅
 ```
 
 ### Test 3: PME Excellente
 ```
-Données: CA=400k€, Ancienneté=15 ans, Ratio=20%
+Données: CA=400k FCFA, Ancienneté=15 ans, Ratio=20%
 Résultat: Score=75.72/100 (BON)
 Statut: ELIGIBLE ✅
 ```

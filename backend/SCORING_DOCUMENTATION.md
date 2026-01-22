@@ -89,7 +89,7 @@ score ≥ 80    → "EXCELLENT"
 
 | Variable | Poids | Min | Max | Direction | Bloquant |
 |----------|-------|-----|-----|-----------|----------|
-| CA | 40% | 50k€ | 500k€ | CROISSANT | Non |
+| CA | 40% | 50k FCFA | 500k FCFA | CROISSANT | Non |
 | Ancienneté | 30% | 1 an | 20 ans | CROISSANT | **OUI** |
 | Ratio Endettement | 30% | 0% | 80% | DECROISSANT | Non |
 
@@ -107,7 +107,7 @@ score ≥ 80    → "EXCELLENT"
 
 ### 3.3 Calculs Détaillés
 
-#### Variable 1: CA = 150k€
+#### Variable 1: CA = 150k FCFA
 ```
 score_variable = ((150000 - 50000) / (500000 - 50000)) * 100
                = (100000 / 450000) * 100

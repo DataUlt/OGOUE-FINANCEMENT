@@ -94,19 +94,19 @@
 📈 RÉSULTATS DES TESTS
 
 Test 1: PME Éligible
-  Données: CA=150000€, Ancienneté=5 ans, Ratio=45%
+  Données: CA=150000 FCFA, Ancienneté=5 ans, Ratio=45%
   Résultat: Score=28.33/100 (RISQUE)
   Statut: ELIGIBLE ✅
   Détail: CA contribue 8.89, Age 6.32, Ratio 13.13
 
 Test 2: PME Non-Éligible
-  Données: CA=150000€, Ancienneté=0 ans, Ratio=45%
+  Données: CA=150000 FCFA, Ancienneté=0 ans, Ratio=45%
   Résultat: Score=0/100
   Statut: NON_ELIGIBLE ✅
   Raison: Ancienneté < 1 (critère bloquant)
 
 Test 3: PME Excellent
-  Données: CA=400000€, Ancienneté=15 ans, Ratio=20%
+  Données: CA=400000 FCFA, Ancienneté=15 ans, Ratio=20%
   Résultat: Score=75.72/100 (BON)
   Statut: ELIGIBLE ✅
   Détail: CA contribue 31.11, Age 22.10, Ratio 22.50
