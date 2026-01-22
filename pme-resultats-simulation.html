@@ -525,7 +525,7 @@ function displayScore(result) {
   scoreGauge.className = `score-gauge bg-gradient-to-br ${gaugeColor}`;
 
   // Generate LLM interpretation
-  generateInterpretation(score, classification, currentProductName, currentInstitutionName, result.variableNames || {});
+  generateInterpretation(score, classification, currentProductName, currentInstitutionName, result.inputVariables || {}, result.variableNames || {}, result.details || []);
 }
 
 // Reset score display
@@ -537,7 +537,7 @@ function resetScoreDisplay() {
 }
 
 // Generate LLM interpretation of the score
-async function generateInterpretation(score, classification, productName, institutionName, variableNames) {
+async function generateInterpretation(score, classification, productName, institutionName, inputVariables, variableNames, scoreDetails) {
   const container = document.getElementById('interpretationContainer');
   const loading = document.getElementById('interpretationLoading');
   const empty = document.getElementById('interpretationEmpty');
@@ -549,8 +549,11 @@ async function generateInterpretation(score, classification, productName, instit
     container.classList.add('hidden');
     loading.classList.remove('hidden');
 
-    // Build variables description
-    const varsArray = Object.entries(variableNames).map(([key, name]) => name).join(', ');
+    // Build detailed variables description with values
+    const varsDetails = Object.entries(variableNames).map(([key, name]) => {
+      const value = inputVariables[key];
+      return `${name}: ${value}`;
+    }).join(', ');
     
     // Call backend API to generate interpretation
     const response = await fetch(`${API_BASE_URL}/simulations/interpret`, {
@@ -563,7 +566,10 @@ async function generateInterpretation(score, classification, productName, instit
         classification: classification,
         product_name: productName,
         institution_name: institutionName,
-        variables_description: varsArray || 'N/A'
+        variables_values: inputVariables || {},
+        variables_names: variableNames || {},
+        variables_description: varsDetails || 'N/A',
+        score_details: scoreDetails || []
       })
     });
 

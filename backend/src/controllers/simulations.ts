@@ -123,7 +123,7 @@ export const simulationsController = {
   interpretScore: async (req: any, res: Response) => {
     console.log("🤖 interpretScore handler appelé");
     try {
-      const { score, classification, product_name, institution_name, variables_description } = req.body;
+      const { score, classification, product_name, institution_name, variables_values, variables_names, variables_description, score_details } = req.body;
 
       if (typeof score !== 'number' || !classification || !product_name) {
         throw new AppError("score, classification et product_name requis", 400);
@@ -134,21 +134,39 @@ export const simulationsController = {
         throw new AppError("OpenAI API key non configurée", 500);
       }
 
-      const prompt = `Tu es un expert en évaluation de crédit financier. Fournis une interprétation concise et professionnelle d'un score d'éligibilité.
+      // Build detailed variables context
+      let variablesContext = "";
+      if (variables_values && Object.keys(variables_values).length > 0) {
+        variablesContext = "\nVARIABLES ENTRÉES PAR L'UTILISATEUR:\n";
+        Object.entries(variables_values).forEach(([key, value]: [string, any]) => {
+          const name = variables_names?.[key] || key;
+          variablesContext += `- ${name}: ${value}\n`;
+        });
+      }
 
-DONNÉES:
-- Score: ${score}/100
+      const prompt = `Tu es un expert en évaluation de crédit financier. Fournis une interprétation professionnelle et personnalisée d'un score d'éligibilité basée sur les variables RÉELLES entrées par l'utilisateur.
+
+DONNÉES DU SCORE:
+- Score Final: ${score}/100
 - Classification: ${classification}
-- Produit: ${product_name}
+- Produit de Crédit: ${product_name}
 - Institution: ${institution_name || 'N/A'}
-${variables_description ? `- Variables évaluées: ${variables_description}` : ''}
+
+${variablesContext}
+
+CONTEXTE:
+Cette interprétation doit réferencer les valeurs SPÉCIFIQUES que l'utilisateur a entrées.
+Explique comment ces variables précises ont contribué au score obtenu.
+Identifie les points forts et les domaines à améliorer basés sur les données réelles.
 
 FORMAT DE RÉPONSE:
-Fournis UNIQUEMENT une interprétation professionnelle sous forme de 2-3 paragraphes.
-DIS CLAIREMENT que c'est une interprétation et non une garantie d'approbation.
-Sois positif mais honnête sur les points forts et faibles.
+Fournis une interprétation personnalisée de 3-4 paragraphes:
+1. Résumé du score avec contexte des variables entrées
+2. Analyse des points forts et points faibles basée sur les valeurs réelles
+3. Conseils spécifiques pour améliorer le profil
+4. Rappel que c'est une interprétation et non une garantie
 
-DÉBUT DE L'INTERPRÉTATION:`;
+DÉBUT DE L'INTERPRÉTATION PERSONNALISÉE:`;
 
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
@@ -161,7 +179,7 @@ DÉBUT DE L'INTERPRÉTATION:`;
           messages: [
             {
               role: 'system',
-              content: 'Tu es un expert en évaluation de crédit. Fournis des interprétations professionnelles, claires et honnêtes des scores d\'éligibilité pour le crédit. Important: clarifie toujours que c\'est une interprétation et non une garantie.'
+              content: 'Tu es un expert financier spécialisé dans l\'évaluation de crédit. Tu fournis des interprétations détaillées, personnalisées et honnêtes des scores d\'éligibilité basées sur les données RÉELLES fournies par l\'utilisateur. Tu dois toujours clarifie que c\'est une interprétation professionnelle et non une garantie d\'approbation du crédit.'
             },
             {
               role: 'user',
@@ -169,7 +187,7 @@ DÉBUT DE L'INTERPRÉTATION:`;
             }
           ],
           temperature: 0.7,
-          max_tokens: 400,
+          max_tokens: 500,
         }),
       }) as any;
 
