@@ -31,30 +31,51 @@ console.log('🌍 Current hostname:', window.location.hostname);
 
 export const authAPI = {
   register: async (email, password, fullName, userType, institutionName = null, pmeData = null) => {
-    const body = { 
-      email, 
-      password, 
-      user_type: userType,
-      full_name: fullName
-    };
-    
-    // Add role-specific data
-    if (userType === 'institution' && institutionName) {
-      body.institution_name = institutionName;
-    } else if (userType === 'pme' && pmeData) {
-      // Extract pme_name from pmeData.company_name
-      body.pme_name = pmeData.company_name;
-      body.pme_data = pmeData;
+    try {
+      const body = { 
+        email, 
+        password, 
+        user_type: userType,
+        full_name: fullName
+      };
+      
+      // Add role-specific data
+      if (userType === 'institution' && institutionName) {
+        body.institution_name = institutionName;
+      } else if (userType === 'pme' && pmeData) {
+        // Extract pme_name from pmeData.company_name
+        body.pme_name = pmeData.company_name;
+        body.pme_data = pmeData;
+      }
+      
+      console.log('📝 Register request to:', `${API_BASE_URL}/auth/register`);
+      const response = await fetch(`${API_BASE_URL}/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      
+      const text = await response.text();
+      
+      if (!text) {
+        throw new Error('Empty response from server. Backend might be offline.');
+      }
+      
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (parseError) {
+        console.error('❌ JSON Parse error:', parseError);
+        console.error('Raw response:', text);
+        throw new Error('Server returned invalid JSON. Backend might be returning an error page.');
+      }
+      
+      if (!response.ok) throw new Error(data.error || "Registration failed");
+      return data;
+    } catch (error) {
+      console.error('❌ Registration error:', error);
+      throw error;
     }
-    
-    const response = await fetch(`${API_BASE_URL}/auth/register`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "Registration failed");
-    return data;
   },
 
   login: async (email, password) => {

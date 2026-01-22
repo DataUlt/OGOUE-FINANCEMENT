@@ -311,7 +311,7 @@
   </div>
 
   <script type="module">
-    import { authAPI, sessionAPI } from './api.js';
+    import { authAPI, sessionAPI, apiHelpers } from './api.js';
 
     const institutionNameInput = document.getElementById('institutionName');
     const institutionTypeInput = document.getElementById('institutionType');
@@ -394,14 +394,13 @@
           const fileName = `${Date.now()}_${file.name}`;
           
           try {
-            const uploadResponse = await fetch('http://localhost:3001/api/auth/upload-logo', {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('fileName', fileName);
+            
+            const uploadResponse = await fetch(`${API_BASE_URL}/auth/upload-logo`, {
               method: 'POST',
-              body: (() => {
-                const formData = new FormData();
-                formData.append('file', file);
-                formData.append('fileName', fileName);
-                return formData;
-              })()
+              body: formData
             });
 
             const uploadData = await uploadResponse.json();
@@ -414,24 +413,15 @@
           }
         }
 
-        const response = await fetch('http://localhost:3001/api/auth/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email: email,
-            password: password,
-            user_type: 'institution',
-            full_name: contactName,
-            institution_name: institutionName,
-            institution_data: institutionData
-          })
-        });
-
-        const data = await response.json();
-        
-        if (!response.ok) {
-          throw new Error(data.error || 'Registration failed');
-        }
+        // Use authAPI.register from api.js for proper error handling and URL resolution
+        const data = await authAPI.register(
+          email,
+          password,
+          contactName,
+          'institution',
+          institutionName,
+          null
+        );
 
         sessionAPI.setToken(data.token);
         sessionAPI.setUser(data.user);

@@ -368,17 +368,17 @@
   </div>
 
   <script>
-    // Dynamically set API_BASE_URL based on current domain
+    // Dynamically set API_BASE_URL based on current domain - aligned with api.js
     const API_BASE_URL = (() => {
       const hostname = window.location.hostname;
       if (hostname === 'localhost' || hostname === '127.0.0.1') {
-        return 'http://localhost:3001';
+        return 'http://localhost:3001/api';
       }
       // Production - API is on separate subdomain
       if (hostname.includes('ogoue.com')) {
-        return `https://api-${hostname}`;
+        return `https://api-${hostname}/api`;
       }
-      return `https://${hostname}`;
+      return `https://${hostname}/api`;
     })();
 
     async function handleSignup(event) {
@@ -428,7 +428,8 @@
         submitBtn.textContent = "Création en cours...";
         submitBtn.disabled = true;
         
-        const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
+        console.log('📝 PME Register request to:', `${API_BASE_URL}/auth/register`);
+        const response = await fetch(`${API_BASE_URL}/auth/register`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -438,6 +439,7 @@
             lastName: lastname,
             email: email,
             password: password,
+            user_type: 'pme',
             organizationName: entreprise,
             rccmNumber: rccm || null,
             nifNumber: nif || null,
@@ -446,7 +448,20 @@
           })
         });
         
-        const data = await response.json();
+        const text = await response.text();
+        
+        if (!text) {
+          throw new Error('Empty response from server. Backend might be offline.');
+        }
+        
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch (parseError) {
+          console.error('❌ JSON Parse error:', parseError);
+          console.error('Raw response:', text);
+          throw new Error('Server returned invalid JSON. Backend might be returning an error page.');
+        }
         
         if (!response.ok) {
           showError(data.error || data.details?.[0]?.message || "Erreur d'inscription");
@@ -458,30 +473,17 @@
         localStorage.setItem('authToken', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
         
-        try {
-          const orgResponse = await fetch(`${API_BASE_URL}/api/organization`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${data.token}`
-            }
-          });
-          
-          if (orgResponse.ok) {
-            const orgData = await orgResponse.json();
-            localStorage.setItem('ogo_org', JSON.stringify(orgData));
-          }
-        } catch (orgError) {
-          console.error('Could not fetch organization:', orgError);
+        if (data.pme) {
+          localStorage.setItem('pme', JSON.stringify(data.pme));
         }
         
         showSuccess("Compte créé avec succès ! Redirection...");
         
         const APP_BASE = (['localhost','127.0.0.1'].some(h => location.hostname.includes(h)))
-          ? 'http://127.0.0.1:8080/app'
-          : 'https://ogoue.com/app';
+          ? 'http://localhost:3000'
+          : 'https://financement.ogoue.com';
         setTimeout(() => {
-          window.location.href = APP_BASE + '/module_tableau_bord.html';
+          window.location.href = APP_BASE + '/pme-selection-institution.html';
         }, 1500);
         
       } catch (error) {
