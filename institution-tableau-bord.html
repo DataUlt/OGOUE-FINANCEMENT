@@ -477,27 +477,37 @@ async function loadDashboardData() {
     document.getElementById('totalSimulations').textContent = stats.total_simulations || 0;
     document.getElementById('activeProducts').textContent = products.length;
     
-    // Update average score
-    const avgScoreEl = document.getElementById('averageScore');
-    if (avgScoreEl) {
-      avgScoreEl.textContent = (stats.average_score || 0) + '';
-      const spanEl = avgScoreEl.querySelector('span') || document.createElement('span');
-      spanEl.className = 'text-xl text-gray-400 font-medium';
-      spanEl.textContent = '/100';
-      if (!avgScoreEl.querySelector('span')) {
-        avgScoreEl.appendChild(spanEl);
-      }
+    // Store all simulations for filtering
+    window.allSimulations = simulations || [];
+    
+    // Listen for date range changes and filter simulations
+    window.addEventListener('dateRangeChanged', (event) => {
+      const { startDate, endDate } = event.detail;
+      console.log('📅 Date range changed:', startDate, '-', endDate);
+      filterSimulationsByDateRange(startDate, endDate);
+    });
+    
+    // Function to filter simulations by date range
+    function filterSimulationsByDateRange(startDate, endDate) {
+      const start = new Date(startDate + 'T00:00:00');
+      const end = new Date(endDate + 'T23:59:59');
+      
+      const filtered = window.allSimulations.filter(sim => {
+        if (!sim.created_at) return false;
+        const simDate = new Date(sim.created_at);
+        return simDate >= start && simDate <= end;
+      });
+      
+      console.log('🔍 Filtered simulations:', filtered.length, 'from', window.allSimulations.length);
+      updateDashboardWithFilteredData(filtered);
     }
     
-    // Update percentage of high scores (>= 60)
-    // Removed - now displayed in the "Distribution des Scores" section
-    
-    // Update score distribution chart
-    try {
-      const simsRes = await simulationsAPI.getInstitutionSimulations(token, institution.id);
-      const allSimulations = simsRes || [];
+    // Function to update dashboard with filtered simulations
+    function updateDashboardWithFilteredData(filteredSimulations) {
+      // Update total simulations count
+      document.getElementById('totalSimulations').textContent = filteredSimulations.length;
       
-      // Calculate distribution
+      // Calculate distribution for filtered data
       const distribution = {
         risque: 0,    // < 40
         moyen: 0,     // 40-60
@@ -505,9 +515,15 @@ async function loadDashboardData() {
         excellent: 0  // > 80
       };
       
-      allSimulations.forEach(sim => {
+      let totalScore = 0;
+      const validScores = [];
+      
+      filteredSimulations.forEach(sim => {
         if (sim.calculated_score !== null) {
           const score = sim.calculated_score;
+          validScores.push(score);
+          totalScore += score;
+          
           if (score < 40) distribution.risque++;
           else if (score < 60) distribution.moyen++;
           else if (score < 80) distribution.bon++;
@@ -515,10 +531,22 @@ async function loadDashboardData() {
         }
       });
       
-      // Calculate total and percentages
+      // Update average score
+      const avgScore = validScores.length > 0 ? totalScore / validScores.length : 0;
+      const avgScoreEl = document.getElementById('averageScore');
+      if (avgScoreEl) {
+        avgScoreEl.textContent = avgScore.toFixed(2);
+        const spanEl = avgScoreEl.querySelector('span') || document.createElement('span');
+        spanEl.className = 'text-xl text-gray-400 font-medium';
+        spanEl.textContent = '/100';
+        if (!avgScoreEl.querySelector('span')) {
+          avgScoreEl.appendChild(spanEl);
+        }
+      }
+      
+      // Update distribution bars
       const total = Object.values(distribution).reduce((a, b) => a + b, 0);
       
-      // Update bars with percentages
       const updateBar = (countId, percentId, barId, count) => {
         const countEl = document.getElementById(countId);
         const percentEl = document.getElementById(percentId);
@@ -536,19 +564,11 @@ async function loadDashboardData() {
       updateBar('count-bon', 'percent-bon', 'bar-bon', distribution.bon);
       updateBar('count-excellent', 'percent-excellent', 'bar-excellent', distribution.excellent);
       
-      console.log('✅ Score distribution updated:', distribution);
-    } catch (e) {
-      console.warn('⚠️ Could not load simulation distribution:', e.message);
-      // Show 0 for all categories
-      document.getElementById('count-risque').textContent = '0';
-      document.getElementById('percent-risque').textContent = '(0%)';
-      document.getElementById('count-moyen').textContent = '0';
-      document.getElementById('percent-moyen').textContent = '(0%)';
-      document.getElementById('count-bon').textContent = '0';
-      document.getElementById('percent-bon').textContent = '(0%)';
-      document.getElementById('count-excellent').textContent = '0';
-      document.getElementById('percent-excellent').textContent = '(0%)';
+      console.log('✅ Dashboard updated with filtered data:', distribution);
     }
+    
+    // Update score distribution chart (initial load with all simulations)
+    updateDashboardWithFilteredData(window.allSimulations);
     
     // Populate products table
     const tableBody = document.getElementById('productsTableBody');
