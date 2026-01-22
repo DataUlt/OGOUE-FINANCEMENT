@@ -3,7 +3,20 @@
  * Centralized API calls for all frontend operations
  */
 
-const API_BASE_URL = "http://localhost:3001/api";
+// Dynamically set API_BASE_URL based on environment
+const API_BASE_URL = (() => {
+  const hostname = window.location.hostname;
+  
+  // Local development
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    return 'http://localhost:3001/api';
+  }
+  
+  // Production - use same domain as frontend
+  return `https://${hostname}/api`;
+})();
+
+console.log('🔌 API Base URL:', API_BASE_URL);
 
 // ============================================
 // AUTHENTICATION

@@ -368,9 +368,14 @@
   </div>
 
   <script>
-    const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-      ? 'http://localhost:3001'
-      : 'https://api.ogoue.com';
+    // Dynamically set API_BASE_URL based on current domain
+    const API_BASE_URL = (() => {
+      const hostname = window.location.hostname;
+      if (hostname === 'localhost' || hostname === '127.0.0.1') {
+        return 'http://localhost:3001';
+      }
+      return `https://${hostname}`;
+    })();
 
     async function handleSignup(event) {
       event.preventDefault();
