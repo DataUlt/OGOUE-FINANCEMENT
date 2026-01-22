@@ -198,6 +198,27 @@
 <script type="module">
 import { sessionAPI } from './api.js';
 
+// Dynamically set API_BASE_URL based on environment
+const API_BASE_URL = (() => {
+  const hostname = window.location.hostname;
+  
+  // Local development
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    return 'http://localhost:3001/api';
+  }
+  
+  // Production - API is on separate subdomain
+  if (hostname.includes('ogoue.com')) {
+    // Convert financement.ogoue.com -> api-financement.ogoue.com
+    return `https://api-${hostname}/api`;
+  }
+  
+  // Fallback
+  return `https://${hostname}/api`;
+})();
+
+console.log('🔌 API Base URL:', API_BASE_URL);
+
 const sidebar = document.getElementById('sidebar');
 const sidebarToggle = document.getElementById('sidebarToggle');
 const navLinks = document.querySelectorAll('.sidebar-nav a');
@@ -276,7 +297,7 @@ const modelId = urlParams.get('id');
 if (modelId) {
   const token = sessionAPI.getToken();
   
-  fetch(`http://localhost:3001/api/scoring-models/${modelId}`, {
+  fetch(`${API_BASE_URL}/scoring-models/${modelId}`, {
     headers: {
       'Authorization': `Bearer ${token}`
     }
@@ -520,7 +541,7 @@ if (saveBtn) {
     }
     
     try {
-      const response = await fetch(`http://localhost:3001/api/scoring-models/${modelId}`, {
+      const response = await fetch(`${API_BASE_URL}/scoring-models/${modelId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

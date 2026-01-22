@@ -333,6 +333,27 @@
 <script type="module">
 import { sessionAPI, productsAPI, simulationsAPI } from './api.js';
 
+// Dynamically set API_BASE_URL based on environment
+const API_BASE_URL = (() => {
+  const hostname = window.location.hostname;
+  
+  // Local development
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    return 'http://localhost:3001/api';
+  }
+  
+  // Production - API is on separate subdomain
+  if (hostname.includes('ogoue.com')) {
+    // Convert financement.ogoue.com -> api-financement.ogoue.com
+    return `https://api-${hostname}/api`;
+  }
+  
+  // Fallback
+  return `https://${hostname}/api`;
+})();
+
+console.log('🔌 API Base URL:', API_BASE_URL);
+
 // Check authentication
 if (!sessionAPI.isLoggedIn()) {
   window.location.href = './institution-login.html';
@@ -543,7 +564,7 @@ async function loadDashboardData() {
       // Load stats for each product
       for (const product of products) {
         try {
-          const statsRes = await fetch(`http://localhost:3001/api/simulations/product/${product.id}/stats`);
+          const statsRes = await fetch(`${API_BASE_URL}/simulations/product/${product.id}/stats`);
           if (statsRes.ok) {
             const productStats = await statsRes.json();
             product.simulation_count = productStats.total_simulations || 0;

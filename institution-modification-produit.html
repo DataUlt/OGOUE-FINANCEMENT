@@ -285,6 +285,27 @@ if (logoutBtn) {
 <script type="module">
   import { productsAPI, sessionAPI, apiHelpers } from './api.js';
 
+  // Dynamically set API_BASE_URL based on environment
+  const API_BASE_URL = (() => {
+    const hostname = window.location.hostname;
+    
+    // Local development
+    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+      return 'http://localhost:3001/api';
+    }
+    
+    // Production - API is on separate subdomain
+    if (hostname.includes('ogoue.com')) {
+      // Convert financement.ogoue.com -> api-financement.ogoue.com
+      return `https://api-${hostname}/api`;
+    }
+    
+    // Fallback
+    return `https://${hostname}/api`;
+  })();
+
+  console.log('🔌 API Base URL:', API_BASE_URL);
+
   const form = document.getElementById('productForm');
   const errorMessage = document.getElementById('errorMessage');
   const successMessage = document.getElementById('successMessage');
@@ -340,7 +361,7 @@ if (logoutBtn) {
   // Load typologies on page load
   async function loadTypologies() {
     try {
-      const res = await fetch('http://localhost:3001/api/credit-products/typologies', {
+      const res = await fetch(`${API_BASE_URL}/credit-products/typologies`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       
@@ -468,7 +489,7 @@ if (logoutBtn) {
   async function loadScoringModels() {
     try {
       const modelsAPI = { getModels: async (token) => {
-        const res = await fetch('http://localhost:3001/api/scoring-models', {
+        const res = await fetch(`${API_BASE_URL}/scoring-models`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         if (!res.ok) throw new Error('Failed to load models');
@@ -524,7 +545,7 @@ if (logoutBtn) {
   // Load product data
   async function loadProduct(models) {
     try {
-      const response = await fetch(`http://localhost:3001/api/credit-products/${productId}`, {
+      const response = await fetch(`${API_BASE_URL}/credit-products/${productId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       
