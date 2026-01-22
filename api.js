@@ -30,7 +30,7 @@ console.log('🌍 Current hostname:', window.location.hostname);
 // ============================================
 
 export const authAPI = {
-  register: async (email, password, fullName, userType, institutionName = null, pmeData = null) => {
+  register: async (email, password, fullName, userType, institutionName = null, pmeData = null, institutionData = null) => {
     try {
       const body = { 
         email, 
@@ -42,6 +42,9 @@ export const authAPI = {
       // Add role-specific data
       if (userType === 'institution' && institutionName) {
         body.institution_name = institutionName;
+        if (institutionData) {
+          body.institution_data = institutionData;
+        }
       } else if (userType === 'pme' && pmeData) {
         // Extract pme_name from pmeData.company_name
         body.pme_name = pmeData.company_name;
