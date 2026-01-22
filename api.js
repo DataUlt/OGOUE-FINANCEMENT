@@ -12,15 +12,13 @@ const API_BASE_URL = (() => {
     return 'http://localhost:3001/api';
   }
   
-  // Production - construct API URL
-  // If on financement.ogoue.com, backend is at financement.ogoue.com/api
-  // If on other domains, use same domain
-  const isProductionApp = hostname.includes('ogoue.com');
-  if (isProductionApp) {
-    return `https://${hostname}/api`;
+  // Production - API is on separate subdomain
+  if (hostname.includes('ogoue.com')) {
+    // Convert financement.ogoue.com -> api-financement.ogoue.com
+    return `https://api-${hostname}/api`;
   }
   
-  // Fallback for other domains
+  // Fallback
   return `https://${hostname}/api`;
 })();
 
@@ -72,17 +70,27 @@ export const authAPI = {
       console.log('📊 Response headers:', response.headers.get('content-type'));
       
       const text = await response.text();
-      console.log('📊 Response text:', text.substring(0, 200));
+      console.log('📊 Response length:', text.length);
+      console.log('📊 Response preview:', text.substring(0, 300));
       
       if (!text) {
-        throw new Error('Empty response from server');
+        console.error('❌ Empty response - Backend might not be running at:', `${API_BASE_URL}/auth/login`);
+        throw new Error('Empty response from server. Backend might be offline or misconfigured.');
       }
       
-      const data = JSON.parse(text);
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (parseError) {
+        console.error('❌ JSON Parse error:', parseError);
+        console.error('Raw response:', text);
+        throw new Error('Server returned invalid JSON. Backend might be returning an error page.');
+      }
+      
       if (!response.ok) throw new Error(data.error || `Login failed (${response.status})`);
       return data;
     } catch (error) {
-      console.error('❌ Login error:', error.message);
+      console.error('❌ Login error details:', error);
       throw error;
     }
   },

@@ -374,6 +374,10 @@
       if (hostname === 'localhost' || hostname === '127.0.0.1') {
         return 'http://localhost:3001';
       }
+      // Production - API is on separate subdomain
+      if (hostname.includes('ogoue.com')) {
+        return `https://api-${hostname}`;
+      }
       return `https://${hostname}`;
     })();
 
