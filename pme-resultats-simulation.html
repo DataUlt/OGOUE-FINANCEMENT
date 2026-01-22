@@ -345,6 +345,7 @@ function generateVariableFields(variables) {
           <label for="${fieldId}" class="block text-sm font-semibold text-text-light">
             ${variable.name}
             <span class="text-primary text-xs font-normal">(Poids: ${variable.weight}%)</span>
+            ${variable.unite ? `<span class="text-text-light-muted text-xs font-normal"> - ${variable.unite}</span>` : ''}
           </label>
           <input 
             type="${inputType}" 
