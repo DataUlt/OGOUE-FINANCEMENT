@@ -219,19 +219,43 @@ function updateUserInfo() {
 // Global variable to store institutions for search
 let allInstitutions = [];
 
+// Dynamically set API_BASE_URL based on environment
+const API_BASE_URL = (() => {
+  const hostname = window.location.hostname;
+  
+  // Local development
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    return 'http://localhost:3001/api';
+  }
+  
+  // Production - API is on separate subdomain
+  if (hostname.includes('ogoue.com')) {
+    // Convert financement.ogoue.com -> api-financement.ogoue.com
+    return `https://api-${hostname}/api`;
+  }
+  
+  // Fallback
+  return `https://${hostname}/api`;
+})();
+
+console.log('🔌 API Base URL:', API_BASE_URL);
+
 // Load institutions from API
 async function loadInstitutions() {
   const grid = document.getElementById('institutionsGrid');
   
   try {
-    const response = await fetch('http://localhost:3001/api/profile/institutions');
+    console.log('📡 Fetching institutions from:', `${API_BASE_URL}/profile/institutions`);
+    const response = await fetch(`${API_BASE_URL}/profile/institutions`);
     
     if (!response.ok) {
-      throw new Error('Failed to load institutions');
+      throw new Error(`Failed to load institutions (${response.status})`);
     }
 
     const data = await response.json();
     allInstitutions = data.institutions || [];
+    
+    console.log('✅ Institutions loaded:', allInstitutions.length);
 
     if (allInstitutions.length === 0) {
       grid.innerHTML = '<div class="col-span-full text-center py-8 text-text-light-muted">Aucune institution disponible</div>';
@@ -241,7 +265,7 @@ async function loadInstitutions() {
     renderInstitutions(allInstitutions);
     setupSearchListener();
   } catch (error) {
-    console.error('Error loading institutions:', error);
+    console.error('❌ Error loading institutions:', error);
     grid.innerHTML = '<div class="col-span-full text-center py-8 text-red-600">Erreur lors du chargement des institutions</div>';
   }
 }
