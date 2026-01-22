@@ -7,6 +7,9 @@ const router = Router();
 // POST /api/simulations/calculate - PUBLIC endpoint pour calculer le score
 router.post("/calculate", simulationsController.calculateScore);
 
+// POST /api/simulations/interpret - PUBLIC endpoint pour interpréter un score via LLM
+router.post("/interpret", simulationsController.interpretScore);
+
 // More specific routes FIRST (with /stats)
 // GET /api/simulations/product/:productId/stats - PUBLIC endpoint pour les stats d'un produit
 router.get("/product/:productId/stats", simulationsController.getProductSimulationStats);

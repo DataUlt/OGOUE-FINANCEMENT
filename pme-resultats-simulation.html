@@ -184,6 +184,30 @@
 </div>
 </div>
 </div>
+
+<!-- LLM Interpretation Block -->
+<div class="lg:col-span-3">
+<div class="bg-surface-light rounded-lg border border-black/10 p-8">
+<h2 class="text-2xl font-bold text-text-light mb-6">Interprétation de votre score d'éligibilité</h2>
+<div id="interpretationContainer" class="hidden">
+<div id="interpretationContent" class="text-text-light leading-relaxed space-y-4">
+<!-- LLM interpretation will be inserted here -->
+</div>
+</div>
+<div id="interpretationLoading" class="hidden">
+<div class="flex items-center gap-3">
+<div class="animate-spin">
+<span class="material-symbols-outlined">hourglass_empty</span>
+</div>
+<p class="text-text-light-muted">Génération de l'interprétation en cours...</p>
+</div>
+</div>
+<div id="interpretationEmpty" class="text-text-light-muted italic">
+Cliquez sur "Calculer le Score" pour générer l'interprétation
+</div>
+</div>
+</div>
+</div>
 </main>
 </div>
 </body>
@@ -499,6 +523,9 @@ function displayScore(result) {
   }
 
   scoreGauge.className = `score-gauge bg-gradient-to-br ${gaugeColor}`;
+
+  // Generate LLM interpretation
+  generateInterpretation(score, classification, currentProductName, currentInstitutionName, result.variableNames || {});
 }
 
 // Reset score display
@@ -506,6 +533,71 @@ function resetScoreDisplay() {
   document.getElementById('scoreValue').textContent = '-';
   document.getElementById('rawScore').textContent = '-';
   document.getElementById('scoreGauge').className = 'score-gauge bg-gradient-to-br from-gray-200 to-gray-300';
+  resetInterpretationDisplay();
+}
+
+// Generate LLM interpretation of the score
+async function generateInterpretation(score, classification, productName, institutionName, variableNames) {
+  const container = document.getElementById('interpretationContainer');
+  const loading = document.getElementById('interpretationLoading');
+  const empty = document.getElementById('interpretationEmpty');
+  const content = document.getElementById('interpretationContent');
+
+  try {
+    // Show loading state
+    empty.classList.add('hidden');
+    container.classList.add('hidden');
+    loading.classList.remove('hidden');
+
+    // Build variables description
+    const varsArray = Object.entries(variableNames).map(([key, name]) => name).join(', ');
+    
+    // Call backend API to generate interpretation
+    const response = await fetch(`${API_BASE_URL}/simulations/interpret`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        score: Math.round(score),
+        classification: classification,
+        product_name: productName,
+        institution_name: institutionName,
+        variables_description: varsArray || 'N/A'
+      })
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Erreur lors de la génération');
+    }
+
+    const result = await response.json();
+    const interpretation = result.interpretation;
+
+    console.log('✅ Interprétation générée:', interpretation);
+
+    // Format the interpretation into paragraphs
+    const paragraphs = interpretation.split('\n').filter(p => p.trim());
+    content.innerHTML = paragraphs.map(p => `<p>${p.trim()}</p>`).join('');
+
+    // Show interpretation
+    loading.classList.add('hidden');
+    container.classList.remove('hidden');
+
+  } catch (error) {
+    console.error('❌ Erreur génération interprétation:', error);
+    loading.classList.add('hidden');
+    content.innerHTML = `<p class="text-red-600">Erreur: ${error.message}</p>`;
+    container.classList.remove('hidden');
+  }
+}
+
+// Reset interpretation display
+function resetInterpretationDisplay() {
+  document.getElementById('interpretationContainer').classList.add('hidden');
+  document.getElementById('interpretationLoading').classList.add('hidden');
+  document.getElementById('interpretationEmpty').classList.remove('hidden');
 }
 
 // Update user info dynamically

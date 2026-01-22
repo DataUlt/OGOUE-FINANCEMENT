@@ -3,6 +3,7 @@ import { supabase } from "../lib/supabase.js";
 import { AuthRequest } from "../middleware/auth.js";
 import { AppError } from "../middleware/errorHandler.js";
 import { ScoringEngine, type Variable } from "../lib/scoring.js";
+import fetch from "node-fetch";
 
 export const simulationsController = {
   /**
@@ -112,6 +113,88 @@ export const simulationsController = {
       }
       console.error("❌ Erreur calcul score:", error);
       res.status(500).json({ error: "Erreur lors du calcul du score" });
+    }
+  },
+
+  /**
+   * POST /api/simulations/interpret (PUBLIC)
+   * Appelle l'API OpenAI pour interpréter un score de simulation
+   */
+  interpretScore: async (req: any, res: Response) => {
+    console.log("🤖 interpretScore handler appelé");
+    try {
+      const { score, classification, product_name, institution_name, variables_description } = req.body;
+
+      if (typeof score !== 'number' || !classification || !product_name) {
+        throw new AppError("score, classification et product_name requis", 400);
+      }
+
+      const openaiApiKey = process.env.OPENAI_API_KEY;
+      if (!openaiApiKey) {
+        throw new AppError("OpenAI API key non configurée", 500);
+      }
+
+      const prompt = `Tu es un expert en évaluation de crédit financier. Fournis une interprétation concise et professionnelle d'un score d'éligibilité.
+
+DONNÉES:
+- Score: ${score}/100
+- Classification: ${classification}
+- Produit: ${product_name}
+- Institution: ${institution_name || 'N/A'}
+${variables_description ? `- Variables évaluées: ${variables_description}` : ''}
+
+FORMAT DE RÉPONSE:
+Fournis UNIQUEMENT une interprétation professionnelle sous forme de 2-3 paragraphes.
+DIS CLAIREMENT que c'est une interprétation et non une garantie d'approbation.
+Sois positif mais honnête sur les points forts et faibles.
+
+DÉBUT DE L'INTERPRÉTATION:`;
+
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${openaiApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          messages: [
+            {
+              role: 'system',
+              content: 'Tu es un expert en évaluation de crédit. Fournis des interprétations professionnelles, claires et honnêtes des scores d\'éligibilité pour le crédit. Important: clarifie toujours que c\'est une interprétation et non une garantie.'
+            },
+            {
+              role: 'user',
+              content: prompt
+            }
+          ],
+          temperature: 0.7,
+          max_tokens: 400,
+        }),
+      }) as any;
+
+      if (!response.ok) {
+        const error = await response.json();
+        console.error("❌ OpenAI API error:", error);
+        throw new AppError(`Erreur OpenAI: ${error.error?.message || 'Erreur inconnue'}`, 500);
+      }
+
+      const data = await response.json();
+      const interpretation = data.choices?.[0]?.message?.content || '';
+
+      console.log("✅ LLM interpretation generated for score:", score);
+      
+      res.json({
+        score,
+        classification,
+        interpretation: interpretation.trim()
+      });
+    } catch (error) {
+      if (error instanceof AppError) {
+        return res.status(error.status).json({ error: error.message });
+      }
+      console.error("❌ Erreur interprétation score:", error);
+      res.status(500).json({ error: "Erreur lors de la génération de l'interprétation" });
     }
   },
 
