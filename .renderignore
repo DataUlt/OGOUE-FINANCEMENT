@@ -1,0 +1,51 @@
+# Git files
+.git
+.gitignore
+
+# Node modules (will be reinstalled)
+node_modules
+*/node_modules
+
+# Documentation
+*.md
+README.md
+LICENSE
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+*.test.ts
+*.spec.ts
+test/
+
+# Logs
+logs
+*.log
+npm-debug.log
+
+# Environment
+.env.local
+.env.*.local
+
+# Build artifacts (frontend)
+dist
+build
+.next
+out
+
+# Cache
+.cache
+.parcel-cache
+
+# Temporary files
+tmp
+temp
+*.tmp

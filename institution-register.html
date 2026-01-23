@@ -349,6 +349,7 @@
     // Register form submission
     registerBtn.addEventListener('click', async (e) => {
       e.preventDefault();
+      console.log('📝 Register button clicked');
       errorMessage.classList.add('hidden');
       successMessage.classList.add('hidden');
       registerBtn.disabled = true;
@@ -364,6 +365,8 @@
         const website = websiteInput.value.trim();
         const password = passwordInput.value;
 
+        console.log('📋 Form values:', { institutionName, institutionType, mission, contactName, email, hasPassword: !!password });
+
         if (!institutionName || !institutionType || !mission || !contactName || !email || !password) {
           throw new Error('Veuillez remplir tous les champs obligatoires');
         }
@@ -372,6 +375,8 @@
           throw new Error('Vous devez accepter les conditions générales');
         }
 
+        console.log('✅ All validations passed');
+
         const institutionData = {
           institution_type: institutionType,
           mission: mission,
@@ -379,29 +384,36 @@
           logo_url: null
         };
 
+        console.log('📤 Processing logo...');
+
+        // Handle logo file - convert to base64
         if (logoInput.files.length > 0) {
           const file = logoInput.files[0];
-          const fileName = `${Date.now()}_${file.name}`;
+          console.log('📸 Logo file found:', file.name);
           
           try {
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append('fileName', fileName);
-            
-            const uploadResponse = await fetch(`${API_BASE_URL}/auth/upload-logo`, {
-              method: 'POST',
-              body: formData
+            const logoBase64 = await new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = (event) => {
+                console.log('✅ Logo converted to base64');
+                resolve(event.target.result);
+              };
+              reader.onerror = () => {
+                reject(new Error('Erreur lors de la lecture du fichier logo'));
+              };
+              reader.readAsDataURL(file);
             });
-
-            const uploadData = await uploadResponse.json();
             
-            if (uploadResponse.ok && uploadData.logoUrl) {
-              institutionData.logo_url = uploadData.logoUrl;
-            }
-          } catch (uploadError) {
-            console.warn('Logo upload error:', uploadError);
+            institutionData.logo_url = logoBase64;
+          } catch (logoError) {
+            console.warn('⚠️ Logo read error:', logoError);
+            // Continue without logo if there's an error
           }
+        } else {
+          console.log('ℹ️ No logo file selected');
         }
+
+        console.log('🚀 Sending registration request...');
 
         // Use authAPI.register from api.js for proper error handling and URL resolution
         const data = await authAPI.register(
@@ -410,8 +422,11 @@
           contactName,
           'institution',
           institutionName,
-          null
+          null,
+          institutionData
         );
+
+        console.log('✅ Registration response received:', data);
 
         sessionAPI.setToken(data.token);
         sessionAPI.setUser(data.user);

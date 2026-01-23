@@ -168,6 +168,10 @@ Fournis une interprétation personnalisée de 3-4 paragraphes:
 
 DÉBUT DE L'INTERPRÉTATION PERSONNALISÉE:`;
 
+      // Create abort controller with 30-second timeout
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 30000); // 30 seconds
+
       const response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {
@@ -189,7 +193,10 @@ DÉBUT DE L'INTERPRÉTATION PERSONNALISÉE:`;
           temperature: 0.7,
           max_tokens: 500,
         }),
+        signal: controller.signal
       }) as any;
+
+      clearTimeout(timeout);
 
       if (!response.ok) {
         const error = await response.json();
