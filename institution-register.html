@@ -248,6 +248,34 @@
               </div>
             </div>
 
+            <!-- Confirmer le mot de passe -->
+            <div>
+              <label class="block text-sm font-semibold text-text-light mb-2" for="confirmPassword">
+                Confirmer le mot de passe
+              </label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <span class="material-symbols-outlined text-text-light-muted">lock</span>
+                </div>
+                <input
+                  class="w-full pl-10 pr-12 py-3 rounded-lg border border-black/10 bg-white text-text-light placeholder-text-light-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  placeholder="Confirmez votre mot de passe"
+                  type="password"
+                  required
+                />
+                <button
+                  class="absolute inset-y-0 right-0 pr-3 flex items-center text-text-light-muted hover:text-text-light transition-colors"
+                  id="toggleConfirmPassword"
+                  type="button"
+                  onclick="toggleConfirmPasswordVisibility()"
+                >
+                  <span class="material-symbols-outlined text-base" id="confirmVisibilityIcon">visibility</span>
+                </button>
+              </div>
+            </div>
+
             <!-- Checkbox Terms -->
             <div class="flex items-center gap-3">
               <input
@@ -311,6 +339,7 @@
     const websiteInput = document.getElementById('website');
     const logoInput = document.getElementById('logo');
     const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
     const termsCheckbox = document.getElementById('termsCheckbox');
     const registerBtn = document.getElementById('registerBtn');
     const errorMessage = document.getElementById('errorMessage');
@@ -318,6 +347,19 @@
 
     // Toggle password visibility
     window.togglePasswordVisibility = function() {
+      const icon = document.getElementById('visibilityIcon');
+      const isPassword = passwordInput.type === 'password';
+      passwordInput.type = isPassword ? 'text' : 'password';
+      icon.textContent = isPassword ? 'visibility' : 'visibility_off';
+    };
+
+    // Toggle confirm password visibility
+    window.toggleConfirmPasswordVisibility = function() {
+      const icon = document.getElementById('confirmVisibilityIcon');
+      const isPassword = confirmPasswordInput.type === 'password';
+      confirmPasswordInput.type = isPassword ? 'text' : 'password';
+      icon.textContent = isPassword ? 'visibility' : 'visibility_off';
+    };
       const icon = document.getElementById('visibilityIcon');
       const isPassword = passwordInput.type === 'password';
       passwordInput.type = isPassword ? 'text' : 'password';
@@ -363,9 +405,18 @@
         const email = emailInput.value.trim();
         const website = websiteInput.value.trim();
         const password = passwordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
 
         if (!institutionName || !institutionType || !mission || !contactName || !email || !password) {
           throw new Error('Veuillez remplir tous les champs obligatoires');
+        }
+
+        if (password !== confirmPassword) {
+          throw new Error('Les mots de passe ne correspondent pas');
+        }
+
+        if (password.length < 6) {
+          throw new Error('Le mot de passe doit contenir au moins 6 caractères');
         }
 
         if (!termsCheckbox.checked) {
