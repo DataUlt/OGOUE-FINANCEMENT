@@ -323,11 +323,6 @@
       passwordInput.type = isPassword ? 'text' : 'password';
       icon.textContent = isPassword ? 'visibility' : 'visibility_off';
     };
-      const icon = document.getElementById('visibilityIcon');
-      const isPassword = passwordInput.type === 'password';
-      passwordInput.type = isPassword ? 'text' : 'password';
-      icon.textContent = isPassword ? 'visibility' : 'visibility_off';
-    };
 
     // Handle logo file upload validation
     logoInput.addEventListener('change', async (e) => {
