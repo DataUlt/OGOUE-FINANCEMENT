@@ -47,7 +47,7 @@ export const simulationsController = {
       // Récupérer les variables du modèle de scoring
       const { data: variables_data, error: variablesError } = await supabase
         .from("model_variables")
-        .select("id, name, weight, min_value, max_value, favorable_direction, is_blocking")
+        .select("id, name, weight, min_value, max_value, favorable_direction, is_blocking, unit")
         .eq("scoring_model_id", product.scoring_model_id);
 
       if (variablesError || !variables_data) {
@@ -250,7 +250,7 @@ Interprétation:`;
       // Récupérer les variables du modèle de scoring
       const { data: variables, error: variablesError } = await supabase
         .from("model_variables")
-        .select("id, name, weight, min_value, max_value, favorable_direction, is_blocking, variable_type")
+        .select("id, name, weight, min_value, max_value, favorable_direction, is_blocking, variable_type, unit")
         .eq("scoring_model_id", product.scoring_model_id)
         .order("id");
 
