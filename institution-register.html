@@ -434,23 +434,23 @@
         if (logoInput.files.length > 0) {
           const file = logoInput.files[0];
           
-          const reader = new FileReader();
-          reader.onload = (event) => {
-            institutionData.logo_url = event.target.result; // Base64 data URL
-          };
-          reader.readAsDataURL(file);
-          
-          // Wait for the file to be read
-          await new Promise(resolve => {
-            const waitForReaderComplete = () => {
-              if (institutionData.logo_url && institutionData.logo_url.startsWith('data:')) {
-                resolve();
-              } else {
-                setTimeout(waitForReaderComplete, 10);
-              }
-            };
-            waitForReaderComplete();
-          });
+          try {
+            const logoBase64 = await new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = (event) => {
+                resolve(event.target.result);
+              };
+              reader.onerror = () => {
+                reject(new Error('Erreur lors de la lecture du fichier logo'));
+              };
+              reader.readAsDataURL(file);
+            });
+            
+            institutionData.logo_url = logoBase64;
+          } catch (logoError) {
+            console.warn('Logo read error:', logoError);
+            // Continue without logo if there's an error
+          }
         }
 
         // Use authAPI.register from api.js for proper error handling and URL resolution
