@@ -691,10 +691,15 @@ document.addEventListener('click', async (e) => {
           selectedStartDate = cellDate;
           selectedEndDate = null;
         } else if (!selectedEndDate) {
-          selectedEndDate = cellDate;
-          // Swap if end is before start
-          if (selectedEndDate < selectedStartDate) {
-            [selectedStartDate, selectedEndDate] = [selectedEndDate, selectedStartDate];
+          // Check if same day is clicked
+          if (cellDate.toDateString() === selectedStartDate.toDateString()) {
+            selectedEndDate = cellDate;
+          } else {
+            selectedEndDate = cellDate;
+            // Swap if end is before start
+            if (selectedEndDate < selectedStartDate) {
+              [selectedStartDate, selectedEndDate] = [selectedEndDate, selectedStartDate];
+            }
           }
         } else {
           // Reset on third click
