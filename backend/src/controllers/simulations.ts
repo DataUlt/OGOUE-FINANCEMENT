@@ -160,13 +160,15 @@ Explique comment ces variables précises ont contribué au score obtenu.
 Identifie les points forts et les domaines à améliorer basés sur les données réelles.
 
 FORMAT DE RÉPONSE:
-Fournis une interprétation personnalisée de 3-4 paragraphes:
+Fournis UNIQUEMENT 3-4 paragraphes d'interprétation (SANS titre ni markdown):
 1. Résumé du score avec contexte des variables entrées
 2. Analyse des points forts et points faibles basée sur les valeurs réelles
 3. Conseils spécifiques pour améliorer le profil
 4. Rappel que c'est une interprétation et non une garantie
 
-DÉBUT DE L'INTERPRÉTATION PERSONNALISÉE:`;
+NE RETOURNE JAMAIS DE TITRE, D'EN-TÊTE MARKDOWN, NI DE "###". COMMENCE DIRECTEMENT PAR LE CONTENU DES PARAGRAPHES.
+
+Interprétation:`;
 
       // Create abort controller with 30-second timeout
       const controller = new AbortController();
@@ -205,14 +207,17 @@ DÉBUT DE L'INTERPRÉTATION PERSONNALISÉE:`;
       }
 
       const data = await response.json();
-      const interpretation = data.choices?.[0]?.message?.content || '';
+      let interpretation = data.choices?.[0]?.message?.content || '';
+
+      // Remove any markdown headers that might have been added
+      interpretation = interpretation.replace(/^#+\s+.+?\n*/gm, '').trim();
 
       console.log("✅ LLM interpretation generated for score:", score);
       
       res.json({
         score,
         classification,
-        interpretation: interpretation.trim()
+        interpretation: interpretation
       });
     } catch (error) {
       if (error instanceof AppError) {
