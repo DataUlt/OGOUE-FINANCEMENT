@@ -379,28 +379,27 @@
           logo_url: null
         };
 
+        // Handle logo file - convert to base64
         if (logoInput.files.length > 0) {
           const file = logoInput.files[0];
-          const fileName = `${Date.now()}_${file.name}`;
           
-          try {
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append('fileName', fileName);
-            
-            const uploadResponse = await fetch(`${API_BASE_URL}/auth/upload-logo`, {
-              method: 'POST',
-              body: formData
-            });
-
-            const uploadData = await uploadResponse.json();
-            
-            if (uploadResponse.ok && uploadData.logoUrl) {
-              institutionData.logo_url = uploadData.logoUrl;
-            }
-          } catch (uploadError) {
-            console.warn('Logo upload error:', uploadError);
-          }
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            institutionData.logo_url = event.target.result; // Base64 data URL
+          };
+          reader.readAsDataURL(file);
+          
+          // Wait for the file to be read
+          await new Promise(resolve => {
+            const waitForReaderComplete = () => {
+              if (institutionData.logo_url && institutionData.logo_url.startsWith('data:')) {
+                resolve();
+              } else {
+                setTimeout(waitForReaderComplete, 10);
+              }
+            };
+            waitForReaderComplete();
+          });
         }
 
         // Use authAPI.register from api.js for proper error handling and URL resolution
