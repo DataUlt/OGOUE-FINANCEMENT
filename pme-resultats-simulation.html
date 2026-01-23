@@ -574,9 +574,12 @@ async function generateInterpretation(score, classification, productName, instit
     }
 
     const result = await response.json();
-    const interpretation = result.interpretation;
+    let interpretation = result.interpretation;
 
     console.log('✅ Interprétation générée:', interpretation);
+
+    // Remove the markdown heading if present
+    interpretation = interpretation.replace(/^#+\s+Interprétation Personnalisée de Score d'Éligibilité\n*/i, '').trim();
 
     // Format the interpretation into paragraphs
     const paragraphs = interpretation.split('\n').filter(p => p.trim());
