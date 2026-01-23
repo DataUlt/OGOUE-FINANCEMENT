@@ -338,8 +338,7 @@ function generateVariableFields(variables) {
       return `
         <div class="space-y-2">
           <label for="${fieldId}" class="block text-sm font-semibold text-text-light">
-            ${variable.name}
-            ${variable.unit ? `<span class="text-text-light-muted text-xs font-normal"> - cette valeur est exprimée en ${variable.unit}</span>` : ''}
+            ${variable.name}${variable.unit ? ` <span class="text-text-light-muted font-normal">(${variable.unit})</span>` : ''}
           </label>
           <input 
             type="${inputType}" 

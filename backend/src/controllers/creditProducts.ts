@@ -527,7 +527,7 @@ export const creditProductsController = {
       // Récupérer les variables du modèle de scoring
       const { data: model_variables } = await supabase
         .from("model_variables")
-        .select("id, name, weight, min_value, max_value, favorable_direction, is_blocking, variable_type")
+        .select("id, name, weight, min_value, max_value, favorable_direction, is_blocking, variable_type, unit")
         .eq("scoring_model_id", product.scoring_model_id);
 
       // Aplatir la relation institutions pour accès facile
