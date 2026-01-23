@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import fileUpload from 'express-fileupload';
 
 // Load environment variables
 dotenv.config();
@@ -12,6 +13,7 @@ const PORT = process.env.PORT || 3001;
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(fileUpload());  // Add file upload middleware
 
 // Routes
 app.get('/api/health', (req: Request, res: Response) => {
