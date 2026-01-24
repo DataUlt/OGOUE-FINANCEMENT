@@ -515,11 +515,17 @@ if (logoutBtn) {
     backdrop.classList.remove('mobile-open');
   });
   
-  // Close menu when clicking nav links
+  // Nav links: collapse sidebar (desktop) or close mobile menu (mobile)
   navLinks.forEach(link => {
     link.addEventListener('click', () => {
-      sidebar.classList.remove('mobile-open');
-      backdrop.classList.remove('mobile-open');
+      if (window.innerWidth <= 768) {
+        sidebar.classList.remove('mobile-open');
+        backdrop.classList.remove('mobile-open');
+      } else {
+        // Desktop: always collapse sidebar when navigating
+        sidebar.classList.add('collapsed');
+        localStorage.setItem('sidebarCollapsed', 'true');
+      }
     });
   });
   
