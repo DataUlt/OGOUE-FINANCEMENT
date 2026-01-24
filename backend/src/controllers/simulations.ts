@@ -144,29 +144,48 @@ export const simulationsController = {
         });
       }
 
-      const prompt = `Tu es un expert en évaluation de crédit financier. Fournis une interprétation professionnelle et personnalisée d'un score d'éligibilité basée sur les variables RÉELLES entrées par l'utilisateur.
+      const prompt = `Tu es un expert senior en analyse de risque de crédit et en évaluation de l'éligibilité financière des entreprises.
+Ton rôle est de fournir une interprétation professionnelle, pédagogique et personnalisée du score obtenu par un utilisateur,
+en t'appuyant STRICTEMENT sur les données réelles qu'il a saisies et sur les caractéristiques du produit de crédit simulé.
 
-DONNÉES DU SCORE:
-- Score Final: ${score}/100
-- Classification: ${classification}
-- Produit de Crédit: ${product_name}
-- Institution: ${institution_name || 'N/A'}
+========================
+DONNÉES DU SCORE
+========================
+- Score final : ${score}/100
+- Classification du score : ${classification}
+- Produit de crédit : ${product_name}
+- Institution financière : ${institution_name || "Non spécifiée"}
 
 ${variablesContext}
 
-CONTEXTE:
-Cette interprétation doit réferencer les valeurs SPÉCIFIQUES que l'utilisateur a entrées.
-Explique comment ces variables précises ont contribué au score obtenu.
-Identifie les points forts et les domaines à améliorer basés sur les données réelles.
+========================
+CONTEXTE ET ATTENTES
+========================
+- L'interprétation doit être STRICTEMENT personnalisée : aucune phrase générique.
+- Tu dois expliquer comment les valeurs précises saisies par l'utilisateur ont influencé le score obtenu.
+- Tu dois mettre en évidence :
+  • les points forts concrets du dossier
+  • les éléments bloquants ou perfectibles
+- Tu ne dois JAMAIS inventer de données, de règles ou de critères non fournis.
 
-FORMAT DE RÉPONSE:
-Fournis UNIQUEMENT 3-4 paragraphes d'interprétation (SANS titre ni markdown):
-1. Résumé du score avec contexte des variables entrées
-2. Analyse des points forts et points faibles basée sur les valeurs réelles
-3. Conseils spécifiques pour améliorer le profil
-4. Rappel que c'est une interprétation et non une garantie
+========================
+FORMAT DE RÉPONSE (OBLIGATOIRE)
+========================
+Fournis UNIQUEMENT 3 à 4 paragraphes de texte, sans titre, sans liste, sans markdown :
 
-NE RETOURNE JAMAIS DE TITRE, D'EN-TÊTE MARKDOWN, NI DE "###". COMMENCE DIRECTEMENT PAR LE CONTENU DES PARAGRAPHES.
+1. Résumé du score obtenu, en lien direct avec le produit de crédit et les principales variables saisies.
+2. Analyse détaillée des points forts et des points faibles du dossier, basée sur les valeurs réelles entrées.
+3. Recommandations concrètes et actionnables pour améliorer l'éligibilité à ce produit précis.
+4. Rappel clair que cette interprétation est informative et ne constitue ni une décision ni une garantie de financement.
+
+========================
+RÈGLES STRICTES
+========================
+- Ne retourne JAMAIS de titre.
+- Ne retourne JAMAIS de markdown.
+- Ne retourne JAMAIS de listes.
+- Commence directement par le premier paragraphe.
+- Ton ton doit être professionnel, clair, pédagogique et orienté accompagnement.
 
 Interprétation:`;
 
