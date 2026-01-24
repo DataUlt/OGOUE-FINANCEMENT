@@ -13,8 +13,8 @@
             theme: {
                 extend: {
                     colors: {
-                        "primary": "#1de22e",
-                        "primary-dark": "#1de22e",
+                        "primary": "#0088CC",
+                        "primary-dark": "#0088CC",
                         "background-light": "#f6f8f7",
                         "surface-light": "#ffffff",
                         "text-light": "#0a0c0a",
@@ -106,10 +106,40 @@
             h1 {
                 font-size: 1.5rem !important;
             }
+            /* Mobile header with hamburger button */
+            .mobile-header {
+                display: flex;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 56px;
+                background: white;
+                border-bottom: 1px solid rgba(0,0,0,0.1);
+                align-items: center;
+                padding: 0 1rem;
+                z-index: 20;
+            }
+            main.flex-1 {
+                padding-top: 56px;
+            }
+        }
+        @media (min-width: 769px) {
+            .mobile-header {
+                display: none !important;
+            }
         }
     </style>
 </head>
 <body class="font-display bg-background-light text-text-light overflow-hidden">
+<!-- Mobile Header with Hamburger -->
+<div class="mobile-header" id="mobileHeader">
+  <button id="mobileMenuBtn" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+    <span class="material-symbols-outlined text-2xl">menu</span>
+  </button>
+  <span class="ml-3 font-bold text-lg">OGOUÉ</span>
+</div>
+
 <div class="flex h-screen w-full">
 <!-- Sidebar -->
 <aside id="sidebar" class="w-64 flex flex-col border-r border-black/10 bg-surface-light shrink-0 transition-all duration-300 collapsed">
@@ -442,6 +472,7 @@ if (logoutBtn) {
 (function() {
   const sidebar = document.getElementById('sidebar');
   const sidebarToggle = document.getElementById('sidebarToggle');
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
   const navLinks = document.querySelectorAll('.sidebar-nav a');
   
   // Create backdrop for mobile
@@ -449,33 +480,48 @@ if (logoutBtn) {
   backdrop.className = 'sidebar-backdrop';
   document.body.appendChild(backdrop);
   
-  // Mobile menu toggle
-  if (window.innerWidth <= 768) {
+  // Function to toggle mobile menu
+  function toggleMobileMenu() {
+    const isMobileOpen = sidebar.classList.contains('mobile-open');
+    if (!isMobileOpen) {
+      sidebar.classList.add('mobile-open');
+      backdrop.classList.add('mobile-open');
+    } else {
+      sidebar.classList.remove('mobile-open');
+      backdrop.classList.remove('mobile-open');
+    }
+  }
+  
+  // Mobile menu button (in header)
+  if (mobileMenuBtn) {
+    mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+  }
+  
+  // Sidebar toggle button (in sidebar)
+  if (sidebarToggle) {
     sidebarToggle.addEventListener('click', () => {
-      const isMobileOpen = sidebar.classList.contains('mobile-open');
-      if (!isMobileOpen) {
-        sidebar.classList.add('mobile-open');
-        backdrop.classList.add('mobile-open');
+      if (window.innerWidth <= 768) {
+        toggleMobileMenu();
       } else {
-        sidebar.classList.remove('mobile-open');
-        backdrop.classList.remove('mobile-open');
+        sidebar.classList.toggle('collapsed');
+        localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
       }
     });
+  }
     
-    // Close menu when clicking backdrop
-    backdrop.addEventListener('click', () => {
+  // Close menu when clicking backdrop
+  backdrop.addEventListener('click', () => {
+    sidebar.classList.remove('mobile-open');
+    backdrop.classList.remove('mobile-open');
+  });
+  
+  // Close menu when clicking nav links
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
       sidebar.classList.remove('mobile-open');
       backdrop.classList.remove('mobile-open');
     });
-    
-    // Close menu when clicking nav links
-    navLinks.forEach(link => {
-      link.addEventListener('click', () => {
-        sidebar.classList.remove('mobile-open');
-        backdrop.classList.remove('mobile-open');
-      });
-    });
-  }
+  });
   
   // Handle window resize
   window.addEventListener('resize', () => {
