@@ -123,7 +123,7 @@ export const simulationsController = {
   interpretScore: async (req: any, res: Response) => {
     console.log("🤖 interpretScore handler appelé");
     try {
-      const { score, classification, product_name, institution_name, variables_values, variables_names, variables_description, score_details } = req.body;
+      const { score, classification, product_name, institution_name, variables_values, variables_names, variables_units, variables_description, score_details } = req.body;
 
       if (typeof score !== 'number' || !classification || !product_name) {
         throw new AppError("score, classification et product_name requis", 400);
@@ -134,13 +134,15 @@ export const simulationsController = {
         throw new AppError("OpenAI API key non configurée", 500);
       }
 
-      // Build detailed variables context
+      // Build detailed variables context with units
       let variablesContext = "";
       if (variables_values && Object.keys(variables_values).length > 0) {
         variablesContext = "\nVARIABLES ENTRÉES PAR L'UTILISATEUR:\n";
         Object.entries(variables_values).forEach(([key, value]: [string, any]) => {
           const name = variables_names?.[key] || key;
-          variablesContext += `- ${name}: ${value}\n`;
+          const unit = variables_units?.[key];
+          const unitText = unit ? ` (${unit})` : '';
+          variablesContext += `- ${name}${unitText}: ${value}\n`;
         });
       }
 

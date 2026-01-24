@@ -347,6 +347,7 @@ function generateVariableFields(variables) {
             name="${variable.id}"
             data-variable-id="${variable.id}"
             data-variable-name="${variable.name}"
+            data-variable-unit="${variable.unit || ''}"
             data-variable-weight="${variable.weight}"
             data-variable-type="${variable.variable_type}"
             placeholder="${placeholder}"
@@ -550,6 +551,17 @@ async function generateInterpretation(score, classification, productName, instit
       return `${name}: ${value}`;
     }).join(', ');
     
+    // Build variables with units
+    const variablesWithUnits = {};
+    const inputs = document.querySelectorAll('[data-variable-id]');
+    inputs.forEach(input => {
+      const varId = input.dataset.variableId;
+      const unit = input.dataset.variableUnit;
+      if (unit) {
+        variablesWithUnits[varId] = unit;
+      }
+    });
+    
     // Call backend API to generate interpretation
     const response = await fetch(`${API_BASE_URL}/simulations/interpret`, {
       method: 'POST',
@@ -563,6 +575,7 @@ async function generateInterpretation(score, classification, productName, instit
         institution_name: institutionName,
         variables_values: inputVariables || {},
         variables_names: variableNames || {},
+        variables_units: variablesWithUnits || {},
         variables_description: varsDetails || 'N/A',
         score_details: scoreDetails || []
       })
