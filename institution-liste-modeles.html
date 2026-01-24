@@ -434,6 +434,9 @@ loadModels();
     sidebarToggle.addEventListener('click', () => {
       if (window.innerWidth <= 768) {
         toggleMobileMenu();
+      } else {
+        sidebar.classList.toggle('collapsed');
+        localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
       }
     });
   }
