@@ -66,6 +66,37 @@
         aside.collapsed .sidebar-user > div:last-child {
             display: none;
         }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            aside#sidebar {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                height: 100vh;
+                z-index: 40;
+                transition: left 0.3s ease;
+            }
+            aside#sidebar.mobile-open {
+                left: 0;
+            }
+            .sidebar-backdrop {
+                display: none;
+            }
+            .sidebar-backdrop.mobile-open {
+                display: block;
+                position: fixed;
+                inset: 0;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 30;
+            }
+            main .p-6 {
+                padding: 1rem !important;
+            }
+            h1 {
+                font-size: 1.5rem !important;
+            }
+        }
     </style>
 </head>
 <body class="bg-background-light text-text-light font-display overflow-hidden">
@@ -239,7 +270,7 @@
 
 <!-- Messages -->
 <div id="errorMessage" class="hidden bg-red-100 text-red-700 px-4 py-3 rounded-lg text-sm"></div>
-<div id="successMessage" class="hidden bg-green-100 text-green-700 px-4 py-3 rounded-lg text-sm"></div>
+<div id="successMessage" class="hidden bg-blue-100 text-blue-700 px-4 py-3 rounded-lg text-sm" style="color: #0088CC;"></div>
 
 <!-- Boutons -->
 <div class="flex justify-end gap-3 pt-6 border-t border-black/10">
@@ -713,6 +744,54 @@ if (logoutBtn) {
       submitBtn.innerHTML = 'Enregistrer les modifications';
     }
   });
+
+// ==================== MOBILE MENU MANAGEMENT ====================
+(function() {
+  const sidebar = document.getElementById('sidebar');
+  const sidebarToggle = document.getElementById('sidebarToggle');
+  const navLinks = document.querySelectorAll('.sidebar-nav a');
+  
+  // Create backdrop for mobile
+  const backdrop = document.createElement('div');
+  backdrop.className = 'sidebar-backdrop';
+  document.body.appendChild(backdrop);
+  
+  // Mobile menu toggle
+  if (window.innerWidth <= 768) {
+    sidebarToggle.addEventListener('click', () => {
+      const isMobileOpen = sidebar.classList.contains('mobile-open');
+      if (!isMobileOpen) {
+        sidebar.classList.add('mobile-open');
+        backdrop.classList.add('mobile-open');
+      } else {
+        sidebar.classList.remove('mobile-open');
+        backdrop.classList.remove('mobile-open');
+      }
+    });
+    
+    // Close menu when clicking backdrop
+    backdrop.addEventListener('click', () => {
+      sidebar.classList.remove('mobile-open');
+      backdrop.classList.remove('mobile-open');
+    });
+    
+    // Close menu when clicking nav links
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        sidebar.classList.remove('mobile-open');
+        backdrop.classList.remove('mobile-open');
+      });
+    });
+  }
+  
+  // Handle window resize
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+      sidebar.classList.remove('mobile-open');
+      backdrop.classList.remove('mobile-open');
+    }
+  });
+})();
 </script>
 </body>
 </html>

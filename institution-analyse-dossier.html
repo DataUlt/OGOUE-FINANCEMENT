@@ -68,6 +68,41 @@
         aside.collapsed .sidebar-user > div:last-child {
             display: none;
         }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            aside#sidebar {
+                position: fixed;
+                left: -100%;
+                top: 0;
+                height: 100vh;
+                z-index: 40;
+                transition: left 0.3s ease;
+            }
+            aside#sidebar.mobile-open {
+                left: 0;
+            }
+            .sidebar-backdrop {
+                display: none;
+            }
+            .sidebar-backdrop.mobile-open {
+                display: block;
+                position: fixed;
+                inset: 0;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 30;
+            }
+            header {
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+            }
+            h2 {
+                font-size: 1.5rem !important;
+            }
+            main .p-8 {
+                padding: 1rem !important;
+            }
+        }
     </style>
 </head>
 <body class="bg-background-light text-text-light font-display overflow-hidden">
@@ -247,7 +282,7 @@ function renderApplications(applications) {
       'draft': 'bg-yellow-100 text-yellow-800',
       'submitted': 'bg-blue-100 text-blue-800',
       'review_needed': 'bg-blue-100 text-blue-800',
-      'approved': 'bg-green-100 text-green-800',
+      'approved': 'bg-blue-100 text-blue-800' + ' style="color: #0088CC;"',
       'rejected': 'bg-red-100 text-red-800'
     };
     
@@ -311,5 +346,53 @@ document.getElementById('filterBtn').addEventListener('click', () => {
 
 // Load on page load
 loadApplications();
+
+// ==================== MOBILE MENU MANAGEMENT ====================
+(function() {
+  const sidebar = document.getElementById('sidebar');
+  const sidebarToggle = document.getElementById('sidebarToggle');
+  const navLinks = document.querySelectorAll('.sidebar-nav a');
+  
+  // Create backdrop for mobile
+  const backdrop = document.createElement('div');
+  backdrop.className = 'sidebar-backdrop';
+  document.body.appendChild(backdrop);
+  
+  // Mobile menu toggle
+  if (window.innerWidth <= 768) {
+    sidebarToggle.addEventListener('click', () => {
+      const isMobileOpen = sidebar.classList.contains('mobile-open');
+      if (!isMobileOpen) {
+        sidebar.classList.add('mobile-open');
+        backdrop.classList.add('mobile-open');
+      } else {
+        sidebar.classList.remove('mobile-open');
+        backdrop.classList.remove('mobile-open');
+      }
+    });
+    
+    // Close menu when clicking backdrop
+    backdrop.addEventListener('click', () => {
+      sidebar.classList.remove('mobile-open');
+      backdrop.classList.remove('mobile-open');
+    });
+    
+    // Close menu when clicking nav links
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        sidebar.classList.remove('mobile-open');
+        backdrop.classList.remove('mobile-open');
+      });
+    });
+  }
+  
+  // Handle window resize
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+      sidebar.classList.remove('mobile-open');
+      backdrop.classList.remove('mobile-open');
+    }
+  });
+})();
 </script>
 </body></html>
