@@ -78,9 +78,25 @@
                 height: 100vh;
                 z-index: 40;
                 transition: left 0.3s ease;
+                overflow-y: auto;
             }
             aside#sidebar.mobile-open {
                 left: 0;
+            }
+            /* Section profil et déconnexion plus compacte en mobile */
+            aside#sidebar .p-4.mt-auto {
+                padding: 0.75rem;
+                margin-top: 0;
+            }
+            aside#sidebar .sidebar-user {
+                padding: 0.5rem;
+                margin-bottom: 0.5rem;
+            }
+            aside#sidebar .sidebar-nav {
+                flex: 0 0 auto;
+            }
+            aside#sidebar #logoutBtn {
+                padding: 0.5rem 1rem;
             }
             .sidebar-backdrop {
                 display: none;
