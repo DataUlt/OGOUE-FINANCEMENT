@@ -73,10 +73,17 @@ export const simulationsController = {
         const apiRequestBody: any = {};
         const variables_data = scoringModel.model_variables || [];
         
+        console.log("📋 Variables data:", variables_data);
+        console.log("📋 Values received:", values);
+        
         for (const variable of variables_data) {
-          const apiName = variable.name; // This is the api_name
-          // Find the value in the provided values (could be keyed by api_name or display_name)
-          const value = values[apiName] ?? values[variable.display_name];
+          const apiName = variable.name; // This is the api_name stored in database
+          // Find the value - frontend sends values keyed by variable.id (UUID)
+          // Also check by api_name or display_name for backwards compatibility
+          const value = values[variable.id] ?? values[apiName] ?? values[variable.display_name];
+          
+          console.log(`📋 Variable ${apiName}: id=${variable.id}, value=${value}`);
+          
           if (value !== undefined) {
             apiRequestBody[apiName] = value;
           }
