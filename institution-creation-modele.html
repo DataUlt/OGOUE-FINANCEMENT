@@ -522,8 +522,15 @@ if (createModelBtn) {
       });
       
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Erreur lors de la création du modèle');
+        const errorData = await response.json();
+        console.error('❌ Full error response:', errorData);
+        // Show debug info if available
+        if (errorData.debug) {
+          alert(`Erreur: ${errorData.error}\n\nDébug:\n- Votre rôle: ${errorData.debug.userRole || 'non défini'}\n- Rôles requis: ${errorData.debug.requiredRoles?.join(', ')}`);
+        } else {
+          alert('Erreur: ' + (errorData.error || 'Erreur lors de la création du modèle'));
+        }
+        throw new Error(errorData.error || 'Erreur lors de la création du modèle');
       }
       
       const result = await response.json();
@@ -534,7 +541,6 @@ if (createModelBtn) {
       window.location.href = 'institution-liste-modeles';
     } catch (error) {
       console.error('❌ Error creating model:', error);
-      alert('Erreur: ' + error.message);
       createModelBtn.disabled = false;
       createModelBtn.innerHTML = '<span class="truncate">Créer le Modèle</span>';
     }
