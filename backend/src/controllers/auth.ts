@@ -35,9 +35,14 @@ export const authController = {
 
       // Build role and full_name from new format if provided
       let role = user_type || 'institution';
-      if (!full_name && (firstName || lastName)) {
+      
+      // Handle PME new format (firstName/lastName) - but only if user_type is not explicitly set
+      if (!user_type && !full_name && (firstName || lastName)) {
         full_name = `${firstName || ''} ${lastName || ''}`.trim();
-        role = 'pme'; // If using new format, it's PME
+        role = 'pme'; // If using new format without explicit user_type, it's PME
+      } else if (!full_name && (firstName || lastName)) {
+        // Build full_name from firstName/lastName but keep the explicit role
+        full_name = `${firstName || ''} ${lastName || ''}`.trim();
       }
 
       // Build pme_name from new format
