@@ -166,11 +166,11 @@
 </button>
 </div>
 <nav class="sidebar-nav flex-1 px-4 flex flex-col gap-2 mt-4">
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary font-medium" href="pme-selection-institution.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary font-medium" href="pme-selection-institution">
 <span class="material-symbols-outlined icon-filled">home</span>
 <span class="sidebar-text">Accueil</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="pme-historique-scores.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="pme-historique-scores">
 <span class="material-symbols-outlined">analytics</span>
 <span class="sidebar-text">Résultats</span>
 </a>
@@ -225,7 +225,7 @@ import { sessionAPI } from './api.js';
 
 // Check authentication
 if (!sessionAPI.isLoggedIn()) {
-  window.location.href = './pme-login.html';
+  window.location.href = './pme-login';
 }
 
 const sidebar = document.getElementById('sidebar');
@@ -254,7 +254,7 @@ if (localStorage.getItem('sidebarCollapsed') === 'true') {
 if (logoutBtn) {
   logoutBtn.addEventListener('click', () => {
     sessionAPI.logout();
-    window.location.href = './pme-login.html';
+    window.location.href = './pme-login';
   });
 }
 
@@ -402,7 +402,7 @@ function renderInstitutions(institutions) {
         e.preventDefault();
         const institutionId = btn.dataset.institutionId;
         sessionStorage.setItem('selectedInstitutionId', institutionId);
-        window.location.href = `pme-catalogue-produits.html?institutionId=${institutionId}`;
+        window.location.href = `pme-catalogue-produits?institutionId=${institutionId}`;
       });
     });
 }

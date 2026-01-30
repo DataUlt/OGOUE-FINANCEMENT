@@ -160,19 +160,19 @@
 </button>
 </div>
 <nav class="sidebar-nav flex-1 px-4 flex flex-col gap-2 mt-4">
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-gray-50 hover:text-text-light transition-colors" href="institution-tableau-bord.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-gray-50 hover:text-text-light transition-colors" href="institution-tableau-bord">
 <span class="material-symbols-outlined">dashboard</span>
 <span class="sidebar-text">Vue d'Ensemble</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-gray-50 hover:text-text-light transition-colors" href="institution-liste-produits.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-gray-50 hover:text-text-light transition-colors" href="institution-liste-produits">
 <span class="material-symbols-outlined">payments</span>
 <span class="sidebar-text">Produits</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-gray-50 hover:text-text-light transition-colors" href="institution-liste-modeles.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-gray-50 hover:text-text-light transition-colors" href="institution-liste-modeles">
 <span class="material-symbols-outlined">table_chart</span>
 <span class="sidebar-text">Modèles</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary font-medium" href="institution-analyse-dossier.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary font-medium" href="institution-analyse-dossier">
 <span class="material-symbols-outlined icon-filled">folder_open</span>
 <span class="sidebar-text">Dossiers</span>
 </a>
@@ -194,7 +194,7 @@
 <p class="text-text-light-muted">Revue et gestion des demandes de crédit des PME.</p>
 </div>
 <div class="flex items-center gap-3">
-<a href="institution-tableau-bord.html" class="flex items-center gap-2 h-10 px-4 rounded-lg border border-black/10 bg-white hover:bg-gray-50 transition-colors text-sm font-semibold text-text-light">
+<a href="institution-tableau-bord" class="flex items-center gap-2 h-10 px-4 rounded-lg border border-black/10 bg-white hover:bg-gray-50 transition-colors text-sm font-semibold text-text-light">
 <span class="material-symbols-outlined text-[20px]">arrow_back</span>
 <span>Retour</span>
 </a>
@@ -264,7 +264,7 @@ import { sessionAPI, applicationsAPI, productsAPI } from './api.js';
 
 // Check authentication
 if (!sessionAPI.isLoggedIn()) {
-  window.location.href = './institution-login.html';
+  window.location.href = './institution-login';
 }
 
 const user = sessionAPI.getUser();
@@ -367,7 +367,7 @@ function renderApplications(applications) {
           <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${colorClass}">${label}</span>
         </td>
         <td class="px-6 py-4 text-center">
-          <button class="text-primary hover:text-primary-dark font-semibold text-sm" onclick="window.location.href='institution-analyse-dossier.html?id=${app.id}'">
+          <button class="text-primary hover:text-primary-dark font-semibold text-sm" onclick="window.location.href='institution-analyse-dossier?id=${app.id}'">
             Détails
           </button>
         </td>

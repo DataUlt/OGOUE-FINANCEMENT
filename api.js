@@ -435,7 +435,7 @@ export const apiHelpers = {
   // Redirect to login if unauthorized
   handleUnauthorized: () => {
     sessionAPI.logout();
-    window.location.href = "./institution-login.html";
+    window.location.href = "./institution-login";
   },
 
   // Check authentication and redirect if needed

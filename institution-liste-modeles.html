@@ -164,15 +164,15 @@
 </button>
 </div>
 <nav class="sidebar-nav flex-1 px-4 flex flex-col gap-2 mt-4">
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-gray-50 hover:text-text-light transition-colors" href="institution-tableau-bord.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-gray-50 hover:text-text-light transition-colors" href="institution-tableau-bord">
 <span class="material-symbols-outlined">dashboard</span>
 <span class="sidebar-text">Vue d'Ensemble</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-gray-50 hover:text-text-light transition-colors" href="institution-liste-produits.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-gray-50 hover:text-text-light transition-colors" href="institution-liste-produits">
 <span class="material-symbols-outlined">payments</span>
 <span class="sidebar-text">Produits</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary font-medium" href="institution-liste-modeles.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary font-medium" href="institution-liste-modeles">
 <span class="material-symbols-outlined icon-filled">table_chart</span>
 <span class="sidebar-text">Modèles</span>
 </a>
@@ -199,7 +199,7 @@
 <p class="text-text-light text-4xl font-black leading-tight tracking-[-0.033em]">Gestion des Modèles de Crédit</p>
 <p class="text-text-light-muted text-base font-normal leading-normal">Créez et gérez les modèles de scoring pour l'octroi de crédits.</p>
 </div>
-<a href="institution-creation-modele.html" class="flex min-w-[120px] max-w-[300px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-12 px-6 bg-primary text-text-light text-base font-bold leading-normal tracking-[0.015em] hover:bg-primary/90">
+<a href="institution-creation-modele" class="flex min-w-[120px] max-w-[300px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-12 px-6 bg-primary text-text-light text-base font-bold leading-normal tracking-[0.015em] hover:bg-primary/90">
 <span class="material-symbols-outlined">add</span>
 <span>Nouveau Modèle</span>
 </a>
@@ -234,7 +234,7 @@ import { sessionAPI, modelsAPI, productsAPI } from './api.js';
 
 // Check authentication
 if (!sessionAPI.isLoggedIn()) {
-  window.location.href = './institution-login.html';
+  window.location.href = './institution-login';
 }
 
 const sidebar = document.getElementById('sidebar');
@@ -278,7 +278,7 @@ const logoutBtn = document.getElementById('logoutBtn');
 if (logoutBtn) {
   logoutBtn.addEventListener('click', () => {
     sessionAPI.logout();
-    window.location.href = './institution-login.html';
+    window.location.href = './institution-login';
   });
 }
 
@@ -359,7 +359,7 @@ function displayModels(models, products) {
     tableBody.innerHTML = `
       <tr>
         <td class="px-4 py-3 text-center text-text-light-muted" colspan="5">
-          Aucun modèle trouvé. <a href="institution-creation-modele.html" class="text-primary font-semibold">Créer un modèle</a>
+          Aucun modèle trouvé. <a href="institution-creation-modele" class="text-primary font-semibold">Créer un modèle</a>
         </td>
       </tr>
     `;
@@ -401,7 +401,7 @@ function displayModels(models, products) {
         </td>
         <td class="px-4 py-3 text-center">
           <div class="flex justify-center gap-1">
-            <a href="institution-modification-modele.html?id=${model.id}" class="p-1.5 hover:bg-blue-500/10 rounded transition-colors inline-flex items-center justify-center" title="Modifier">
+            <a href="institution-modification-modele?id=${model.id}" class="p-1.5 hover:bg-blue-500/10 rounded transition-colors inline-flex items-center justify-center" title="Modifier">
               <span class="material-symbols-outlined text-sm text-blue-500">edit</span>
             </a>
             <button class="p-1.5 hover:bg-red-500/10 rounded transition-colors" title="Supprimer" onclick="deleteModel('${model.id}')">

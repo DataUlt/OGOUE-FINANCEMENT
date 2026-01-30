@@ -154,15 +154,15 @@
 </button>
 </div>
 <nav class="sidebar-nav flex-1 px-4 flex flex-col gap-2 mt-4">
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="institution-tableau-bord.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="institution-tableau-bord">
 <span class="material-symbols-outlined">dashboard</span>
 <span class="sidebar-text">Vue d'Ensemble</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary font-medium" href="institution-liste-produits.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary font-medium" href="institution-liste-produits">
 <span class="material-symbols-outlined icon-filled">payments</span>
 <span class="sidebar-text">Produits</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="institution-liste-modeles.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="institution-liste-modeles">
 <span class="material-symbols-outlined">table_chart</span>
 <span class="sidebar-text">Modèles</span>
 </a>
@@ -184,7 +184,7 @@
 </aside>
 <main class="flex-1 overflow-auto bg-background-light">
 <div class="max-w-4xl mx-auto p-6">
-<a href="institution-liste-produits.html" class="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors w-fit mb-4">
+<a href="institution-liste-produits" class="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors w-fit mb-4">
 <span class="material-symbols-outlined text-[20px]">arrow_back</span>
 <span class="text-sm font-semibold">Retour</span>
 </a>
@@ -354,7 +354,7 @@ const logoutBtn = document.getElementById('logoutBtn');
 if (logoutBtn) {
   logoutBtn.addEventListener('click', () => {
     sessionAPI.logout();
-    window.location.href = './institution-login.html';
+    window.location.href = './institution-login';
   });
 }
 </script>
@@ -434,7 +434,7 @@ if (logoutBtn) {
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
       sessionAPI.logout();
-      window.location.href = './institution-login.html';
+      window.location.href = './institution-login';
     });
   }
   
@@ -743,7 +743,7 @@ if (logoutBtn) {
       successMessage.classList.remove('hidden');
 
       setTimeout(() => {
-        window.location.href = './institution-liste-produits.html';
+        window.location.href = './institution-liste-produits';
       }, 2000);
 
     } catch (error) {

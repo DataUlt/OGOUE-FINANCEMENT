@@ -179,11 +179,11 @@
 </button>
 </div>
 <nav class="sidebar-nav flex-1 px-4 flex flex-col gap-2 mt-4">
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="pme-selection-institution.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="pme-selection-institution">
 <span class="material-symbols-outlined icon-filled">home</span>
 <span class="sidebar-text">Accueil</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="pme-historique-scores.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="pme-historique-scores">
 <span class="material-symbols-outlined">analytics</span>
 <span class="sidebar-text">Résultats</span>
 </a>
@@ -318,7 +318,7 @@ console.log('🔌 API Base URL:', API_BASE_URL);
 
 // Check authentication
 if (!sessionAPI.isLoggedIn()) {
-  window.location.href = './pme-login.html';
+  window.location.href = './pme-login';
 }
 
 // Load PME profile at startup
@@ -748,7 +748,7 @@ const logoutBtn = document.getElementById('logoutBtn');
 if (logoutBtn) {
   logoutBtn.addEventListener('click', () => {
     localStorage.removeItem('authToken');
-    window.location.href = './pme-login.html';
+    window.location.href = './pme-login';
   });
 }
 

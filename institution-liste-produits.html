@@ -158,15 +158,15 @@
 </button>
 </div>
 <nav class="sidebar-nav flex-1 px-4 flex flex-col gap-2 mt-4">
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="institution-tableau-bord.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="institution-tableau-bord">
 <span class="material-symbols-outlined">dashboard</span>
 <span class="sidebar-text">Vue d'Ensemble</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary font-medium" href="institution-liste-produits.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary font-medium" href="institution-liste-produits">
 <span class="material-symbols-outlined icon-filled">payments</span>
 <span class="sidebar-text">Produits</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="institution-liste-modeles.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="institution-liste-modeles">
 <span class="material-symbols-outlined">table_chart</span>
 <span class="sidebar-text">Modèles</span>
 </a>
@@ -195,7 +195,7 @@
 <h1 class="text-4xl font-bold text-text-light mb-2">Gestion des Produits de Crédit</h1>
 <p class="text-text-light-muted text-base">Consultez, modifiez ou supprimez vos offres de crédit.</p>
 </div>
-<a href="institution-creation-produit.html" class="flex items-center gap-2 px-6 h-12 bg-primary text-background-dark rounded-lg font-bold hover:bg-primary/90 transition-colors">
+<a href="institution-creation-produit" class="flex items-center gap-2 px-6 h-12 bg-primary text-background-dark rounded-lg font-bold hover:bg-primary/90 transition-colors">
 <span class="material-symbols-outlined">add</span>
 <span>Nouveau Produit</span>
 </a>
@@ -236,7 +236,7 @@ import { sessionAPI, productsAPI } from './api.js';
 
 // Check authentication
 if (!sessionAPI.isLoggedIn()) {
-  window.location.href = './institution-login.html';
+  window.location.href = './institution-login';
 }
 
 // Update sidebar with user info
@@ -285,7 +285,7 @@ const logoutBtn = document.getElementById('logoutBtn');
 if (logoutBtn) {
   logoutBtn.addEventListener('click', () => {
     sessionAPI.logout();
-    window.location.href = './institution-login.html';
+    window.location.href = './institution-login';
   });
 }
 
@@ -344,7 +344,7 @@ function displayProducts(productsToDisplay) {
     tableBody.innerHTML = `
       <tr>
         <td class="px-4 py-3 text-center text-text-light-muted" colspan="9">
-          Aucun produit trouvé. <a href="institution-creation-produit.html" class="text-primary font-semibold">Créer un produit</a>
+          Aucun produit trouvé. <a href="institution-creation-produit" class="text-primary font-semibold">Créer un produit</a>
         </td>
       </tr>
     `;
@@ -397,7 +397,7 @@ function displayProducts(productsToDisplay) {
         </td>
         <td class="px-4 py-3 text-center">
           <div class="flex justify-center gap-1">
-            <a href="institution-modification-produit.html?id=${product.id}" class="p-1.5 hover:bg-blue-500/10 rounded transition-colors inline-flex items-center justify-center" title="Modifier">
+            <a href="institution-modification-produit?id=${product.id}" class="p-1.5 hover:bg-blue-500/10 rounded transition-colors inline-flex items-center justify-center" title="Modifier">
               <span class="material-symbols-outlined text-sm text-blue-500">edit</span>
             </a>
             <button class="p-1.5 hover:bg-red-500/10 rounded transition-colors delete-btn" data-product-id="${product.id}" title="Supprimer">

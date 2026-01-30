@@ -1,0 +1,20 @@
+# Clean URLs - Rewrite paths without .html extension
+/institution-login              /institution-login.html               200
+/institution-register           /institution-register.html            200
+/institution-tableau-bord       /institution-tableau-bord.html        200
+/institution-liste-produits     /institution-liste-produits.html      200
+/institution-tous-produits      /institution-tous-produits.html       200
+/institution-creation-produit   /institution-creation-produit.html    200
+/institution-modification-produit /institution-modification-produit.html 200
+/institution-liste-modeles      /institution-liste-modeles.html       200
+/institution-creation-modele    /institution-creation-modele.html     200
+/institution-modification-modele /institution-modification-modele.html 200
+/institution-analyse-dossier    /institution-analyse-dossier.html     200
+/pme-login                      /pme-login.html                       200
+/pme-register                   /pme-register.html                    200
+/pme-catalogue-produits         /pme-catalogue-produits.html          200
+/pme-selection-institution      /pme-selection-institution.html       200
+/pme-resultats-simulation       /pme-resultats-simulation.html        200
+/pme-historique-scores          /pme-historique-scores.html           200
+/login                          /pme-login.html                       200
+/forgot-password                /forgot-password.html                 200

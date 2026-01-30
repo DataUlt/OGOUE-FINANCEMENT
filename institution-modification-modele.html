@@ -154,15 +154,15 @@
 </button>
 </div>
 <nav class="sidebar-nav flex-1 px-4 flex flex-col gap-2 mt-4">
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-gray-50 hover:text-text-light transition-colors" href="institution-tableau-bord.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-gray-50 hover:text-text-light transition-colors" href="institution-tableau-bord">
 <span class="material-symbols-outlined">dashboard</span>
 <span class="sidebar-text">Vue d'Ensemble</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-gray-50 hover:text-text-light transition-colors" href="institution-liste-produits.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-gray-50 hover:text-text-light transition-colors" href="institution-liste-produits">
 <span class="material-symbols-outlined">payments</span>
 <span class="sidebar-text">Produits</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary font-medium" href="institution-liste-modeles.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary font-medium" href="institution-liste-modeles">
 <span class="material-symbols-outlined icon-filled">table_chart</span>
 <span class="sidebar-text">Modèles</span>
 </a>
@@ -187,7 +187,7 @@
 <main class="flex-1 flex flex-col h-full overflow-hidden">
 <div class="flex-1 overflow-y-auto p-8">
 <div class="max-w-4xl mx-auto">
-<a href="institution-liste-modeles.html" class="inline-flex items-center gap-2 text-primary hover:text-primary-dark font-medium mb-6">
+<a href="institution-liste-modeles" class="inline-flex items-center gap-2 text-primary hover:text-primary-dark font-medium mb-6">
 <span class="material-symbols-outlined text-xl">arrow_back</span>
 <span>Retour</span>
 </a>
@@ -361,7 +361,7 @@ const logoutBtn = document.getElementById('logoutBtn');
 if (logoutBtn) {
   logoutBtn.addEventListener('click', () => {
     sessionAPI.logout();
-    window.location.href = './institution-login.html';
+    window.location.href = './institution-login';
   });
 }
 
@@ -612,7 +612,7 @@ if (saveBtn) {
     const token = sessionAPI.getToken();
     if (!token) {
       alert('Session expirée, veuillez vous reconnecter');
-      window.location.href = 'institution-login.html';
+      window.location.href = 'institution-login';
       return;
     }
     
@@ -640,7 +640,7 @@ if (saveBtn) {
       alert('Modèle enregistré avec succès!');
       
       // Redirect to models list
-      window.location.href = 'institution-liste-modeles.html';
+      window.location.href = 'institution-liste-modeles';
     } catch (error) {
       console.error('❌ Error updating model:', error);
       alert('Erreur: ' + error.message);
@@ -655,7 +655,7 @@ const cancelBtn = Array.from(document.querySelectorAll('button')).find(btn =>
 
 if (cancelBtn) {
   cancelBtn.addEventListener('click', () => {
-    window.location.href = 'institution-liste-modeles.html';
+    window.location.href = 'institution-liste-modeles';
   });
 }
 

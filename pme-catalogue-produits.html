@@ -165,11 +165,11 @@
 </button>
 </div>
 <nav class="sidebar-nav flex-1 px-4 flex flex-col gap-2 mt-4">
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="pme-selection-institution.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="pme-selection-institution">
 <span class="material-symbols-outlined icon-filled">home</span>
 <span class="sidebar-text">Accueil</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="pme-historique-scores.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="pme-historique-scores">
 <span class="material-symbols-outlined">analytics</span>
 <span class="sidebar-text">Résultats</span>
 </a>
@@ -254,7 +254,7 @@ console.log('🔌 API Base URL:', API_BASE_URL);
 
 // Check authentication
 if (!sessionAPI.isLoggedIn()) {
-  window.location.href = './pme-login.html';
+  window.location.href = './pme-login';
 }
 
 // Get institution ID from URL or sessionStorage
@@ -303,7 +303,7 @@ async function loadProducts() {
       document.getElementById('productsTableBody').innerHTML = `
         <tr>
           <td class="px-4 py-3 text-center text-red-500" colspan="9">
-            Aucune institution sélectionnée. <a href="pme-selection-institution.html" class="text-primary font-semibold">Retour</a>
+            Aucune institution sélectionnée. <a href="pme-selection-institution" class="text-primary font-semibold">Retour</a>
           </td>
         </tr>
       `;
@@ -326,7 +326,7 @@ async function loadProducts() {
     document.getElementById('productsTableBody').innerHTML = `
       <tr>
         <td class="px-4 py-3 text-center text-text-light-muted" colspan="9">
-          Erreur lors du chargement des produits. <a href="pme-selection-institution.html" class="text-primary font-semibold">Retour</a>
+          Erreur lors du chargement des produits. <a href="pme-selection-institution" class="text-primary font-semibold">Retour</a>
         </td>
       </tr>
     `;
@@ -394,7 +394,7 @@ function displayProducts(productsToDisplay) {
           </div>
         </td>
         <td class="px-4 py-3 text-center">
-          <button onclick="window.location.href='pme-resultats-simulation.html?productId=${product.id}'" class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors text-sm font-semibold cursor-pointer border-0">
+          <button onclick="window.location.href='pme-resultats-simulation?productId=${product.id}'" class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors text-sm font-semibold cursor-pointer border-0">
             <span class="material-symbols-outlined text-sm">calculate</span>
             <span>Simuler</span>
           </button>
@@ -480,7 +480,7 @@ const logoutBtn = document.getElementById('logoutBtn');
 if (logoutBtn) {
   logoutBtn.addEventListener('click', () => {
     localStorage.removeItem('authToken');
-    window.location.href = './pme-login.html';
+    window.location.href = './pme-login';
   });
 }
 

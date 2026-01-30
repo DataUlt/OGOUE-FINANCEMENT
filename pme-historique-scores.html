@@ -172,11 +172,11 @@
 </button>
 </div>
 <nav class="sidebar-nav flex-1 px-4 flex flex-col gap-2 mt-4">
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="pme-selection-institution.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="pme-selection-institution">
 <span class="material-symbols-outlined icon-filled">home</span>
 <span class="sidebar-text">Accueil</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="pme-resultats-simulation.html">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="pme-resultats-simulation">
 <span class="material-symbols-outlined">analytics</span>
 <span class="sidebar-text">Résultats</span>
 </a>
@@ -221,7 +221,7 @@
 <tbody class="divide-y divide-black/10" id="resultsTableBody">
 <tr>
 <td class="px-4 py-3 text-center text-text-light-muted" colspan="7">
-Aucune simulation pour le moment. <a href="pme-selection-institution.html" class="text-primary font-semibold">Démarrer une simulation</a>
+Aucune simulation pour le moment. <a href="pme-selection-institution" class="text-primary font-semibold">Démarrer une simulation</a>
 </td>
 </tr>
 </tbody>
@@ -238,7 +238,7 @@ import { sessionAPI } from './api.js';
 
 // Check authentication
 if (!sessionAPI.isLoggedIn()) {
-  window.location.href = './pme-login.html';
+  window.location.href = './pme-login';
 }
 
 // Update user info dynamically
@@ -283,7 +283,7 @@ function loadSimulationResults() {
     tableBody.innerHTML = `
       <tr>
         <td class="px-4 py-3 text-center text-text-light-muted" colspan="7">
-          Aucune simulation pour le moment. <a href="pme-selection-institution.html" class="text-primary font-semibold">Démarrer une simulation</a>
+          Aucune simulation pour le moment. <a href="pme-selection-institution" class="text-primary font-semibold">Démarrer une simulation</a>
         </td>
       </tr>
     `;
@@ -396,7 +396,7 @@ const logoutBtn = document.getElementById('logoutBtn');
 if (logoutBtn) {
   logoutBtn.addEventListener('click', () => {
     localStorage.removeItem('authToken');
-    window.location.href = './pme-login.html';
+    window.location.href = './pme-login';
   });
 }
 
