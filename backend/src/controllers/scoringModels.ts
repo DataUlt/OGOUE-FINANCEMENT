@@ -5,7 +5,7 @@ import { AppError } from "../middleware/errorHandler.js";
 import { v4 as uuidv4 } from "uuid";
 
 export const scoringModelsController = {
-  // Create a new scoring model
+  // Create a new scoring model (supports both legacy and API-based)
   createModel: async (req: AuthRequest, res: Response) => {
     try {
       console.log('🔵 Create model request received');
@@ -14,17 +14,32 @@ export const scoringModelsController = {
       
       if (!req.user) throw new AppError("Not authenticated", 401);
 
-      const { name, description, variables } = req.body;
+      const { name, description, variables, api_config } = req.body;
 
       // Validation
-      if (!name || !variables || !Array.isArray(variables) || variables.length === 0) {
-        throw new AppError("Name and at least one variable are required", 400);
+      if (!name) {
+        throw new AppError("Name is required", 400);
       }
 
-      // Validate variables
+      // Check if it's an API-based model
+      const isApiModel = api_config && api_config.endpoint && api_config.method;
+
+      if (!variables || !Array.isArray(variables) || variables.length === 0) {
+        throw new AppError("At least one variable is required", 400);
+      }
+
+      // Validate variables based on model type
       for (const variable of variables) {
-        if (!variable.name || variable.weight === undefined || variable.min === undefined || variable.max === undefined) {
-          throw new AppError("Each variable must have name, weight, min, and max", 400);
+        if (isApiModel) {
+          // API-based model: need api_name and display_name
+          if (!variable.api_name || !variable.display_name) {
+            throw new AppError("Each variable must have api_name and display_name", 400);
+          }
+        } else {
+          // Legacy model: need name, weight, min, max
+          if (!variable.name || variable.weight === undefined || variable.min === undefined || variable.max === undefined) {
+            throw new AppError("Each variable must have name, weight, min, and max", 400);
+          }
         }
       }
 
@@ -71,34 +86,67 @@ export const scoringModelsController = {
 
       // Create the scoring model
       const modelId = uuidv4();
-      const { error: modelError } = await supabase.from("scoring_models").insert({
+      const modelData: any = {
         id: modelId,
         institution_id: institution.id,
         name,
         description: description || null,
         is_active: true,
         created_at: new Date(),
-      });
+      };
+
+      // Add API config if provided
+      if (isApiModel) {
+        modelData.api_endpoint = api_config.endpoint;
+        modelData.api_method = api_config.method;
+        modelData.api_response_mapping = api_config.response_mapping || { score_field: 'score', explanation_field: 'explanation' };
+      }
+
+      const { error: modelError } = await supabase.from("scoring_models").insert(modelData);
 
       if (modelError) {
         console.error('❌ Model insert error:', modelError);
         throw new AppError("Failed to create model", 500);
       }
 
-      // Insert model variables
-      const modelVariablesData = variables.map(variable => ({
-        id: uuidv4(),
-        scoring_model_id: modelId,
-        name: variable.name,
-        weight: variable.weight,
-        min_value: variable.min,
-        max_value: variable.max,
-        unit: variable.unit || null,
-        favorable_direction: variable.favorableDirection || 'Croissant',
-        is_blocking: variable.isBlocking || false,
-        variable_type: variable.type || 'numeric',
-        created_at: new Date(),
-      }));
+      // Insert model variables (supports both legacy and API-based)
+      const modelVariablesData = variables.map((variable: any) => {
+        if (isApiModel) {
+          // API-based model variables
+          return {
+            id: uuidv4(),
+            scoring_model_id: modelId,
+            name: variable.api_name,
+            display_name: variable.display_name,
+            description: variable.description || null,
+            variable_type: variable.variable_type || 'number',
+            weight: 0,
+            min_value: null,
+            max_value: null,
+            unit: null,
+            favorable_direction: null,
+            is_blocking: false,
+            created_at: new Date(),
+          };
+        } else {
+          // Legacy model variables
+          return {
+            id: uuidv4(),
+            scoring_model_id: modelId,
+            name: variable.name,
+            display_name: variable.name,
+            description: null,
+            weight: variable.weight,
+            min_value: variable.min,
+            max_value: variable.max,
+            unit: variable.unit || null,
+            favorable_direction: variable.favorableDirection || 'Croissant',
+            is_blocking: variable.isBlocking || false,
+            variable_type: variable.type || 'numeric',
+            created_at: new Date(),
+          };
+        }
+      });
 
       const { error: variablesError } = await supabase
         .from("model_variables")
@@ -110,13 +158,14 @@ export const scoringModelsController = {
         console.warn('⚠️ Model created but variables failed to insert');
       }
 
-      console.log('✅ Scoring model created:', { modelId, name, variableCount: variables.length });
+      console.log('✅ Scoring model created:', { modelId, name, variableCount: variables.length, isApiModel });
       res.status(201).json({
         message: "Scoring model created successfully",
         model: {
           id: modelId,
           name,
           description,
+          api_config: isApiModel ? api_config : null,
           variables: variables.length,
         },
       });
@@ -159,7 +208,17 @@ export const scoringModelsController = {
 
       if (error) throw new AppError("Failed to fetch models", 500);
 
-      res.json({ models });
+      // Transform models to include api_config structure
+      const transformedModels = models?.map((model: any) => ({
+        ...model,
+        api_config: model.api_endpoint ? {
+          method: model.api_method,
+          endpoint: model.api_endpoint,
+          response_mapping: model.api_response_mapping
+        } : null
+      }));
+
+      res.json({ models: transformedModels });
     } catch (error) {
       if (error instanceof AppError) {
         return res.status(error.status).json({ error: error.message });
@@ -188,7 +247,17 @@ export const scoringModelsController = {
         throw new AppError("Model not found", 404);
       }
 
-      res.json({ model });
+      // Transform model to include api_config structure
+      const transformedModel = {
+        ...model,
+        api_config: model.api_endpoint ? {
+          method: model.api_method,
+          endpoint: model.api_endpoint,
+          response_mapping: model.api_response_mapping
+        } : null
+      };
+
+      res.json({ model: transformedModel });
     } catch (error) {
       if (error instanceof AppError) {
         return res.status(error.status).json({ error: error.message });
@@ -204,7 +273,7 @@ export const scoringModelsController = {
       if (!req.user) throw new AppError("Not authenticated", 401);
 
       const { id } = req.params;
-      const { name, description, is_active, variables } = req.body;
+      const { name, description, is_active, variables, api_config } = req.body;
 
       // Get model and verify ownership
       const { data: model } = await supabase
@@ -227,15 +296,25 @@ export const scoringModelsController = {
         throw new AppError("Unauthorized", 403);
       }
 
+      // Build update object
+      const updateData: any = {
+        name,
+        description,
+        is_active,
+        updated_at: new Date(),
+      };
+
+      // Add API config if provided
+      if (api_config) {
+        updateData.api_endpoint = api_config.endpoint;
+        updateData.api_method = api_config.method;
+        updateData.api_response_mapping = api_config.response_mapping;
+      }
+
       // Update model
       const { data: updated, error } = await supabase
         .from("scoring_models")
-        .update({
-          name,
-          description,
-          is_active,
-          updated_at: new Date(),
-        })
+        .update(updateData)
         .eq("id", id)
         .select()
         .single();
@@ -243,6 +322,9 @@ export const scoringModelsController = {
       if (error) {
         throw new AppError("Failed to update model", 500);
       }
+
+      // Check if it's an API-based model
+      const isApiModel = api_config && api_config.endpoint && api_config.method;
 
       // If variables provided, update them
       if (variables && Array.isArray(variables) && variables.length > 0) {
@@ -252,20 +334,43 @@ export const scoringModelsController = {
           .delete()
           .eq("scoring_model_id", id);
 
-        // Insert new variables
-        const modelVariablesData = variables.map(variable => ({
-          id: uuidv4(),
-          scoring_model_id: id,
-          name: variable.name,
-          weight: variable.weight,
-          min_value: variable.min,
-          max_value: variable.max,
-          unit: variable.unit || '',
-          favorable_direction: variable.favorableDirection || 'Croissant',
-          is_blocking: variable.isBlocking || false,
-          variable_type: variable.type || 'numeric',
-          created_at: new Date(),
-        }));
+        // Insert new variables (supports both legacy and API-based)
+        const modelVariablesData = variables.map((variable: any) => {
+          if (isApiModel || variable.api_name) {
+            // API-based model variables
+            return {
+              id: uuidv4(),
+              scoring_model_id: id,
+              name: variable.api_name || variable.name,
+              display_name: variable.display_name || variable.name,
+              description: variable.description || null,
+              variable_type: variable.variable_type || 'number',
+              weight: 0,
+              min_value: null,
+              max_value: null,
+              unit: null,
+              favorable_direction: null,
+              is_blocking: false,
+              created_at: new Date(),
+            };
+          } else {
+            // Legacy model variables
+            return {
+              id: uuidv4(),
+              scoring_model_id: id,
+              name: variable.name,
+              display_name: variable.name,
+              weight: variable.weight,
+              min_value: variable.min,
+              max_value: variable.max,
+              unit: variable.unit || '',
+              favorable_direction: variable.favorableDirection || 'Croissant',
+              is_blocking: variable.isBlocking || false,
+              variable_type: variable.type || 'numeric',
+              created_at: new Date(),
+            };
+          }
+        });
 
         const { error: variablesError } = await supabase
           .from("model_variables")

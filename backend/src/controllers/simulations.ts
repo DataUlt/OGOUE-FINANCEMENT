@@ -9,6 +9,7 @@ export const simulationsController = {
   /**
    * POST /api/simulations/calculate (PUBLIC)
    * Calcule le score pour une simulation
+   * Supports both legacy (internal calculation) and API-based models
    */
   calculateScore: async (req: any, res: Response) => {
     console.log("🎯 calculateScore handler appelé");
@@ -44,58 +45,139 @@ export const simulationsController = {
 
       console.log("✅ Product retrieved:", product);
 
-      // Récupérer les variables du modèle de scoring
-      const { data: variables_data, error: variablesError } = await supabase
-        .from("model_variables")
-        .select("id, name, weight, min_value, max_value, favorable_direction, is_blocking, unit")
-        .eq("scoring_model_id", product.scoring_model_id);
+      // Récupérer le modèle de scoring complet (incluant API config)
+      const { data: scoringModel, error: modelError } = await supabase
+        .from("scoring_models")
+        .select("*, model_variables(*)")
+        .eq("id", product.scoring_model_id)
+        .single();
 
-      if (variablesError || !variables_data) {
-        console.error("❌ Variables not found error:", variablesError);
-        throw new AppError("Variables du modèle non trouvées", 404);
+      if (modelError || !scoringModel) {
+        console.error("❌ Scoring model not found error:", modelError);
+        throw new AppError("Modèle de scoring non trouvé", 404);
       }
 
-      console.log("✅ Model variables retrieved:", variables_data);
+      console.log("✅ Scoring model retrieved:", scoringModel.name);
 
-      // Construire les variables pour le moteur de scoring
-      const variables: Variable[] = variables_data.map(
-        (mv: any) => ({
-          id: mv.id,
-          name: mv.name,
-          weight: mv.weight,
-          min: mv.min_value,
-          max: mv.max_value,
-          favorableDirection:
-            mv.favorable_direction?.toUpperCase() === "CROISSANT"
-              ? "CROISSANT"
-              : "DECROISSANT",
-          blocking: mv.is_blocking || false,
-        })
-      );
+      // Check if this is an API-based model
+      const isApiModel = scoringModel.api_endpoint && scoringModel.api_method;
 
-      // Créer le moteur et calculer
-      const engine = new ScoringEngine();
-      const result = engine.calculate({
-        variables,
-        values,
-        missingPolicy: "REFUSE",
-      });
+      let result: any;
+      let explanation: string | null = null;
 
-      console.log("✅ Score calculé:", result.score_final);
+      if (isApiModel) {
+        // API-based model: call external API
+        console.log("🌐 Calling external scoring API:", scoringModel.api_endpoint);
+        
+        // Build the request body using the variable mappings
+        const apiRequestBody: any = {};
+        const variables_data = scoringModel.model_variables || [];
+        
+        for (const variable of variables_data) {
+          const apiName = variable.name; // This is the api_name
+          // Find the value in the provided values (could be keyed by api_name or display_name)
+          const value = values[apiName] ?? values[variable.display_name];
+          if (value !== undefined) {
+            apiRequestBody[apiName] = value;
+          }
+        }
+
+        console.log("📤 API request body:", apiRequestBody);
+
+        try {
+          const apiResponse = await fetch(scoringModel.api_endpoint, {
+            method: scoringModel.api_method,
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: scoringModel.api_method === 'POST' ? JSON.stringify(apiRequestBody) : undefined,
+          });
+
+          if (!apiResponse.ok) {
+            console.error("❌ External API error:", apiResponse.status, apiResponse.statusText);
+            throw new AppError(`Erreur de l'API externe: ${apiResponse.statusText}`, 502);
+          }
+
+          const apiResult = await apiResponse.json() as any;
+          console.log("📥 API response:", apiResult);
+
+          // Extract score and explanation using response mapping
+          const responseMapping = scoringModel.api_response_mapping || { score_field: 'score', explanation_field: 'explanation' };
+          
+          // Handle nested fields (e.g., "data.score")
+          const getNestedValue = (obj: any, path: string) => {
+            return path.split('.').reduce((current, key) => current?.[key], obj);
+          };
+
+          const score = getNestedValue(apiResult, responseMapping.score_field);
+          explanation = getNestedValue(apiResult, responseMapping.explanation_field);
+
+          if (score === undefined || score === null) {
+            console.error("❌ Score not found in API response");
+            throw new AppError("Le score n'a pas été trouvé dans la réponse de l'API", 502);
+          }
+
+          // Build result object similar to internal scoring
+          result = {
+            score_final: typeof score === 'number' ? score : parseFloat(score),
+            classification: score >= 80 ? 'Excellent' : score >= 60 ? 'Bon' : score >= 40 ? 'Moyen' : 'Faible',
+            details: [],
+            explanation: explanation,
+          };
+
+          console.log("✅ Score from external API:", result.score_final);
+
+        } catch (fetchError: any) {
+          console.error("❌ Error calling external API:", fetchError);
+          if (fetchError instanceof AppError) throw fetchError;
+          throw new AppError(`Impossible de contacter l'API externe: ${fetchError.message}`, 502);
+        }
+
+      } else {
+        // Legacy model: use internal scoring engine
+        console.log("📊 Using internal scoring engine");
+        
+        const variables_data = scoringModel.model_variables || [];
+
+        // Construire les variables pour le moteur de scoring
+        const variables: Variable[] = variables_data.map(
+          (mv: any) => ({
+            id: mv.id,
+            name: mv.name,
+            weight: mv.weight,
+            min: mv.min_value,
+            max: mv.max_value,
+            favorableDirection:
+              mv.favorable_direction?.toUpperCase() === "CROISSANT"
+                ? "CROISSANT"
+                : "DECROISSANT",
+            blocking: mv.is_blocking || false,
+          })
+        );
+
+        // Créer le moteur et calculer
+        const engine = new ScoringEngine();
+        result = engine.calculate({
+          variables,
+          values,
+          missingPolicy: "REFUSE",
+        });
+
+        console.log("✅ Score calculé (internal):", result.score_final);
+      }
 
       // Sauvegarder la simulation dans la base de données
-      // Le pme_id peut être fourni ou sera null (cas PME anonyme)
       const { data: simulation, error: simulationError } = await supabase
         .from("simulations")
         .insert({
-          pme_id: pme_id || null, // Optional PME ID
+          pme_id: pme_id || null,
           institution_id: product.institution_id,
           credit_product_id: product_id,
           simulation_data: values,
           calculated_score: result.score_final,
           score_breakdown: result.details || [],
           recommendation: result.score_final >= 60 ? "eligible" : result.score_final >= 40 ? "conditional" : "ineligible",
-          recommendation_reason: `Score: ${result.score_final}/100 - ${result.classification}`,
+          recommendation_reason: explanation || `Score: ${result.score_final}/100 - ${result.classification}`,
         })
         .select()
         .single();
@@ -106,7 +188,12 @@ export const simulationsController = {
       }
 
       console.log("✅ Simulation sauvegardée:", simulation);
-      res.json({ ...result, simulation_id: simulation.id });
+      res.json({ 
+        ...result, 
+        simulation_id: simulation.id,
+        is_api_based: isApiModel,
+        explanation: explanation 
+      });
     } catch (error) {
       if (error instanceof AppError) {
         return res.status(error.status).json({ error: error.message });

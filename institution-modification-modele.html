@@ -5,8 +5,8 @@
 <title>Modification Modèle d'Octroi (Institution)</title>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script id="tailwind-config">
         tailwind.config = {
@@ -14,9 +14,7 @@
                 extend: {
                     colors: {
                         "primary": "#0088CC",
-                        "primary-dark": "#19b823",
                         "background-light": "#f6f8f6",
-                        "surface-light": "#ffffff",
                         "text-light": "#0a0c0a",
                         "text-light-muted": "#5c6c60",
                     },
@@ -33,7 +31,7 @@
             font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
         }
         .icon-filled {
-            font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
         aside.collapsed {
             width: 80px;
@@ -68,8 +66,15 @@
         aside.collapsed .sidebar-user > div:last-child {
             display: none;
         }
+        aside.collapsed #logoutBtn {
+            padding: 8px;
+            width: fit-content;
+            margin: 0 auto;
+        }
+        aside.collapsed #logoutBtn span:last-child {
+            display: none;
+        }
         
-        /* Mobile Responsive */
         @media (max-width: 768px) {
             aside#sidebar {
                 position: fixed;
@@ -83,7 +88,6 @@
             aside#sidebar.mobile-open {
                 left: 0;
             }
-            /* Section profil et déconnexion plus compacte en mobile */
             aside#sidebar .p-4.mt-auto {
                 padding: 0.75rem;
                 margin-top: 0;
@@ -92,176 +96,177 @@
                 padding: 0.5rem;
                 margin-bottom: 0.5rem;
             }
-            aside#sidebar .sidebar-nav {
-                flex: 0 0 auto;
-            }
             aside#sidebar #logoutBtn {
-                padding: 0.5rem 1rem;
-            }
-            .sidebar-backdrop {
-                display: none;
-            }
-            .sidebar-backdrop.mobile-open {
-                display: block;
-                position: fixed;
-                inset: 0;
-                background-color: rgba(0, 0, 0, 0.5);
-                z-index: 30;
-            }
-            main .p-8 {
-                padding: 1rem !important;
-            }
-            .text-4xl {
-                font-size: 1.5rem !important;
-            }
-            .mobile-header {
-                display: flex;
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                height: 56px;
-                background: white;
-                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-                align-items: center;
-                padding: 0 1rem;
-                z-index: 20;
-            }
-            main.flex-1 {
-                padding-top: 56px;
+                padding: 0.5rem 0.75rem;
+                font-size: 0.875rem;
             }
         }
-        @media (min-width: 769px) {
-            .mobile-header {
-                display: none !important;
-            }
+        .sidebar-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 30;
+        }
+        .sidebar-backdrop.mobile-open {
+            display: block;
         }
     </style>
 </head>
-<body class="bg-background-light text-text-light font-display overflow-hidden">
-<!-- Mobile Header -->
-<div class="mobile-header" id="mobileHeader">
-    <button id="mobileMenuBtn" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-        <span class="material-symbols-outlined text-2xl">menu</span>
-    </button>
-    <span class="ml-3 font-bold text-lg text-primary">OGOUÉ</span>
+<body class="bg-background-light font-display">
+<div class="flex min-h-screen">
+<!-- Sidebar -->
+<aside class="w-64 border-r border-black/10 bg-white flex flex-col transition-all duration-300" id="sidebar">
+<div class="sidebar-header p-5 flex items-center gap-4 border-b border-black/10">
+<div class="flex items-center justify-center rounded-lg">
+<img src="https://i.ibb.co/L5yXtNw/OGOUE-FINANCEMENT-Logo-1.png" alt="Ogoué Financement" class="size-10 object-contain" />
 </div>
-<div class="flex h-screen w-full">
-<aside id="sidebar" class="w-64 flex flex-col border-r border-black/10 bg-white shrink-0 transition-all duration-300">
-<div class="sidebar-header p-6 flex items-center gap-3">
-<button id="sidebarToggle" class="flex-shrink-0 p-1.5 hover:bg-gray-50 rounded-lg transition-colors">
-<span class="material-symbols-outlined text-xl">menu</span>
+<div class="flex flex-col">
+<h1 class="text-text-light text-xl font-bold">Ogoué Financement</h1>
+<p class="text-text-light-muted text-xs">Espace Institution</p>
+</div>
+</div>
+<button class="absolute top-5 right-[-12px] bg-white border border-black/10 rounded-full p-1 shadow-sm hover:bg-gray-50 z-10" id="sidebarToggle">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
 </button>
-</div>
-<nav class="sidebar-nav flex-1 px-4 flex flex-col gap-2 mt-4">
+<nav class="sidebar-nav flex-1 py-4 px-3">
 <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-gray-50 hover:text-text-light transition-colors" href="institution-tableau-bord">
 <span class="material-symbols-outlined">dashboard</span>
-<span class="sidebar-text">Vue d'Ensemble</span>
+<span class="sidebar-text">Tableau de bord</span>
 </a>
 <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-gray-50 hover:text-text-light transition-colors" href="institution-liste-produits">
-<span class="material-symbols-outlined">payments</span>
-<span class="sidebar-text">Produits</span>
+<span class="material-symbols-outlined">credit_card</span>
+<span class="sidebar-text">Produits de Crédit</span>
 </a>
 <a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary font-medium" href="institution-liste-modeles">
-<span class="material-symbols-outlined icon-filled">table_chart</span>
-<span class="sidebar-text">Modèles</span>
+<span class="material-symbols-outlined">analytics</span>
+<span class="sidebar-text">Modèles d'Octroi</span>
 </a>
 </nav>
-<div class="p-4 mt-auto">
-<div class="sidebar-user bg-gray-50 rounded-lg p-4 flex items-center gap-3">
-<div class="size-8 rounded-full bg-gradient-to-br from-primary to-[#006699] flex items-center justify-center text-white font-bold text-sm" id="userAvatarInitials">
-                    ?
-                </div>
-<div class="overflow-hidden flex-1">
-<p class="text-sm font-semibold text-text-light truncate" id="institutionDisplayName">Institution</p>
-<p class="text-xs text-text-light-muted truncate" id="contactDisplayName">Contact</p>
-<p class="text-xs text-text-light-muted truncate" id="institutionDisplayEmail">email@example.com</p>
+<div class="p-4 mt-auto border-t border-black/10">
+<div class="sidebar-user flex items-center gap-3 p-3 rounded-lg bg-background-light mb-3">
+<div class="size-10 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">business</span>
+</div>
+<div>
+<p class="text-sm font-semibold text-text-light truncate">Ma Banque</p>
+<p class="text-xs text-text-light-muted truncate">contact@mabanque.ga</p>
 </div>
 </div>
-<button id="logoutBtn" class="w-full mt-4 flex items-center justify-center gap-2 rounded-lg h-10 px-4 text-red-500 text-sm font-bold bg-red-500/10 hover:bg-red-500/20 transition-colors">
+<button class="flex w-full items-center justify-center gap-2 px-4 py-2 rounded-lg text-red-600 hover:bg-red-50 transition-colors font-semibold text-sm" id="logoutBtn">
 <span class="material-symbols-outlined text-sm">logout</span>
-<span class="sidebar-text">Déconnexion</span>
+<span>Se déconnecter</span>
 </button>
 </div>
 </aside>
-<main class="flex-1 flex flex-col h-full overflow-hidden">
-<div class="flex-1 overflow-y-auto p-8">
-<div class="max-w-4xl mx-auto">
-<a href="institution-liste-modeles" class="inline-flex items-center gap-2 text-primary hover:text-primary-dark font-medium mb-6">
-<span class="material-symbols-outlined text-xl">arrow_back</span>
-<span>Retour</span>
+<!-- Main Content -->
+<main class="flex-1 overflow-y-auto">
+<!-- Mobile Header -->
+<header class="md:hidden flex items-center justify-between p-4 border-b border-black/10 bg-white sticky top-0 z-20">
+<button class="p-2 hover:bg-gray-100 rounded-lg" id="mobileMenuBtn">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<img src="https://i.ibb.co/L5yXtNw/OGOUE-FINANCEMENT-Logo-1.png" alt="Logo" class="h-8" />
+<div class="w-10"></div>
+</header>
+<div class="p-4 md:p-10 max-w-4xl mx-auto">
+<a href="institution-liste-modeles" class="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors w-fit mb-2">
+<span class="material-symbols-outlined text-sm">arrow_back</span>
+<span class="text-sm font-medium">Retour aux modèles</span>
 </a>
-<div class="flex flex-wrap justify-between gap-3 p-4">
-<div class="flex min-w-72 flex-col gap-3">
-<p class="text-text-light text-4xl font-black leading-tight tracking-[-0.033em]">Modification du Modèle de Crédit</p>
-<p class="text-text-light-muted text-base font-normal leading-normal">Mettez à jour les variables, les poids et les critères d'acceptation.</p>
+<div class="mb-6">
+<p class="text-text-light text-4xl font-black leading-tight tracking-[-0.033em]">Modification du Modèle</p>
+<p class="text-text-light-muted text-base font-normal leading-normal">Modifiez la configuration de votre API de scoring et les variables.</p>
 </div>
+
+<!-- Loading State -->
+<div id="loadingState" class="mt-8 bg-white p-8 rounded-lg shadow-sm border border-black/10 text-center">
+<span class="material-symbols-outlined text-4xl text-primary animate-spin">progress_activity</span>
+<p class="mt-4 text-text-light-muted">Chargement du modèle...</p>
 </div>
-<div class="mt-8 bg-white p-8 rounded-lg shadow-sm border border-black/10">
+
+<!-- Form (hidden initially) -->
+<div id="formContainer" class="mt-8 bg-white p-8 rounded-lg shadow-sm border border-black/10 hidden">
 <div class="flex flex-col gap-8">
+<!-- Section 1: Informations Générales -->
 <div>
 <h2 class="text-text-light text-[22px] font-bold leading-tight tracking-[-0.015em] pb-3">Informations Générales</h2>
 <div class="grid grid-cols-1 gap-6">
 <label class="flex flex-col">
 <p class="text-text-light text-base font-medium leading-normal pb-2">Nom du Modèle</p>
-<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-14 placeholder:text-text-light-muted p-[15px] text-base font-normal leading-normal" placeholder="Ex: Modèle PME Standard 2024" value="Modèle PME Standard"/>
+<input id="modelName" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-14 placeholder:text-text-light-muted p-[15px] text-base font-normal leading-normal" placeholder="Ex: Modèle PME Standard 2024" type="text"/>
 </label>
 <label class="flex flex-col">
 <p class="text-text-light text-base font-medium leading-normal pb-2">Description</p>
-<textarea class="form-textarea flex w-full min-w-0 flex-1 resize-y overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 min-h-[120px] placeholder:text-text-light-muted p-[15px] text-base font-normal leading-normal">Modèle standard pour l'évaluation des PME en fonction de leur rentabilité, stabilité et perspectives de croissance.</textarea>
+<textarea id="modelDescription" class="form-textarea flex w-full min-w-0 flex-1 resize-y overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 min-h-[120px] placeholder:text-text-light-muted p-[15px] text-base font-normal leading-normal" placeholder="Décrivez le modèle et son utilisation..."></textarea>
+</label>
+<label class="flex items-center gap-3">
+<input id="modelActive" type="checkbox" class="form-checkbox h-5 w-5 rounded text-primary focus:ring-primary/50 border-black/10 bg-white" checked />
+<span class="text-text-light text-base font-medium">Modèle actif</span>
 </label>
 </div>
 </div>
+
+<!-- Section 2: Configuration API -->
+<div>
+<h2 class="text-text-light text-[22px] font-bold leading-tight tracking-[-0.015em] pt-5 pb-3">Configuration de l'API de Scoring</h2>
+<p class="text-text-light-muted text-sm mb-4">Configurez l'endpoint de votre API externe qui calculera le score de crédit.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<label class="flex flex-col">
+<p class="text-text-light text-base font-medium leading-normal pb-2">Méthode HTTP</p>
+<select id="httpMethod" class="form-select flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-14 p-[15px] text-base font-normal leading-normal">
+<option value="POST" selected>POST</option>
+<option value="GET">GET</option>
+</select>
+</label>
+<label class="flex flex-col md:col-span-1">
+<p class="text-text-light text-base font-medium leading-normal pb-2">URL de l'API</p>
+<input id="apiEndpoint" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-14 placeholder:text-text-light-muted p-[15px] text-base font-normal leading-normal" placeholder="https://api.votre-institution.com/scoring" type="url"/>
+</label>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+<label class="flex flex-col">
+<p class="text-text-light text-base font-medium leading-normal pb-2">Champ du Score (réponse JSON)</p>
+<input id="scoreField" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-14 placeholder:text-text-light-muted p-[15px] text-base font-normal leading-normal" placeholder="Ex: score ou data.score" type="text" value="score"/>
+</label>
+<label class="flex flex-col">
+<p class="text-text-light text-base font-medium leading-normal pb-2">Champ de l'Explication (réponse JSON)</p>
+<input id="explanationField" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-14 placeholder:text-text-light-muted p-[15px] text-base font-normal leading-normal" placeholder="Ex: explanation ou data.reason" type="text" value="explanation"/>
+</label>
+</div>
+</div>
+
+<!-- Section 3: Variables du Modèle -->
 <div>
 <h2 class="text-text-light text-[22px] font-bold leading-tight tracking-[-0.015em] pt-5 pb-3">Variables du Modèle</h2>
+<p class="text-text-light-muted text-sm mb-4">Définissez les variables que les PME devront remplir lors de la simulation.</p>
 <div class="overflow-x-auto">
-<table class="w-full text-sm">
+<table class="w-full text-sm" id="variablesTable">
 <thead>
 <tr class="border-b border-black/10">
-<th class="px-4 py-3 text-left"><p class="text-text-light-muted text-xs font-semibold">Variable</p></th>
-<th class="px-4 py-3 text-left"><p class="text-text-light-muted text-xs font-semibold">Poids (%)</p></th>
-<th class="px-4 py-3 text-left"><p class="text-text-light-muted text-xs font-semibold">Min</p></th>
-<th class="px-4 py-3 text-left"><p class="text-text-light-muted text-xs font-semibold">Max</p></th>
-<th class="px-4 py-3 text-left"><p class="text-text-light-muted text-xs font-semibold">Unité</p></th>
-<th class="px-4 py-3 text-left"><p class="text-text-light-muted text-xs font-semibold">Sens Favorable</p></th>
-<th class="px-4 py-3 text-left"><p class="text-text-light-muted text-xs font-semibold">Critère Bloquant</p></th>
+<th class="px-4 py-3 text-left"><p class="text-text-light-muted text-xs font-semibold">Nom API</p><p class="text-text-light-muted text-[10px]">Envoyé à l'API</p></th>
+<th class="px-4 py-3 text-left"><p class="text-text-light-muted text-xs font-semibold">Nom Affiché</p><p class="text-text-light-muted text-[10px]">Visible par la PME</p></th>
+<th class="px-4 py-3 text-left"><p class="text-text-light-muted text-xs font-semibold">Description</p><p class="text-text-light-muted text-[10px]">Aide pour la PME</p></th>
+<th class="px-4 py-3 text-left"><p class="text-text-light-muted text-xs font-semibold">Type</p></th>
 <th class="px-4 py-3 text-center"><p class="text-text-light-muted text-xs font-semibold">Action</p></th>
 </tr>
 </thead>
-<tbody>
-<tr class="border-b border-black/10 hover:bg-gray-50">
-<td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-light-muted p-2 text-sm font-normal leading-normal" value="CA" type="text"/></td>
-<td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-light-muted p-2 text-sm font-normal leading-normal" value="100" type="number"/></td>
-<td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-light-muted p-2 text-sm font-normal leading-normal" value="100" type="number"/></td>
-<td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-light-muted p-2 text-sm font-normal leading-normal" value="300" type="number"/></td>
-<td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-light-muted p-2 text-sm font-normal leading-normal" placeholder="%, mois, millions FCFA" type="text"/></td>
-<td class="px-4 py-3"><select class="form-select flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 p-2 text-sm font-normal leading-normal"><option selected>Croissant</option><option>Décroissant</option></select></td>
-<td class="px-4 py-3"><label class="flex"><input class="form-checkbox h-4 w-4 rounded text-primary focus:ring-primary/50 border-black/10 bg-white checked:bg-primary" type="checkbox"/></label></td>
-<td class="px-4 py-3 text-center"><button class="p-1 hover:bg-red-500/10 rounded transition-colors delete-btn"><span class="material-symbols-outlined text-sm text-red-500">delete</span></button></td>
-</tr>
+<tbody id="variablesBody">
 </tbody>
 </table>
 </div>
-<div class="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-<div class="flex items-start gap-3">
-<span class="material-symbols-outlined text-blue-600 mt-1">info</span>
-<div>
-<p class="text-sm font-medium text-blue-900">Pour valider votre modèle</p>
-<p class="text-sm text-blue-800">La somme des poids de chaque variable doit être égale à 100%</p>
-<p class="text-sm font-bold text-blue-900 mt-2">Poids actuel : <span id="totalWeightDisplay">0</span>%</p>
-</div>
-</div>
-</div>
-<button class="mt-4 flex min-w-[100px] max-w-[200px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-10 px-4 bg-gray-100 text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/10 disabled:opacity-50 disabled:cursor-not-allowed" id="addVariableBtn">
+<button class="mt-4 flex min-w-[100px] max-w-[200px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-10 px-4 bg-gray-100 text-primary text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/10" id="addVariableBtn" type="button">
 <span class="material-symbols-outlined">add</span>
 <span>Ajouter une Variable</span>
 </button>
 </div>
+
+<!-- Form Buttons -->
 <div class="flex justify-end items-center gap-4 pt-8 border-t border-black/10 mt-4">
-<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-white border border-black/10 text-text-light text-base font-bold leading-normal tracking-[0.015em] hover:bg-gray-50">
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-white text-text-light text-base font-bold leading-normal tracking-[0.015em] hover:bg-gray-50 border border-black/10" id="cancelBtn" type="button">
 <span class="truncate">Annuler</span>
 </button>
-<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-primary-dark">
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] hover:bg-primary/90" id="saveModelBtn" type="button">
 <span class="truncate">Enregistrer les modifications</span>
 </button>
 </div>
@@ -276,24 +281,27 @@ import { sessionAPI } from './api.js';
 // Dynamically set API_BASE_URL based on environment
 const API_BASE_URL = (() => {
   const hostname = window.location.hostname;
-  
-  // Local development
   if (hostname === 'localhost' || hostname === '127.0.0.1') {
     return 'http://localhost:3001/api';
   }
-  
-  // Production - API is on separate subdomain
   if (hostname.includes('ogoue.com')) {
-    // Convert financement.ogoue.com -> api-financement.ogoue.com
     return `https://api-${hostname}/api`;
   }
-  
-  // Fallback
   return `https://${hostname}/api`;
 })();
 
 console.log('🔌 API Base URL:', API_BASE_URL);
 
+// Get model ID from URL
+const urlParams = new URLSearchParams(window.location.search);
+const modelId = urlParams.get('id');
+
+if (!modelId) {
+  alert('ID du modèle non spécifié');
+  window.location.href = 'institution-liste-modeles';
+}
+
+// Sidebar functionality
 const sidebar = document.getElementById('sidebar');
 const sidebarToggle = document.getElementById('sidebarToggle');
 const navLinks = document.querySelectorAll('.sidebar-nav a');
@@ -316,47 +324,21 @@ if (localStorage.getItem('sidebarCollapsed') === 'true') {
 
 // Update sidebar with institution info
 const institution = sessionAPI.getInstitution();
-const user = sessionAPI.getUser();
-
 if (institution) {
-  // Update institution logo (first letter)
-  const institutionLogo = document.getElementById('institutionLogo');
-  if (institutionLogo) {
-    institutionLogo.textContent = (institution.name || 'I').charAt(0).toUpperCase();
-  }
-  
-  // Update institution info
-  const institutionInfo = document.getElementById('institutionInfo');
-  if (institutionInfo) {
-    institutionInfo.innerHTML = `
-      <h1 class="text-text-light text-sm font-bold tracking-tight">${institution.name || 'Institution'}</h1>
-      <p class="text-text-light-muted text-xs font-medium">${user?.full_name || 'Contact'}</p>
-    `;
+  const sidebarUserDiv = document.querySelector('.sidebar-user');
+  if (sidebarUserDiv) {
+    const textDiv = sidebarUserDiv.querySelector('div:last-child');
+    if (textDiv) {
+      textDiv.innerHTML = `
+        <p class="text-sm font-semibold text-text-light truncate">${institution.name || 'Institution'}</p>
+        <p class="text-xs text-text-light-muted truncate">${institution.full_name || 'Contact'}</p>
+        <p class="text-xs text-text-light-muted truncate">${institution.email || 'email@example.com'}</p>
+      `;
+    }
   }
 }
 
-// Update user info (bottom sidebar)
-if (user && institution) {
-  const institutionDisplayName = document.getElementById('institutionDisplayName');
-  const contactDisplayName = document.getElementById('contactDisplayName');
-  const institutionDisplayEmail = document.getElementById('institutionDisplayEmail');
-  const userAvatarInitials = document.getElementById('userAvatarInitials');
-  
-  if (institutionDisplayName) institutionDisplayName.textContent = institution.name || 'Institution';
-  if (contactDisplayName) contactDisplayName.textContent = user.full_name || 'Contact';
-  if (institutionDisplayEmail) institutionDisplayEmail.textContent = user.email || 'email@example.com';
-  
-  if (userAvatarInitials) {
-    const initials = (institution.name || 'I')
-      .split(' ')
-      .map(n => n.charAt(0).toUpperCase())
-      .join('')
-      .slice(0, 2);
-    userAvatarInitials.textContent = initials;
-  }
-}
-
-// Logout button
+// Logout button handler
 const logoutBtn = document.getElementById('logoutBtn');
 if (logoutBtn) {
   logoutBtn.addEventListener('click', () => {
@@ -365,257 +347,187 @@ if (logoutBtn) {
   });
 }
 
-// Load model data from URL parameter
-const urlParams = new URLSearchParams(window.location.search);
-const modelId = urlParams.get('id');
+// Variables table functions
+const variablesTable = document.getElementById('variablesTable');
+const variablesBody = document.getElementById('variablesBody');
 
-if (modelId) {
-  const token = sessionAPI.getToken();
+function createVariableRow(variable = {}) {
+  const row = document.createElement('tr');
+  row.className = 'border-b border-black/10 hover:bg-gray-50';
+  row.innerHTML = `
+    <td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-light-muted p-2 text-sm font-normal leading-normal api-name" placeholder="api_variable_name" type="text" value="${variable.name || ''}"/></td>
+    <td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-light-muted p-2 text-sm font-normal leading-normal display-name" placeholder="Nom visible" type="text" value="${variable.display_name || variable.name || ''}"/></td>
+    <td class="px-4 py-3"><input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 placeholder:text-text-light-muted p-2 text-sm font-normal leading-normal description" placeholder="Description pour la PME" type="text" value="${variable.description || ''}"/></td>
+    <td class="px-4 py-3">
+      <select class="form-select flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-10 p-2 text-sm font-normal leading-normal var-type">
+        <option value="number" ${variable.variable_type === 'number' ? 'selected' : ''}>Nombre</option>
+        <option value="text" ${variable.variable_type === 'text' ? 'selected' : ''}>Texte</option>
+        <option value="boolean" ${variable.variable_type === 'boolean' ? 'selected' : ''}>Oui/Non</option>
+      </select>
+    </td>
+    <td class="px-4 py-3 text-center"><button class="p-1 hover:bg-red-500/10 rounded transition-colors delete-btn" type="button"><span class="material-symbols-outlined text-sm text-red-500">delete</span></button></td>
+  `;
   
-  fetch(`${API_BASE_URL}/scoring-models/${modelId}`, {
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
-  })
-  .then(res => {
-    if (!res.ok) throw new Error('Failed to load model');
-    return res.json();
-  })
-  .then(data => {
-    const model = data.model;
-    console.log('📋 Model loaded:', model);
-    
-    // Update form with model data
-    const nameInput = document.querySelector('input[placeholder="Ex: Modèle PME Standard 2024"]');
-    const descriptionInput = document.querySelector('textarea.form-textarea');
-    
-    if (nameInput) nameInput.value = model.name || '';
-    if (descriptionInput) descriptionInput.value = model.description || '';
-    
-    // Clear existing table rows and add model variables
-    const tbody = document.querySelector('table tbody');
-    if (tbody && model.model_variables && model.model_variables.length > 0) {
-      tbody.innerHTML = '';
-      
-      model.model_variables.forEach(variable => {
-        const row = document.createElement('tr');
-        row.className = 'border-b border-black/10 hover:bg-gray-50';
-        row.innerHTML = `
-          <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-black/10 bg-white focus:ring-primary/50 focus:border-primary w-full" type="text" value="${variable.name || ''}"/></td>
-          <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-black/10 bg-white focus:ring-primary/50 focus:border-primary w-full" type="number" value="${variable.weight || 0}"/></td>
-          <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-black/10 bg-white focus:ring-primary/50 focus:border-primary w-full" type="number" value="${variable.min_value || 0}"/></td>
-          <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-black/10 bg-white focus:ring-primary/50 focus:border-primary w-full" type="number" value="${variable.max_value || 0}"/></td>
-          <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-black/10 bg-white focus:ring-primary/50 focus:border-primary w-full" type="text" value="${variable.unit || ''}"/></td>
-          <td class="px-4 py-3"><select class="form-select rounded-md h-10 border-black/10 bg-white focus:ring-primary/50 focus:border-primary w-full">
-            <option ${(variable.favorable_direction || 'Croissant') === 'Croissant' ? 'selected' : ''}>Croissant</option>
-            <option ${(variable.favorable_direction || 'Croissant') === 'Décroissant' ? 'selected' : ''}>Décroissant</option>
-          </select></td>
-          <td class="px-4 py-3 text-center"><label class="relative inline-flex cursor-pointer items-center">
-            <input class="peer sr-only" type="checkbox" ${variable.is_blocking ? 'checked' : ''}/>
-            <div class="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-primary peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50"></div>
-          </label></td>
-          <td class="px-4 py-3 text-center"><button class="flex items-center justify-center text-text-light-muted hover:text-red-500 delete-btn" type="button"><span class="material-symbols-outlined">delete</span></button></td>
-        `;
-        tbody.appendChild(row);
-        
-        // Add delete functionality
-        const deleteBtn = row.querySelector('.delete-btn');
-        deleteBtn.addEventListener('click', () => {
-          row.remove();
-          updateWeightDisplay();
-        });
-        
-        // Add event listener to weight input to update total in real-time
-        const weightInput = row.querySelector('input[type="number"]');
-        if (weightInput) {
-          weightInput.addEventListener('input', updateWeightDisplay);
-        }
-      });
-      
-      // Update weight display after loading variables
-      updateWeightDisplay();
-    }
-  })
-  .catch(error => {
-    console.error('❌ Error loading model:', error);
-    alert('Erreur: ' + error.message);
-  });
+  const deleteBtn = row.querySelector('.delete-btn');
+  deleteBtn.addEventListener('click', () => row.remove());
+  
+  return row;
 }
 
-// Add variable button functionality
-const addVariableBtn = Array.from(document.querySelectorAll('button')).find(btn => 
-  btn.textContent.includes('Ajouter une Variable')
-);
-
-// Function to calculate total weight
-function calculateTotalWeight() {
-  const rows = document.querySelectorAll('table tbody tr');
-  let total = 0;
-  rows.forEach(row => {
-    const weightInput = row.querySelectorAll('input[type="number"]')[0];
-    if (weightInput) {
-      total += parseFloat(weightInput.value) || 0;
-    }
-  });
-  return total;
-}
-
-// Function to update weight display and button state
-function updateWeightDisplay() {
-  const totalWeight = calculateTotalWeight();
-  const display = document.getElementById('totalWeightDisplay');
-  const addBtn = document.getElementById('addVariableBtn');
-  
-  if (display) {
-    display.textContent = totalWeight;
-    
-    // Change color based on total
-    if (totalWeight > 100) {
-      display.className = 'font-bold text-red-600';
-    } else if (totalWeight < 100) {
-      display.className = 'font-bold text-yellow-600';
-    } else {
-      display.className = 'font-bold text-blue-600';
-      display.style.color = '#0088CC';
-    }
-  }
-  
-  // Disable "Add variable" button if total is already 100%
-  if (addBtn) {
-    addBtn.disabled = totalWeight >= 100;
-    if (totalWeight >= 100) {
-      addBtn.title = 'Le poids total est déjà à 100%';
-    } else {
-      addBtn.title = '';
-    }
-  }
-}
-
+// Add variable button
+const addVariableBtn = document.getElementById('addVariableBtn');
 if (addVariableBtn) {
   addVariableBtn.addEventListener('click', () => {
-    const tbody = document.querySelector('table tbody');
-    const newRow = document.createElement('tr');
-    newRow.className = 'border-b border-black/10 hover:bg-gray-50';
-    newRow.innerHTML = `
-      <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-black/10 bg-white focus:ring-primary/50 focus:border-primary w-full" type="text" placeholder="Nom de la variable"/></td>
-      <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-black/10 bg-white focus:ring-primary/50 focus:border-primary w-full" type="number" value="0"/></td>
-      <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-black/10 bg-white focus:ring-primary/50 focus:border-primary w-full" type="number" value="0"/></td>
-      <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-black/10 bg-white focus:ring-primary/50 focus:border-primary w-full" type="number" value="0"/></td>
-      <td class="px-4 py-3"><input class="form-input rounded-md h-10 border-black/10 bg-white focus:ring-primary/50 focus:border-primary w-full" type="text" placeholder="%, mois, millions FCFA"/></td>
-      <td class="px-4 py-3"><select class="form-select rounded-md h-10 border-black/10 bg-white focus:ring-primary/50 focus:border-primary w-full">
-        <option selected="">Croissant</option>
-        <option>Décroissant</option>
-      </select></td>
-      <td class="px-4 py-3 text-center"><label class="relative inline-flex cursor-pointer items-center">
-        <input class="peer sr-only" type="checkbox"/>
-        <div class="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-primary peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-primary/50"></div>
-      </label></td>
-      <td class="px-4 py-3 text-center"><button class="flex items-center justify-center text-text-light-muted hover:text-red-500 delete-btn" type="button"><span class="material-symbols-outlined">delete</span></button></td>
-    `;
-    tbody.appendChild(newRow);
-    
-    // Add delete functionality to new row
-    const deleteBtn = newRow.querySelector('.delete-btn');
-    deleteBtn.addEventListener('click', () => {
-      newRow.remove();
-      updateWeightDisplay();
-    });
-    
-    // Add change listener to weight input
-    const weightInput = newRow.querySelectorAll('input[type="number"]')[0];
-    if (weightInput) {
-      weightInput.addEventListener('change', updateWeightDisplay);
-      weightInput.addEventListener('input', updateWeightDisplay);
-    }
-    
-    updateWeightDisplay();
+    variablesBody.appendChild(createVariableRow());
   });
 }
 
-// Delete button functionality for existing rows
-document.querySelectorAll('table tbody .delete-btn').forEach(btn => {
-  btn.addEventListener('click', (e) => {
-    e.preventDefault();
-    btn.closest('tr').remove();
-    updateWeightDisplay();
-  });
-});
+// Load model data
+async function loadModel() {
+  const token = sessionAPI.getToken();
+  if (!token) {
+    alert('Session expirée, veuillez vous reconnecter');
+    window.location.href = 'institution-login';
+    return;
+  }
 
-// Add change listeners to all weight inputs (existing rows)
-document.querySelectorAll('table tbody input[type="number"]').forEach(input => {
-  input.addEventListener('change', updateWeightDisplay);
-  input.addEventListener('input', updateWeightDisplay);
-});
-
-// Initial weight display update
-updateWeightDisplay();
-
-// Save modifications button
-const saveBtn = Array.from(document.querySelectorAll('button')).find(btn => 
-  btn.textContent.includes('Enregistrer les modifications')
-);
-
-if (saveBtn) {
-  saveBtn.addEventListener('click', async (e) => {
-    e.preventDefault();
-    console.log('💾 Saving model modifications...');
-    
-    // Validate total weight first
-    const totalWeight = calculateTotalWeight();
-    if (totalWeight !== 100) {
-      alert(`Le poids total doit égaler 100% (actuellement: ${totalWeight}%)`);
-      return;
-    }
-    
-    // Get form data
-    const nameInput = document.querySelector('input[placeholder="Ex: Modèle PME Standard 2024"]');
-    const descriptionInput = document.querySelector('textarea.form-textarea');
-    const rows = document.querySelectorAll('table tbody tr');
-    
-    const modelName = nameInput?.value.trim();
-    const modelDescription = descriptionInput?.value.trim();
-    
-    if (!modelName) {
-      alert('Le nom du modèle est requis');
-      return;
-    }
-    
-    // Collect variables
-    const variables = [];
-    rows.forEach(row => {
-      const inputs = row.querySelectorAll('input[type="text"], input[type="number"]');
-      const select = row.querySelector('select');
-      const checkbox = row.querySelector('input[type="checkbox"]');
-      
-      if (inputs.length >= 5) {
-        const variable = {
-          name: inputs[0].value.trim(),
-          weight: parseFloat(inputs[1].value) || 0,
-          min: parseFloat(inputs[2].value) || 0,
-          max: parseFloat(inputs[3].value) || 0,
-          unit: inputs[4].value.trim() || '',
-          favorableDirection: select ? select.value : 'Croissant',
-          isBlocking: checkbox ? checkbox.checked : false
-        };
-        
-        if (variable.name && variable.weight > 0) {
-          variables.push(variable);
-        }
+  try {
+    const response = await fetch(`${API_BASE_URL}/scoring-models/${modelId}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
       }
     });
+
+    if (!response.ok) {
+      throw new Error('Modèle non trouvé');
+    }
+
+    const { model } = await response.json();
+    console.log('✅ Model loaded:', model);
+
+    // Fill form fields
+    document.getElementById('modelName').value = model.name || '';
+    document.getElementById('modelDescription').value = model.description || '';
+    document.getElementById('modelActive').checked = model.is_active !== false;
+
+    // Fill API config
+    if (model.api_config) {
+      document.getElementById('httpMethod').value = model.api_config.method || 'POST';
+      document.getElementById('apiEndpoint').value = model.api_config.endpoint || '';
+      if (model.api_config.response_mapping) {
+        document.getElementById('scoreField').value = model.api_config.response_mapping.score_field || 'score';
+        document.getElementById('explanationField').value = model.api_config.response_mapping.explanation_field || 'explanation';
+      }
+    }
+
+    // Fill variables
+    variablesBody.innerHTML = '';
+    if (model.model_variables && model.model_variables.length > 0) {
+      model.model_variables.forEach(variable => {
+        variablesBody.appendChild(createVariableRow(variable));
+      });
+    } else {
+      variablesBody.appendChild(createVariableRow());
+    }
+
+    // Show form, hide loading
+    document.getElementById('loadingState').classList.add('hidden');
+    document.getElementById('formContainer').classList.remove('hidden');
+
+  } catch (error) {
+    console.error('❌ Error loading model:', error);
+    alert('Erreur: ' + error.message);
+    window.location.href = 'institution-liste-modeles';
+  }
+}
+
+// Save model
+const saveModelBtn = document.getElementById('saveModelBtn');
+const cancelBtn = document.getElementById('cancelBtn');
+
+if (saveModelBtn) {
+  saveModelBtn.addEventListener('click', async (e) => {
+    e.preventDefault();
     
-    if (variables.length === 0) {
-      alert('Chaque variable doit avoir un nom et un poids > 0');
+    const nameInput = document.getElementById('modelName');
+    const descriptionInput = document.getElementById('modelDescription');
+    const activeCheckbox = document.getElementById('modelActive');
+    const httpMethodSelect = document.getElementById('httpMethod');
+    const apiEndpointInput = document.getElementById('apiEndpoint');
+    const scoreFieldInput = document.getElementById('scoreField');
+    const explanationFieldInput = document.getElementById('explanationField');
+
+    // Validate
+    if (!nameInput.value.trim()) {
+      alert('Le nom du modèle est requis');
+      nameInput.focus();
       return;
     }
+
+    if (!apiEndpointInput.value.trim()) {
+      alert("L'URL de l'API est requise");
+      apiEndpointInput.focus();
+      return;
+    }
+
+    try {
+      new URL(apiEndpointInput.value.trim());
+    } catch {
+      alert("L'URL de l'API n'est pas valide");
+      apiEndpointInput.focus();
+      return;
+    }
+
+    // Collect variables
+    const rows = variablesBody.querySelectorAll('tr');
+    const variables = [];
     
+    rows.forEach(row => {
+      const apiName = row.querySelector('.api-name').value.trim();
+      const displayName = row.querySelector('.display-name').value.trim();
+      const description = row.querySelector('.description').value.trim();
+      const varType = row.querySelector('.var-type').value;
+      
+      if (apiName && displayName) {
+        variables.push({
+          api_name: apiName,
+          display_name: displayName,
+          description: description,
+          variable_type: varType
+        });
+      }
+    });
+
+    if (variables.length === 0) {
+      alert('Au moins une variable est requise');
+      return;
+    }
+
     const token = sessionAPI.getToken();
     if (!token) {
       alert('Session expirée, veuillez vous reconnecter');
       window.location.href = 'institution-login';
       return;
     }
-    
+
+    const modelData = {
+      name: nameInput.value.trim(),
+      description: descriptionInput.value.trim(),
+      is_active: activeCheckbox.checked,
+      api_config: {
+        method: httpMethodSelect.value,
+        endpoint: apiEndpointInput.value.trim(),
+        response_mapping: {
+          score_field: scoreFieldInput.value.trim() || 'score',
+          explanation_field: explanationFieldInput.value.trim() || 'explanation'
+        }
+      },
+      variables: variables
+    };
+
+    saveModelBtn.disabled = true;
+    saveModelBtn.innerHTML = '<span class="truncate">Enregistrement...</span>';
+
     try {
       const response = await fetch(`${API_BASE_URL}/scoring-models/${modelId}`, {
         method: 'PUT',
@@ -623,35 +535,24 @@ if (saveBtn) {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({
-          name: modelName,
-          description: modelDescription,
-          variables: variables
-        })
+        body: JSON.stringify(modelData)
       });
-      
+
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.error || 'Failed to update model');
+        throw new Error(error.error || 'Erreur lors de la mise à jour');
       }
-      
-      const result = await response.json();
-      console.log('✅ Model updated:', result);
-      alert('Modèle enregistré avec succès!');
-      
-      // Redirect to models list
+
+      alert('Modèle mis à jour avec succès!');
       window.location.href = 'institution-liste-modeles';
     } catch (error) {
-      console.error('❌ Error updating model:', error);
+      console.error('❌ Error saving model:', error);
       alert('Erreur: ' + error.message);
+      saveModelBtn.disabled = false;
+      saveModelBtn.innerHTML = '<span class="truncate">Enregistrer les modifications</span>';
     }
   });
 }
-
-// Cancel button
-const cancelBtn = Array.from(document.querySelectorAll('button')).find(btn => 
-  btn.textContent.trim().includes('Annuler')
-);
 
 if (cancelBtn) {
   cancelBtn.addEventListener('click', () => {
@@ -659,7 +560,7 @@ if (cancelBtn) {
   });
 }
 
-// ==================== MOBILE MENU (séparé du desktop) ====================
+// Mobile menu
 const mobileMenuBtn = document.getElementById('mobileMenuBtn');
 const backdrop = document.createElement('div');
 backdrop.className = 'sidebar-backdrop';
@@ -685,6 +586,9 @@ window.addEventListener('resize', () => {
     backdrop.classList.remove('mobile-open');
   }
 });
+
+// Load model on page load
+loadModel();
 </script>
 </body>
 </html>
