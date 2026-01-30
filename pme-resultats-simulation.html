@@ -227,9 +227,9 @@
 </div>
 
 <div class="flex gap-4 pt-6 border-t border-black/10">
-<button type="submit" class="flex items-center gap-2 px-8 h-12 bg-primary text-white rounded-lg font-bold hover:bg-opacity-90 transition-colors">
-<span class="material-symbols-outlined">calculate</span>
-<span>Calculer le Score</span>
+<button type="submit" id="calculateBtn" class="flex items-center gap-2 px-8 h-12 bg-primary text-white rounded-lg font-bold hover:bg-opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+<span class="material-symbols-outlined" id="calculateIcon">calculate</span>
+<span id="calculateText">Calculer le Score</span>
 </button>
 <a href="#" id="resetBtn" class="flex items-center gap-2 px-8 h-12 bg-surface-light border border-black/10 text-text-light rounded-lg font-bold hover:bg-background-light transition-colors">
 <span class="material-symbols-outlined">refresh</span>
@@ -464,6 +464,9 @@ if (resetBtn) {
 // Calculate score
 async function calculateScore() {
   const inputs = document.querySelectorAll('[data-variable-id]');
+  const calculateBtn = document.getElementById('calculateBtn');
+  const calculateIcon = document.getElementById('calculateIcon');
+  const calculateText = document.getElementById('calculateText');
   
   const values = {};
   const variableNames = {};
@@ -492,6 +495,12 @@ async function calculateScore() {
     alert('Veuillez remplir tous les champs');
     return;
   }
+
+  // Show loading state
+  calculateBtn.disabled = true;
+  calculateIcon.textContent = 'hourglass_empty';
+  calculateIcon.classList.add('animate-spin');
+  calculateText.textContent = 'Calcul en cours...';
 
   try {
     // Call backend API to calculate score
@@ -534,6 +543,16 @@ async function calculateScore() {
   } catch (error) {
     console.error('❌ Error calculating score:', error);
     alert('Erreur lors du calcul du score: ' + error.message);
+  } finally {
+    // Reset button state
+    const calculateBtn = document.getElementById('calculateBtn');
+    const calculateIcon = document.getElementById('calculateIcon');
+    const calculateText = document.getElementById('calculateText');
+    
+    calculateBtn.disabled = false;
+    calculateIcon.textContent = 'calculate';
+    calculateIcon.classList.remove('animate-spin');
+    calculateText.textContent = 'Calculer le Score';
   }
 }
 
