@@ -559,6 +559,7 @@ function displayScore(result) {
     variables: result.inputVariables || result.variables || {},
     variableNames: result.variableNames || {},
     details: result.details || [],
+    explanation: result.explanation || null,
     fullResult: result
   };
   
@@ -600,8 +601,38 @@ function displayScore(result) {
 
   scoreGauge.className = `score-gauge bg-gradient-to-br ${gaugeColor}`;
 
-  // Generate LLM interpretation
-  generateInterpretation(score, classification, currentProductName, currentInstitutionName, result.inputVariables || {}, result.variableNames || {}, result.details || []);
+  // Check if we have an explanation from the external API (API-based model)
+  if (result.explanation) {
+    // Use the explanation from the external API directly
+    displayExternalExplanation(result.explanation);
+  } else {
+    // Generate LLM interpretation for legacy models
+    generateInterpretation(score, classification, currentProductName, currentInstitutionName, result.inputVariables || {}, result.variableNames || {}, result.details || []);
+  }
+}
+
+// Display explanation from external API (for API-based models)
+function displayExternalExplanation(explanation) {
+  const container = document.getElementById('interpretationContainer');
+  const loading = document.getElementById('interpretationLoading');
+  const empty = document.getElementById('interpretationEmpty');
+  const content = document.getElementById('interpretationContent');
+
+  // Hide loading and empty states
+  loading.classList.add('hidden');
+  empty.classList.add('hidden');
+
+  // Format the explanation - handle both string and object types
+  let explanationText = typeof explanation === 'string' ? explanation : JSON.stringify(explanation);
+  
+  // Split into paragraphs if it contains newlines
+  const paragraphs = explanationText.split('\n').filter(p => p.trim());
+  content.innerHTML = paragraphs.map(p => `<p>${p.trim()}</p>`).join('');
+
+  // Show the container
+  container.classList.remove('hidden');
+  
+  console.log('✅ Explication API externe affichée:', explanation);
 }
 
 // Reset score display
