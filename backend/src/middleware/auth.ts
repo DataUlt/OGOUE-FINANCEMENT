@@ -35,8 +35,25 @@ export const authMiddleware = (req: AuthRequest, res: Response, next: NextFuncti
 
 export const requireRole = (allowedRoles: string[]) => {
   return (req: AuthRequest, res: Response, next: NextFunction) => {
+    console.log('🔒 Role check:', { 
+      hasUser: !!req.user, 
+      userRole: req.user?.role, 
+      allowedRoles,
+      roleIncluded: req.user ? allowedRoles.includes(req.user.role) : false
+    });
+    
     if (!req.user || !allowedRoles.includes(req.user.role)) {
-      return res.status(403).json({ error: "Insufficient permissions" });
+      console.error('❌ Role check failed:', { 
+        userRole: req.user?.role, 
+        allowedRoles 
+      });
+      return res.status(403).json({ 
+        error: "Insufficient permissions",
+        debug: {
+          userRole: req.user?.role,
+          requiredRoles: allowedRoles
+        }
+      });
     }
     next();
   };
