@@ -216,7 +216,6 @@
 <tr class="border-b border-black/10">
 <th class="px-4 py-3 text-left"><p class="text-text-light-muted text-xs font-semibold uppercase tracking-wider">Nom du Modèle</p></th>
 <th class="px-4 py-3 text-left"><p class="text-text-light-muted text-xs font-semibold uppercase tracking-wider">Variables</p></th>
-<th class="px-4 py-3 text-left"><p class="text-text-light-muted text-xs font-semibold uppercase tracking-wider">Poids Total</p></th>
 <th class="px-4 py-3 text-left"><p class="text-text-light-muted text-xs font-semibold uppercase tracking-wider">Produits Associés</p></th>
 <th class="px-4 py-3 text-center"><p class="text-text-light-muted text-xs font-semibold uppercase tracking-wider">Actions</p></th>
 </tr>
@@ -358,7 +357,7 @@ function displayModels(models, products) {
   if (!models || models.length === 0) {
     tableBody.innerHTML = `
       <tr>
-        <td class="px-4 py-3 text-center text-text-light-muted" colspan="5">
+        <td class="px-4 py-3 text-center text-text-light-muted" colspan="4">
           Aucun modèle trouvé. <a href="institution-creation-modele" class="text-primary font-semibold">Créer un modèle</a>
         </td>
       </tr>
@@ -387,9 +386,6 @@ function displayModels(models, products) {
             `).join('')}
             ${variableCount === 0 ? '<span class="text-text-light-muted text-sm">Aucune</span>' : ''}
           </div>
-        </td>
-        <td class="px-4 py-3">
-          <p class="text-sm text-text-light font-medium whitespace-nowrap">100%</p>
         </td>
         <td class="px-4 py-3">
           <div class="flex flex-wrap gap-1">
