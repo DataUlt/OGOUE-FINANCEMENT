@@ -412,21 +412,26 @@ function generateVariableFields(variables) {
       const isNumeric = variable.variable_type === 'numeric' || variable.variable_type === 'number';
       const inputType = isNumeric ? 'number' : 'text';
       
+      // Use display_name for PME-friendly label, fallback to name
+      const displayLabel = variable.display_name || variable.name;
+      // Use description as help text for PME
+      const helpText = variable.description || '';
       // Always use generic placeholder
       let placeholder = "Entrez une valeur";
       
       return `
         <div class="space-y-2">
           <label for="${fieldId}" class="block text-sm font-semibold text-text-light">
-            ${variable.name}
+            ${displayLabel}
             ${variable.unit ? `<span class="text-text-light-muted text-xs font-normal"> - Cette valeur est exprimée en ${variable.unit}</span>` : ''}
           </label>
+          ${helpText ? `<p class="text-xs text-text-light-muted">${helpText}</p>` : ''}
           <input 
             type="${inputType}" 
             id="${fieldId}" 
             name="${variable.id}"
             data-variable-id="${variable.id}"
-            data-variable-name="${variable.name}"
+            data-variable-name="${displayLabel}"
             data-variable-unit="${variable.unit || ''}"
             data-variable-weight="${variable.weight}"
             data-variable-type="${variable.variable_type}"
