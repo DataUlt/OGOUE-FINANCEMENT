@@ -573,6 +573,7 @@ function displayScore(result) {
   // Save simulation result to localStorage
   const simulationResult = {
     timestamp: new Date().toISOString(),
+    simulationId: result.simulation_id || null,
     productId: productId,
     productName: currentProductName,
     institutionName: currentInstitutionName,
@@ -583,6 +584,7 @@ function displayScore(result) {
     variableNames: result.variableNames || {},
     details: result.details || [],
     explanation: result.explanation || null,
+    interpretation: null, // Will be filled after LLM interpretation
     fullResult: result
   };
   
@@ -627,15 +629,15 @@ function displayScore(result) {
   // Check if we have an explanation from the external API (API-based model)
   if (result.explanation) {
     // Use the explanation from the external API directly
-    displayExternalExplanation(result.explanation);
+    displayExternalExplanation(result.explanation, result.simulation_id);
   } else {
     // Generate LLM interpretation for legacy models
-    generateInterpretation(score, classification, currentProductName, currentInstitutionName, result.inputVariables || {}, result.variableNames || {}, result.details || []);
+    generateInterpretation(score, classification, currentProductName, currentInstitutionName, result.inputVariables || {}, result.variableNames || {}, result.details || [], result.simulation_id);
   }
 }
 
 // Display explanation from external API (for API-based models)
-function displayExternalExplanation(explanation) {
+function displayExternalExplanation(explanation, simulationId) {
   const container = document.getElementById('interpretationContainer');
   const loading = document.getElementById('interpretationLoading');
   const empty = document.getElementById('interpretationEmpty');
@@ -656,6 +658,12 @@ function displayExternalExplanation(explanation) {
   container.classList.remove('hidden');
   
   console.log('✅ Explication API externe affichée:', explanation);
+  
+  // Save interpretation to localStorage and backend
+  saveInterpretationToLocalStorage(explanationText);
+  if (simulationId) {
+    saveInterpretationToBackend(simulationId, explanationText);
+  }
 }
 
 // Reset score display
@@ -667,7 +675,7 @@ function resetScoreDisplay() {
 }
 
 // Generate LLM interpretation of the score
-async function generateInterpretation(score, classification, productName, institutionName, inputVariables, variableNames, scoreDetails) {
+async function generateInterpretation(score, classification, productName, institutionName, inputVariables, variableNames, scoreDetails, simulationId) {
   const container = document.getElementById('interpretationContainer');
   const loading = document.getElementById('interpretationLoading');
   const empty = document.getElementById('interpretationEmpty');
@@ -735,12 +743,53 @@ async function generateInterpretation(score, classification, productName, instit
     // Show interpretation
     loading.classList.add('hidden');
     container.classList.remove('hidden');
+    
+    // Save interpretation to localStorage and backend
+    saveInterpretationToLocalStorage(interpretation);
+    if (simulationId) {
+      saveInterpretationToBackend(simulationId, interpretation);
+    }
 
   } catch (error) {
     console.error('❌ Erreur génération interprétation:', error);
     loading.classList.add('hidden');
     content.innerHTML = `<p class="text-red-600">Erreur: ${error.message}</p>`;
     container.classList.remove('hidden');
+  }
+}
+
+// Save interpretation to the most recent simulation in localStorage
+function saveInterpretationToLocalStorage(interpretation) {
+  try {
+    const results = JSON.parse(localStorage.getItem('simulationResults') || '[]');
+    if (results.length > 0) {
+      results[results.length - 1].interpretation = interpretation;
+      localStorage.setItem('simulationResults', JSON.stringify(results));
+      console.log('✅ Interprétation sauvegardée dans localStorage');
+    }
+  } catch (e) {
+    console.error('❌ Erreur sauvegarde localStorage:', e);
+  }
+}
+
+// Save interpretation to the backend
+async function saveInterpretationToBackend(simulationId, interpretation) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/simulations/${simulationId}/interpretation`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ interpretation })
+    });
+    
+    if (response.ok) {
+      console.log('✅ Interprétation sauvegardée dans le backend');
+    } else {
+      console.warn('⚠️ Échec sauvegarde interprétation backend:', await response.text());
+    }
+  } catch (e) {
+    console.error('❌ Erreur sauvegarde backend:', e);
   }
 }
 

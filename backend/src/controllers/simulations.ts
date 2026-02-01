@@ -344,6 +344,82 @@ Interprétation:`;
   },
 
   /**
+   * PATCH /api/simulations/:simulationId/interpretation (PUBLIC)
+   * Sauvegarde l'interprétation générée pour une simulation existante
+   */
+  saveInterpretation: async (req: any, res: Response) => {
+    console.log("💾 saveInterpretation handler appelé");
+    try {
+      const { simulationId } = req.params;
+      const { interpretation } = req.body;
+
+      if (!simulationId || !interpretation) {
+        throw new AppError("simulationId et interpretation requis", 400);
+      }
+
+      // Update the simulation with the interpretation
+      const { data: simulation, error } = await supabase
+        .from("simulations")
+        .update({ ai_interpretation: interpretation })
+        .eq("id", simulationId)
+        .select()
+        .single();
+
+      if (error) {
+        console.error("❌ Error saving interpretation:", error);
+        throw new AppError("Erreur lors de la sauvegarde de l'interprétation", 500);
+      }
+
+      console.log("✅ Interpretation saved for simulation:", simulationId);
+      res.json({ success: true, simulation });
+    } catch (error) {
+      if (error instanceof AppError) {
+        return res.status(error.status).json({ error: error.message });
+      }
+      console.error("❌ Erreur sauvegarde interprétation:", error);
+      res.status(500).json({ error: "Erreur lors de la sauvegarde de l'interprétation" });
+    }
+  },
+
+  /**
+   * GET /api/simulations/:simulationId (PUBLIC)
+   * Récupère les détails complets d'une simulation
+   */
+  getSimulationById: async (req: any, res: Response) => {
+    console.log("📖 getSimulationById handler appelé");
+    try {
+      const { simulationId } = req.params;
+
+      const { data: simulation, error } = await supabase
+        .from("simulations")
+        .select(`
+          *,
+          credit_products!inner(
+            name,
+            id,
+            institutions!inner(name)
+          )
+        `)
+        .eq("id", simulationId)
+        .single();
+
+      if (error || !simulation) {
+        console.error("❌ Simulation not found:", error);
+        throw new AppError("Simulation non trouvée", 404);
+      }
+
+      console.log("✅ Simulation retrieved:", simulationId);
+      res.json(simulation);
+    } catch (error) {
+      if (error instanceof AppError) {
+        return res.status(error.status).json({ error: error.message });
+      }
+      console.error("❌ Erreur récupération simulation:", error);
+      res.status(500).json({ error: "Erreur lors de la récupération" });
+    }
+  },
+
+  /**
    * GET /api/simulations/product/:productId (PUBLIC)
    * Récupère les variables du modèle de scoring pour la simulation
    */

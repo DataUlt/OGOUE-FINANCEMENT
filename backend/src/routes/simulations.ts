@@ -10,6 +10,12 @@ router.post("/calculate", simulationsController.calculateScore);
 // POST /api/simulations/interpret - PUBLIC endpoint pour interpréter un score via LLM
 router.post("/interpret", simulationsController.interpretScore);
 
+// PATCH /api/simulations/:simulationId/interpretation - PUBLIC endpoint pour sauvegarder l'interprétation
+router.patch("/:simulationId/interpretation", simulationsController.saveInterpretation);
+
+// GET /api/simulations/:simulationId - PUBLIC endpoint pour récupérer une simulation par ID
+router.get("/:simulationId", simulationsController.getSimulationById);
+
 // More specific routes FIRST (with /stats)
 // GET /api/simulations/product/:productId/stats - PUBLIC endpoint pour les stats d'un produit
 router.get("/product/:productId/stats", simulationsController.getProductSimulationStats);
