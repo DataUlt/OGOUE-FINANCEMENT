@@ -102,75 +102,102 @@
                 font-size: 0.875rem;
             }
         }
-        .sidebar-backdrop {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 30;
+        aside#sidebar .sidebar-nav {
+                flex: 0 0 auto;
+            }
+            aside#sidebar #logoutBtn {
+                padding: 0.5rem 1rem;
+            }
+            .sidebar-backdrop {
+                display: none;
+            }
+            .sidebar-backdrop.mobile-open {
+                display: block;
+                position: fixed;
+                inset: 0;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 30;
+            }
+            header {
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+            }
+            h2, .text-4xl {
+                font-size: 1.5rem !important;
+            }
+            main .p-8 {
+                padding: 1rem !important;
+            }
+            .mobile-header {
+                display: flex;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 56px;
+                background: white;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                align-items: center;
+                padding: 0 1rem;
+                z-index: 20;
+            }
+            main.flex-1 {
+                padding-top: 56px;
+            }
         }
-        .sidebar-backdrop.mobile-open {
-            display: block;
+        @media (min-width: 769px) {
+            .mobile-header {
+                display: none !important;
+            }
         }
     </style>
 </head>
-<body class="bg-background-light font-display">
-<div class="flex min-h-screen">
-<!-- Sidebar -->
-<aside class="w-64 border-r border-black/10 bg-white flex flex-col transition-all duration-300" id="sidebar">
-<div class="sidebar-header p-5 flex items-center gap-4 border-b border-black/10">
-<div class="flex items-center justify-center rounded-lg">
-<img src="https://i.ibb.co/L5yXtNw/OGOUE-FINANCEMENT-Logo-1.png" alt="Ogoué Financement" class="size-10 object-contain" />
+<body class="bg-background-light text-text-light font-display overflow-hidden">
+<!-- Mobile Header -->
+<div class="mobile-header" id="mobileHeader">
+    <button id="mobileMenuBtn" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+        <span class="material-symbols-outlined text-2xl">menu</span>
+    </button>
+    <span class="ml-3 font-bold text-lg text-primary">OGOUÉ</span>
 </div>
-<div class="flex flex-col">
-<h1 class="text-text-light text-xl font-bold">Ogoué Financement</h1>
-<p class="text-text-light-muted text-xs">Espace Institution</p>
-</div>
-</div>
-<button class="absolute top-5 right-[-12px] bg-white border border-black/10 rounded-full p-1 shadow-sm hover:bg-gray-50 z-10" id="sidebarToggle">
-<span class="material-symbols-outlined text-sm">chevron_left</span>
+<div class="flex h-screen w-full">
+<aside id="sidebar" class="w-64 flex flex-col border-r border-black/10 bg-white shrink-0 transition-all duration-300">
+<div class="sidebar-header p-6 flex items-center gap-3">
+<button id="sidebarToggle" class="flex-shrink-0 p-1.5 hover:bg-gray-50 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-xl">menu</span>
 </button>
-<nav class="sidebar-nav flex-1 py-4 px-3">
+</div>
+<nav class="sidebar-nav flex-1 px-4 flex flex-col gap-2 mt-4">
 <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-gray-50 hover:text-text-light transition-colors" href="institution-tableau-bord">
 <span class="material-symbols-outlined">dashboard</span>
-<span class="sidebar-text">Tableau de bord</span>
+<span class="sidebar-text">Vue d'Ensemble</span>
 </a>
 <a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-gray-50 hover:text-text-light transition-colors" href="institution-liste-produits">
-<span class="material-symbols-outlined">credit_card</span>
-<span class="sidebar-text">Produits de Crédit</span>
+<span class="material-symbols-outlined">payments</span>
+<span class="sidebar-text">Produits</span>
 </a>
 <a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary font-medium" href="institution-liste-modeles">
-<span class="material-symbols-outlined">analytics</span>
-<span class="sidebar-text">Modèles d'Octroi</span>
+<span class="material-symbols-outlined icon-filled">table_chart</span>
+<span class="sidebar-text">Modèles</span>
 </a>
 </nav>
 <div class="p-4 mt-auto border-t border-black/10">
-<div class="sidebar-user flex items-center gap-3 p-3 rounded-lg bg-background-light mb-3">
-<div class="size-10 rounded-full bg-primary/10 flex items-center justify-center">
-<span class="material-symbols-outlined text-primary">business</span>
-</div>
-<div>
-<p class="text-sm font-semibold text-text-light truncate">Ma Banque</p>
-<p class="text-xs text-text-light-muted truncate">contact@mabanque.ga</p>
+<div class="sidebar-user bg-white rounded-lg p-4 flex items-center gap-3 mb-3 border border-black/10">
+<div class="size-8 rounded-full bg-cover bg-center" data-alt="User profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCRIT7ff6v9rrUcAhYe0OOUrUpnKRPk116GNykQEkHvpkm8OcnbFIHebI_9s2BLSgjCDBIiCeTAyUqjsiPk6ByM9xta6qZ1RWzIhxls9I4Sk5sNcDyDiKiJf5ycTmKrqubfo50DZ8awUuPWSee77ZLhFpXooySZDpCEyN09_mGL6P3cfWBrKmY-W59JNITG3gg73Gcfexu3E4wl2e-ftUXVW2HngUX2vEFC-gITs_jcsGdd2m05m69kA6GmDheaVmMJx3vZ3B9VR24');"></div>
+<div class="overflow-hidden flex-1">
+<p class="text-sm font-semibold text-text-light truncate">Testbank5</p>
+<p class="text-xs text-text-light-muted truncate">test5@gmail.com</p>
 </div>
 </div>
-<button class="flex w-full items-center justify-center gap-2 px-4 py-2 rounded-lg text-red-600 hover:bg-red-50 transition-colors font-semibold text-sm" id="logoutBtn">
+<button id="logoutBtn" class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 transition-colors text-sm font-semibold">
 <span class="material-symbols-outlined text-sm">logout</span>
-<span>Se déconnecter</span>
+<span class="sidebar-text">Déconnexion</span>
 </button>
 </div>
 </aside>
-<!-- Main Content -->
-<main class="flex-1 overflow-y-auto">
-<!-- Mobile Header -->
-<header class="md:hidden flex items-center justify-between p-4 border-b border-black/10 bg-white sticky top-0 z-20">
-<button class="p-2 hover:bg-gray-100 rounded-lg" id="mobileMenuBtn">
-<span class="material-symbols-outlined">menu</span>
-</button>
-<img src="https://i.ibb.co/L5yXtNw/OGOUE-FINANCEMENT-Logo-1.png" alt="Logo" class="h-8" />
-<div class="w-10"></div>
-</header>
-<div class="p-4 md:p-10 max-w-4xl mx-auto">
+<main class="flex-1 flex flex-col h-full overflow-hidden">
+<div class="flex-1 overflow-y-auto p-8">
+<div class="max-w-4xl mx-auto">
 <a href="institution-liste-modeles" class="flex items-center gap-2 text-primary hover:text-primary/80 transition-colors w-fit mb-2">
 <span class="material-symbols-outlined text-sm">arrow_back</span>
 <span class="text-sm font-medium">Retour aux modèles</span>
