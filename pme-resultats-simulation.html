@@ -604,24 +604,24 @@ function displayScore(result) {
 
   switch (classification) {
     case 'EXCELLENT':
-      gaugeColor = 'from-blue-300 to-blue-400';
+      gaugeColor = 'from-gray-300 to-gray-400';
       break;
     case 'BON':
-      gaugeColor = 'from-blue-300 to-blue-400';
+      gaugeColor = 'from-gray-300 to-gray-400';
       break;
     case 'MOYEN':
-      gaugeColor = 'from-yellow-300 to-yellow-400';
+      gaugeColor = 'from-gray-300 to-gray-400';
       break;
     case 'RISQUE':
-      gaugeColor = 'from-red-300 to-red-400';
+      gaugeColor = 'from-gray-300 to-gray-400';
       break;
     default:
-      gaugeColor = 'from-red-300 to-red-400';
+      gaugeColor = 'from-gray-300 to-gray-400';
   }
 
   // If blocking criteria failed
   if (status === 'NON_ELIGIBLE' && result.blocking_failed && result.blocking_failed.length > 0) {
-    gaugeColor = 'from-red-500 to-red-600';
+    gaugeColor = 'from-gray-300 to-gray-400';
   }
 
   scoreGauge.className = `score-gauge bg-gradient-to-br ${gaugeColor}`;
