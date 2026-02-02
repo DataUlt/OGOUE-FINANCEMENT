@@ -227,7 +227,8 @@
 <!-- Les variables seront générées ici dynamiquement -->
 </div>
 
-<div class="flex gap-4 pt-6 border-t border-black/10">
+<div class="flex items-center justify-between gap-4 pt-6 border-t border-black/10">
+<div class="flex gap-4">
 <button type="submit" id="calculateBtn" class="flex items-center gap-2 px-8 h-12 bg-primary text-white rounded-lg font-bold hover:bg-opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
 <span class="material-symbols-outlined" id="calculateIcon">calculate</span>
 <span id="calculateText">Calculer le Score</span>
@@ -237,32 +238,15 @@
 <span>Réinitialiser</span>
 </a>
 </div>
-</form>
-</div>
-</div>
 
-<!-- Affichage du score -->
-<div>
-<div class="bg-surface-light rounded-lg border border-black/10 p-8">
-<div>
-<h3 class="text-xl font-bold text-text-light mb-4">Score d'Éligibilité</h3>
-
-<!-- Score gauge -->
-<div class="flex justify-center mb-4">
+<!-- Score gauge on the right -->
+<div class="flex-shrink-0">
 <div class="score-gauge bg-gradient-to-br from-gray-200 to-gray-300" id="scoreGauge">
 <span id="scoreValue">-</span>
 </div>
 </div>
-
-<!-- Score details -->
-<div class="space-y-3" id="scoreDetails">
-<div class="p-3 bg-background-light rounded-lg text-center">
-<p class="text-sm text-text-light-muted mb-1">Score Brut</p>
-<p class="text-lg font-bold text-text-light" id="rawScore">-</p>
 </div>
-</div>
-</div>
-</div>
+</form>
 </div>
 </div>
 
