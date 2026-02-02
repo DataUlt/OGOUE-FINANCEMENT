@@ -547,7 +547,6 @@ async function calculateScore() {
 // Display score results
 function displayScore(result) {
   const scoreValue = document.getElementById('scoreValue');
-  const rawScoreEl = document.getElementById('rawScore');
   const scoreGauge = document.getElementById('scoreGauge');
 
   const score = result.score_final || 0;
@@ -581,7 +580,10 @@ function displayScore(result) {
 
   // Update gauge
   scoreValue.textContent = Math.round(score);
-  rawScoreEl.textContent = score.toFixed(2);
+  const rawScoreEl = document.getElementById('rawScore');
+  if (rawScoreEl) {
+    rawScoreEl.textContent = score.toFixed(2);
+  }
 
   // Determine gauge color based on classification
   let gaugeColor = '';
@@ -653,7 +655,10 @@ function displayExternalExplanation(explanation, simulationId) {
 // Reset score display
 function resetScoreDisplay() {
   document.getElementById('scoreValue').textContent = '-';
-  document.getElementById('rawScore').textContent = '-';
+  const rawScoreEl = document.getElementById('rawScore');
+  if (rawScoreEl) {
+    rawScoreEl.textContent = '-';
+  }
   document.getElementById('scoreGauge').className = 'score-gauge bg-gradient-to-br from-gray-200 to-gray-300';
   resetInterpretationDisplay();
 }
