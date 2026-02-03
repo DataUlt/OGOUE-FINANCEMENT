@@ -231,12 +231,9 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 <label class="flex flex-col">
 <p class="text-text-light text-base font-medium leading-normal pb-2">Méthode HTTP</p>
-<select id="httpMethod" class="form-select flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-14 p-[15px] text-base font-normal leading-normal">
-<option value="POST" selected>POST</option>
-<option value="GET">GET</option>
-</select>
+<input id="httpMethod" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-gray-100 h-14 p-[15px] text-base font-normal leading-normal cursor-not-allowed" type="text" value="POST" readonly/>
 </label>
-<label class="flex flex-col md:col-span-1">
+<label class="flex flex-col">
 <p class="text-text-light text-base font-medium leading-normal pb-2">URL de l'API</p>
 <input id="apiEndpoint" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light focus:outline-0 border border-black/10 bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 h-14 placeholder:text-text-light-muted p-[15px] text-base font-normal leading-normal" placeholder="https://api.votre-institution.com/scoring" type="url"/>
 </label>
