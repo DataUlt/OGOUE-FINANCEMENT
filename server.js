@@ -45,23 +45,35 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  // Lire le fichier
-  fs.readFile(filePath, (err, content) => {
-    if (err) {
-      if (err.code === 'ENOENT') {
-        res.writeHead(404, { 'Content-Type': 'text/plain' });
-        res.end('404 - File Not Found');
-      } else {
-        res.writeHead(500, { 'Content-Type': 'text/plain' });
-        res.end('500 - Server Error');
+  // Lire le fichier.
+  // Les liens internes de l'application sont sans extension (.html),
+  // comme en production ou _redirects fait la reecriture. On retente
+  // donc avec .html avant de conclure a un fichier absent, sinon la
+  // navigation echoue partout en local.
+  function servir(chemin, dejaRetente) {
+    fs.readFile(chemin, (err, content) => {
+      if (err) {
+        if (err.code === 'ENOENT' && !dejaRetente && !path.extname(chemin)) {
+          servir(chemin + '.html', true);
+          return;
+        }
+        if (err.code === 'ENOENT') {
+          res.writeHead(404, { 'Content-Type': 'text/plain' });
+          res.end('404 - File Not Found');
+        } else {
+          res.writeHead(500, { 'Content-Type': 'text/plain' });
+          res.end('500 - Server Error');
+        }
+        return;
       }
-    } else {
-      const ext = path.extname(filePath);
+      const ext = path.extname(chemin);
       const contentType = mimeTypes[ext] || 'application/octet-stream';
       res.writeHead(200, { 'Content-Type': contentType });
       res.end(content);
-    }
-  });
+    });
+  }
+
+  servir(filePath, false);
 });
 
 server.listen(PORT, () => {

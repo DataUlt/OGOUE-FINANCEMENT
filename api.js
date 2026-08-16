@@ -9,7 +9,8 @@ const API_BASE_URL = (() => {
   
   // Local development
   if (hostname === 'localhost' || hostname === '127.0.0.1') {
-    return 'http://localhost:3001/api';
+    // Port 3002 : le backend d'OGOUE occupe le 3001 en local
+    return 'http://localhost:3002/api';
   }
   
   // Production - API is on separate subdomain
