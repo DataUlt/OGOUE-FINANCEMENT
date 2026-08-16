@@ -170,10 +170,6 @@
 <span class="material-symbols-outlined icon-filled">home</span>
 <span class="sidebar-text">Accueil</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="pme-historique-scores">
-<span class="material-symbols-outlined">analytics</span>
-<span class="sidebar-text">Résultats</span>
-</a>
 </nav>
 <div class="p-4 mt-auto border-t border-black/10">
 <div class="sidebar-user bg-[#f0f4f3] rounded-lg p-4 flex items-center gap-3 mb-3">
@@ -230,28 +226,19 @@
 </body>
 
 <script type="module">
-import { sessionAPI, productsAPI } from './api.js';
+import { sessionAPI, productsAPI, API_BASE_URL } from './api.js';
 
-// Dynamically set API_BASE_URL based on environment
-const API_BASE_URL = (() => {
+// Le depot d'un dossier se fait dans l'application OGOUE, ou la PME est deja
+// connectee avec sa comptabilite. On l'y envoie en passant le produit choisi.
+const OGOUE_APP_URL = (() => {
   const hostname = window.location.hostname;
-  
-  // Local development
-  if (hostname === 'localhost' || hostname === '127.0.0.1') {
-    return 'http://localhost:3001/api';
-  }
-  
-  // Production - API is on separate subdomain
-  if (hostname.includes('ogoue.com')) {
-    // Convert financement.ogoue.com -> api-financement.ogoue.com
-    return `https://api-${hostname}/api`;
-  }
-  
-  // Fallback
-  return `https://${hostname}/api`;
-})();
 
-console.log('🔌 API Base URL:', API_BASE_URL);
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    return 'http://localhost:8080/app';
+  }
+
+  return 'https://www.ogoue.com/app';
+})();
 
 // Check authentication
 if (!sessionAPI.isLoggedIn()) {
@@ -395,9 +382,9 @@ function displayProducts(productsToDisplay) {
           </div>
         </td>
         <td class="px-4 py-3 text-center">
-          <button onclick="window.location.href='pme-resultats-simulation?productId=${product.id}'" class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors text-sm font-semibold cursor-pointer border-0">
-            <span class="material-symbols-outlined text-sm">calculate</span>
-            <span>Simuler</span>
+          <button onclick="window.location.href='${OGOUE_APP_URL}/module_depot_dossier?productId=${product.id}'" class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors text-sm font-semibold cursor-pointer border-0 whitespace-nowrap">
+            <span class="material-symbols-outlined text-sm">upload_file</span>
+            <span>Déposer mon dossier</span>
           </button>
         </td>
       </tr>

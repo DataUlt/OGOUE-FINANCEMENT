@@ -26,6 +26,7 @@ import creditProductRouter from './routes/creditProducts.js';
 import simulationRouter from './routes/simulations.js';
 import profileRouter from './routes/profile.js';
 import scoringModelRouter from './routes/scoringModels.js';
+import applicationRouter from './routes/applications.js';
 
 // Use routes - using the auth router from routes/index.ts
 app.use('/api/auth', authRouter);
@@ -33,6 +34,7 @@ app.use('/api/credit-products', creditProductRouter);
 app.use('/api/simulations', simulationRouter);
 app.use('/api/profile', profileRouter);
 app.use('/api/scoring-models', scoringModelRouter);
+app.use('/api/applications', applicationRouter);
 
 // Error handling middleware
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {

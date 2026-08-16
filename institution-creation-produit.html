@@ -163,6 +163,10 @@
 <span class="material-symbols-outlined icon-filled">payments</span>
 <span class="sidebar-text">Produits</span>
 </a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="institution-analyse-dossier">
+<span class="material-symbols-outlined">folder_shared</span>
+<span class="sidebar-text">Dossiers</span>
+</a>
 </nav>
 <div class="p-4 mt-auto">
 <div class="sidebar-user bg-white rounded-lg p-4 flex items-center gap-3 border border-black/10">
@@ -295,22 +299,6 @@
 </div>
 </div>
 
-<!-- Modèle d'Octroi -->
-<div class="bg-white rounded-lg p-6 border border-black/10">
-<h2 class="text-text-light text-xl font-bold mb-4">Modèle d'Octroi</h2>
-<label class="flex flex-col">
-<p class="text-text-light text-sm font-medium mb-2">Associer à un Modèle d'Octroi</p>
-<select class="form-select w-full rounded-lg border border-black/10 bg-white text-text-light focus:border-primary focus:ring-2 focus:ring-primary/20 h-12 px-4" id="scoring_model_id">
-<option value="">Aucun modèle</option>
-</select>
-<p class="text-text-light-muted text-xs mt-2">Le modèle d'octroi définit les règles et le score d'éligibilité.</p>
-</label>
-<div id="modelError" class="mt-2 hidden bg-red-100 text-red-700 px-3 py-2 rounded text-xs flex items-center gap-2">
-<span class="material-symbols-outlined text-sm">error</span>
-<span>Au moins une variable est requise</span>
-</div>
-</div>
-
 <!-- Messages -->
 <div id="errorMessage" class="hidden bg-red-100 text-red-700 px-4 py-3 rounded-lg text-sm"></div>
 <div id="successMessage" class="hidden bg-blue-100 text-blue-700 px-4 py-3 rounded-lg text-sm" style="color: #0088CC;"></div>
@@ -357,28 +345,7 @@ if (logoutBtn) {
 </script>
 
 <script type="module">
-  import { productsAPI, sessionAPI, apiHelpers } from './api.js';
-
-  // Dynamically set API_BASE_URL based on environment
-  const API_BASE_URL = (() => {
-    const hostname = window.location.hostname;
-    
-    // Local development
-    if (hostname === 'localhost' || hostname === '127.0.0.1') {
-      return 'http://localhost:3001/api';
-    }
-    
-    // Production - API is on separate subdomain
-    if (hostname.includes('ogoue.com')) {
-      // Convert financement.ogoue.com -> api-financement.ogoue.com
-      return `https://api-${hostname}/api`;
-    }
-    
-    // Fallback
-    return `https://${hostname}/api`;
-  })();
-
-  console.log('🔌 API Base URL:', API_BASE_URL);
+  import { productsAPI, sessionAPI, apiHelpers, API_BASE_URL } from './api.js';
 
   const form = document.getElementById('productForm');
   const errorMessage = document.getElementById('errorMessage');
@@ -602,71 +569,6 @@ if (logoutBtn) {
     initDocumentManagement();
   }
 
-  // Store selected model and its variables
-  let selectedModel = null;
-  let selectedModelVariables = [];
-
-  // Load scoring models
-  async function loadScoringModels() {
-    try {
-      const modelsAPI = { getModels: async (token) => {
-        const res = await fetch(`${API_BASE_URL}/scoring-models`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (!res.ok) throw new Error('Failed to load models');
-        return res.json();
-      }};
-
-      const data = await modelsAPI.getModels(token);
-      const models = data.models || [];
-      
-      const modelSelect = document.getElementById('scoring_model_id');
-      
-      // Clear existing options (keep "Aucun modèle")
-      modelSelect.innerHTML = '<option value="">Aucun modèle</option>';
-      
-      // Add models from API
-      models.forEach(model => {
-        const option = document.createElement('option');
-        option.value = model.id;
-        option.textContent = model.name;
-        option.dataset.variableCount = model.model_variables?.length || 0;
-        modelSelect.appendChild(option);
-      });
-
-      // Add change listener
-      modelSelect.addEventListener('change', (e) => {
-        const modelId = e.target.value;
-        const modelError = document.getElementById('modelError');
-        
-        if (modelId === '') {
-          selectedModel = null;
-          selectedModelVariables = [];
-          modelError.classList.add('hidden');
-        } else {
-          selectedModel = models.find(m => m.id === modelId);
-          selectedModelVariables = selectedModel?.model_variables || [];
-          
-          // Validate at least one variable
-          if (selectedModelVariables.length === 0) {
-            modelError.classList.remove('hidden');
-            selectedModel = null;
-            selectedModelVariables = [];
-          } else {
-            modelError.classList.add('hidden');
-          }
-        }
-      });
-      
-      console.log('✅ Scoring models loaded:', models.length);
-    } catch (error) {
-      console.error('❌ Error loading models:', error);
-    }
-  }
-
-  // Load models on page load
-  loadScoringModels();
-  
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -698,19 +600,6 @@ if (logoutBtn) {
         }
       }
 
-      // Validate model selection
-      if (!selectedModel || selectedModelVariables.length === 0) {
-        throw new Error('At least one variable is required');
-      }
-
-      // Build variables array from selected model
-      const variables = selectedModelVariables.map(variable => ({
-        name: variable.name,
-        field_key: variable.name.toLowerCase().replace(/\s+/g, '_'),
-        variable_type: 'numeric',
-        weight: variable.weight || 0
-      }));
-
       const formData = {
         name: document.getElementById('name').value.trim(),
         objective: document.getElementById('objective').value.trim(),
@@ -721,9 +610,7 @@ if (logoutBtn) {
         interest_type: document.getElementById('interest_type').value || null,
         typology: typologyValue,
         target: document.getElementById('target').value.trim(),
-        required_documents: addedDocuments.map(doc => ({ name: doc })),
-        variables: variables,
-        scoring_model_id: selectedModel.id
+        required_documents: addedDocuments.map(doc => ({ name: doc }))
       };
 
       if (!formData.name || !formData.objective || !formData.amount_min || !formData.amount_max) {

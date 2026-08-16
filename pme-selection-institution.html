@@ -171,10 +171,6 @@
 <span class="material-symbols-outlined icon-filled">home</span>
 <span class="sidebar-text">Accueil</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="pme-historique-scores">
-<span class="material-symbols-outlined">analytics</span>
-<span class="sidebar-text">Résultats</span>
-</a>
 </nav>
 <div class="p-4 mt-auto border-t border-black/10">
 <div class="sidebar-user bg-[#f0f4f3] rounded-lg p-4 flex items-center gap-3 mb-3">
@@ -222,7 +218,7 @@
 </div>
 
 <script type="module">
-import { sessionAPI } from './api.js';
+import { sessionAPI, API_BASE_URL } from './api.js';
 
 // Check authentication
 if (!sessionAPI.isLoggedIn()) {
@@ -295,27 +291,6 @@ function updateUserInfo() {
 
 // Global variable to store institutions for search
 let allInstitutions = [];
-
-// Dynamically set API_BASE_URL based on environment
-const API_BASE_URL = (() => {
-  const hostname = window.location.hostname;
-  
-  // Local development
-  if (hostname === 'localhost' || hostname === '127.0.0.1') {
-    return 'http://localhost:3001/api';
-  }
-  
-  // Production - API is on separate subdomain
-  if (hostname.includes('ogoue.com')) {
-    // Convert financement.ogoue.com -> api-financement.ogoue.com
-    return `https://api-${hostname}/api`;
-  }
-  
-  // Fallback
-  return `https://${hostname}/api`;
-})();
-
-console.log('🔌 API Base URL:', API_BASE_URL);
 
 // Load institutions from API
 async function loadInstitutions() {

@@ -23,14 +23,32 @@ const server = http.createServer((req, res) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
+  // Serveur de developpement : ne jamais laisser le navigateur mettre en
+  // cache. Sans en-tete, il applique un cache heuristique et continue de
+  // servir l'ancien api.js apres une modification, ce qui fait echouer les
+  // imports ES et rend la page entierement inerte, sans message d'erreur.
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+
   if (req.method === 'OPTIONS') {
     res.writeHead(200);
     res.end();
     return;
   }
 
-  // Chemin du fichier (ignorer la query string)
-  const urlWithoutQuery = req.url.split('?')[0];
+  // Chemin du fichier (ignorer la query string).
+  // Il faut decoder : le navigateur encode les caracteres speciaux, et
+  // certains fichiers en contiennent ("Logo-ogoue (2).png"). Sans decodage
+  // on cherchait un fichier nomme "Logo-ogoue%20(2).png", d'ou un 404.
+  let urlWithoutQuery = req.url.split('?')[0];
+  try {
+    urlWithoutQuery = decodeURIComponent(urlWithoutQuery);
+  } catch (e) {
+    res.writeHead(400, { 'Content-Type': 'text/plain' });
+    res.end('Bad Request');
+    return;
+  }
   let filePath = path.join(__dirname, urlWithoutQuery);
   
   // Si c'est un dossier, servir index.html

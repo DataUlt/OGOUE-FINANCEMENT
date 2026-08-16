@@ -173,6 +173,10 @@
 <span class="material-symbols-outlined">payments</span>
 <span class="sidebar-text">Produits</span>
 </a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="institution-analyse-dossier">
+<span class="material-symbols-outlined">folder_shared</span>
+<span class="sidebar-text">Dossiers</span>
+</a>
 </nav>
 <div class="p-4 mt-auto">
 <div class="sidebar-user bg-background-light rounded-lg p-4 flex items-center gap-3">
@@ -192,242 +196,55 @@
 <main class="flex-1 flex flex-col h-full overflow-hidden">
 <header class="px-8 py-6 border-b border-black/10 bg-white flex flex-wrap justify-between items-end gap-4 shrink-0 z-10">
 <div class="flex flex-col gap-1">
-<h2 class="text-3xl font-bold tracking-tight text-text-light">Vue d'ensemble des simulations de financement</h2>
-<p class="text-text-light-muted">Suivi global des scores et du positionnement des PME vis-à-vis de vos produits.</p>
+<h2 class="text-3xl font-bold tracking-tight text-text-light">Vue d'ensemble de votre offre de financement</h2>
+<p class="text-text-light-muted">Les produits de crédit que vous proposez aux PME.</p>
 </div>
 </header>
 <div class="flex-1 overflow-y-auto p-8">
 <div class="max-w-7xl mx-auto flex flex-col gap-8">
-<!-- Date Range Picker Button -->
-<div class="relative">
-<button id="dateRangeBtn" class="flex items-center gap-2 h-10 px-4 rounded-lg border border-black/10 bg-white hover:bg-background-light transition-colors text-sm font-semibold text-text-light">
-<span class="material-symbols-outlined text-[20px]">calendar_month</span>
-<span id="dateRangeDisplay">01/01/2026 - 04/01/2026</span>
-</button>
-
-<!-- Date Range Picker Modal -->
-<div id="dateRangeModal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
-<div class="fixed inset-0 bg-black/30" id="dateRangeBackdrop"></div>
-<div class="relative bg-white rounded-lg shadow-2xl border border-black/10 p-6 w-96">
-<!-- Header -->
-<div class="flex justify-between items-center mb-4">
-<div class="flex items-center gap-2">
-<button id="prevMonthBtn" class="p-1.5 hover:bg-background-light rounded transition-colors">
-<span class="material-symbols-outlined">chevron_left</span>
-</button>
-<div class="flex items-center gap-2 min-w-[180px]">
-<select id="monthSelect" class="flex-1 px-2 py-1 rounded border border-black/10 bg-white text-text-light text-sm">
-<option value="0">Janvier</option>
-<option value="1">Février</option>
-<option value="2">Mars</option>
-<option value="3">Avril</option>
-<option value="4">Mai</option>
-<option value="5">Juin</option>
-<option value="6">Juillet</option>
-<option value="7">Août</option>
-<option value="8">Septembre</option>
-<option value="9">Octobre</option>
-<option value="10">Novembre</option>
-<option value="11">Décembre</option>
-</select>
-<input type="number" id="yearInput" min="1900" max="2200" class="w-20 px-2 py-1 rounded border border-black/10 bg-white text-text-light text-sm" />
-</div>
-<button id="nextMonthBtn" class="p-1.5 hover:bg-background-light rounded transition-colors">
-<span class="material-symbols-outlined">chevron_right</span>
-</button>
-</div>
-<button id="resetDateRangeBtn" class="ml-auto p-1.5 hover:bg-background-light rounded transition-colors text-primary" title="Réinitialiser">
-<span class="material-symbols-outlined text-sm">refresh</span>
-</button>
-</div>
-
-<!-- Calendar Grid -->
-<div class="mb-4">
-<div class="grid grid-cols-7 gap-1 mb-2">
-<div class="text-center text-xs font-semibold text-text-light-muted p-1">Lun</div>
-<div class="text-center text-xs font-semibold text-text-light-muted p-1">Mar</div>
-<div class="text-center text-xs font-semibold text-text-light-muted p-1">Mer</div>
-<div class="text-center text-xs font-semibold text-text-light-muted p-1">Jeu</div>
-<div class="text-center text-xs font-semibold text-text-light-muted p-1">Ven</div>
-<div class="text-center text-xs font-semibold text-text-light-muted p-1">Sam</div>
-<div class="text-center text-xs font-semibold text-text-light-muted p-1">Dim</div>
-</div>
-<div id="calendarDays" class="grid grid-cols-7 gap-1">
-<!-- Days will be inserted here -->
-</div>
-</div>
-
-<!-- Actions -->
-<div class="flex gap-3">
-<button id="closeDateRangeBtn" class="flex-1 px-4 h-10 rounded-lg border border-black/10 bg-white text-text-light font-medium hover:bg-background-light transition-colors">Annuler</button>
-<button id="confirmDateRangeBtn" class="flex-1 px-4 h-10 rounded-lg bg-primary text-background-dark font-medium hover:bg-primary/90 transition-colors">Confirmer</button>
-</div>
-</div>
-</div>
-</div>
-
-<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 <div class="bg-white rounded-lg p-6 border border-black/10 shadow-sm flex items-center gap-5">
 <div>
-<p class="text-sm text-text-light-muted font-medium mb-1">Simulations totales</p>
-<p class="text-3xl font-bold text-text-light" id="totalSimulations">-</p>
-</div>
-</div>
-<div class="bg-white rounded-lg p-6 border border-black/10 shadow-sm flex items-center gap-5">
-<div>
-<p class="text-sm text-text-light-muted font-medium mb-1">Score moyen</p>
-<p class="text-3xl font-bold text-text-light" id="averageScore">-<span class="text-xl text-text-light-muted font-medium">/100</span></p>
-</div>
-</div>
-<div class="bg-white rounded-lg p-6 border border-black/10 shadow-sm flex items-center gap-5">
-<div>
-<p class="text-sm text-text-light-muted font-medium mb-1">Produits actifs</p>
-<p class="text-3xl font-bold text-text-light" id="activeProducts">-</p>
+<p class="text-sm text-text-light-muted font-medium mb-1">Produits proposés</p>
+<p class="text-3xl font-bold text-text-light" id="totalProducts">-</p>
 </div>
 </div>
 </div>
-<div class="grid grid-cols-1 lg:grid-cols-5 gap-8">
-<div class="lg:col-span-3 flex flex-col gap-6">
+<div class="flex flex-col gap-8">
+<div class="flex flex-col gap-6">
 <div class="bg-white rounded-lg border border-black/10 shadow-sm flex flex-col h-full">
 <div class="px-6 py-5 border-b border-black/10 flex justify-between items-center">
-<h3 class="text-lg font-bold text-text-light">Performance par Produit</h3>
-<a href="institution-tous-produits" class="text-primary text-sm font-semibold hover:underline">Voir tout</a>
+<h3 class="text-lg font-bold text-text-light">Vos produits de crédit</h3>
+<a href="institution-liste-produits" class="text-primary text-sm font-semibold hover:underline">Gérer les produits</a>
 </div>
 <div class="overflow-x-auto rounded-b-lg">
 <table class="w-full text-left border-collapse">
 <thead class="bg-background-light">
 <tr>
 <th class="px-6 py-4 text-xs font-semibold uppercase text-text-light-muted tracking-wider">Nom du Produit</th>
-<th class="px-6 py-4 text-xs font-semibold uppercase text-text-light-muted tracking-wider text-center">Simulations</th>
-<th class="px-6 py-4 text-xs font-semibold uppercase text-text-light-muted tracking-wider text-center">Score Moyen</th>
+<th class="px-6 py-4 text-xs font-semibold uppercase text-text-light-muted tracking-wider">Typologie</th>
+<th class="px-6 py-4 text-xs font-semibold uppercase text-text-light-muted tracking-wider">Montant</th>
+<th class="px-6 py-4 text-xs font-semibold uppercase text-text-light-muted tracking-wider text-center">Durée</th>
+<th class="px-6 py-4 text-xs font-semibold uppercase text-text-light-muted tracking-wider text-center">Pièces exigées</th>
 </tr>
 </thead>
 <tbody class="divide-y divide-black/10" id="productsTableBody">
 <tr class="hover:bg-background-light transition-colors">
-<td class="px-6 py-4 text-center text-text-light-muted" colspan="3">Chargement...</td>
+<td class="px-6 py-4 text-center text-text-light-muted" colspan="5">Chargement...</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 </div>
-<div class="lg:col-span-2 bg-white rounded-lg border border-black/10 shadow-sm flex flex-col">
-<div class="px-6 py-5 border-b border-black/10 flex justify-between items-center">
-<div>
-<h3 class="text-lg font-bold text-text-light">Distribution des Scores</h3>
-<p class="text-text-light-muted text-sm mt-1">Répartition des scores de simulation par catégorie</p>
-</div>
-<button class="p-2 hover:bg-background-light rounded-lg transition-colors">
-<span class="material-symbols-outlined text-text-light-muted">more_horiz</span>
-</button>
-</div>
-<div class="p-6 md:p-8 flex flex-col justify-center gap-6 h-full">
-<!-- Range < 40 -->
-<div class="flex flex-col gap-2">
-<div class="flex justify-between items-end mb-1">
-<div class="flex items-center gap-2">
-<div class="size-3 rounded-full" style="background-color: #3B82F6;"></div>
-<span class="text-sm font-semibold text-text-light">< 40</span>
-</div>
-<span class="text-sm font-bold text-text-light"><span id="count-risque">0</span> <span class="text-text-light-muted font-normal text-xs ml-1" id="percent-risque">(0%)</span></span>
-</div>
-<div class="w-full h-4 bg-background-light rounded-full overflow-hidden relative">
-<div class="absolute top-0 left-0 h-full rounded-full" id="bar-risque" style="width: 0%; background-color: #3B82F6;"></div>
-</div>
-</div>
-<!-- Range 40-60 -->
-<div class="flex flex-col gap-2">
-<div class="flex justify-between items-end mb-1">
-<div class="flex items-center gap-2">
-<div class="size-3 rounded-full" style="background-color: #3B82F6;"></div>
-<span class="text-sm font-semibold text-text-light">40-60</span>
-</div>
-<span class="text-sm font-bold text-text-light"><span id="count-moyen">0</span> <span class="text-text-light-muted font-normal text-xs ml-1" id="percent-moyen">(0%)</span></span>
-</div>
-<div class="w-full h-4 bg-background-light rounded-full overflow-hidden relative">
-<div class="absolute top-0 left-0 h-full rounded-full" id="bar-moyen" style="width: 0%; background-color: #3B82F6;"></div>
-</div>
-</div>
-<!-- Range 60-80 -->
-<div class="flex flex-col gap-2">
-<div class="flex justify-between items-end mb-1">
-<div class="flex items-center gap-2">
-<div class="size-3 rounded-full" style="background-color: #3B82F6;"></div>
-<span class="text-sm font-semibold text-text-light">60-80</span>
-</div>
-<span class="text-sm font-bold text-text-light"><span id="count-bon">0</span> <span class="text-text-light-muted font-normal text-xs ml-1" id="percent-bon">(0%)</span></span>
-</div>
-<div class="w-full h-4 bg-background-light rounded-full overflow-hidden relative">
-<div class="absolute top-0 left-0 h-full rounded-full" id="bar-bon" style="width: 0%; background-color: #3B82F6;"></div>
-</div>
-</div>
-<!-- Range > 80 -->
-<div class="flex flex-col gap-2">
-<div class="flex justify-between items-end mb-1">
-<div class="flex items-center gap-2">
-<div class="size-3 rounded-full" style="background-color: #3B82F6;"></div>
-<span class="text-sm font-semibold text-text-light">> 80</span>
-</div>
-<span class="text-sm font-bold text-text-light"><span id="count-excellent">0</span> <span class="text-text-light-muted font-normal text-xs ml-1" id="percent-excellent">(0%)</span></span>
-</div>
-<div class="w-full h-4 bg-background-light rounded-full overflow-hidden relative">
-<div class="absolute top-0 left-0 h-full rounded-full" id="bar-excellent" style="width: 0%; background-color: #3B82F6;"></div>
-</div>
-</div>
-</div>
-
-</div>
 </div>
 </div>
 </main>
 
-<!-- Simulations Modal -->
-<div id="simulationsModal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
-<div class="fixed inset-0 bg-black/30" id="simulationsModalBackdrop"></div>
-<div class="relative bg-white rounded-lg shadow-2xl border border-black/10 w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
-<!-- Header -->
-<div class="px-6 py-5 border-b border-black/10 flex justify-between items-center shrink-0">
-<div>
-<h3 class="text-lg font-bold text-text-light" id="simulationsModalTitle">Simulations</h3>
-<p class="text-text-light-muted text-sm mt-1">Détails des simulations et variables saisies</p>
-</div>
-<button id="closeSimulationsModalBtn" class="p-2 hover:bg-background-light rounded-lg transition-colors">
-<span class="material-symbols-outlined text-text-light-muted">close</span>
-</button>
-</div>
-<!-- Content -->
-<div class="overflow-y-auto flex-1 p-6">
-<div id="simulationsModalContent" class="space-y-4">
-<!-- Simulations will be inserted here -->
-</div>
-</div>
-</div>
-</div>
 </div>
 </div>
 <script type="module">
-import { sessionAPI, productsAPI, simulationsAPI } from './api.js';
-
-// Dynamically set API_BASE_URL based on environment
-const API_BASE_URL = (() => {
-  const hostname = window.location.hostname;
-  
-  // Local development
-  if (hostname === 'localhost' || hostname === '127.0.0.1') {
-    return 'http://localhost:3001/api';
-  }
-  
-  // Production - API is on separate subdomain
-  if (hostname.includes('ogoue.com')) {
-    // Convert financement.ogoue.com -> api-financement.ogoue.com
-    return `https://api-${hostname}/api`;
-  }
-  
-  // Fallback
-  return `https://${hostname}/api`;
-})();
-
-console.log('🔌 API Base URL:', API_BASE_URL);
+import { sessionAPI, productsAPI } from './api.js';
 
 // Check authentication
 if (!sessionAPI.isLoggedIn()) {
@@ -515,700 +332,91 @@ if (logoutBtn) {
   });
 }
 
-// Load dashboard data
+// Chargement du tableau de bord : l'offre de credit de l'institution.
+// Les dossiers deposes par les PME viendront s'ajouter ici une fois l'API
+// dossiers disponible cote financement.
+
+const FCFA = new Intl.NumberFormat('fr-FR');
+
+function formatMontant(min, max) {
+  const bas = Number(min) || 0;
+  const haut = Number(max) || 0;
+  if (!bas && !haut) return '-';
+  return `${FCFA.format(bas)} - ${FCFA.format(haut)} FCFA`;
+}
+
+function formatDuree(min, max) {
+  if (!min && !max) return '-';
+  if (min && max) return min === max ? `${min} mois` : `${min} - ${max} mois`;
+  return `${min || max} mois`;
+}
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, (c) => (
+    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+  ));
+}
+
+function renderProducts(products) {
+  const tableBody = document.getElementById('productsTableBody');
+
+  if (products.length === 0) {
+    tableBody.innerHTML = `
+      <tr>
+        <td class="px-6 py-8 text-center text-text-light-muted" colspan="5">
+          Aucun produit pour le moment.
+          <a href="institution-creation-produit" class="text-primary font-semibold hover:underline">Créer votre premier produit</a>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tableBody.innerHTML = products.map((product) => {
+    const nbDocs = (product.product_required_documents || []).length;
+
+    return `
+      <tr class="hover:bg-background-light transition-colors">
+        <td class="px-6 py-4">
+          <p class="font-semibold text-text-light text-sm">${escapeHtml(product.name)}</p>
+          <p class="text-xs text-text-light-muted">${escapeHtml(product.objective || '')}</p>
+        </td>
+        <td class="px-6 py-4 text-sm text-text-light">${escapeHtml(product.typology || '-')}</td>
+        <td class="px-6 py-4 text-sm text-text-light whitespace-nowrap">${formatMontant(product.amount_min, product.amount_max)}</td>
+        <td class="px-6 py-4 text-sm text-text-light text-center whitespace-nowrap">${formatDuree(product.duration_min_months, product.duration_max_months)}</td>
+        <td class="px-6 py-4 text-sm text-text-light font-medium text-center">${nbDocs}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
 async function loadDashboardData() {
+  const tableBody = document.getElementById('productsTableBody');
+
   try {
     const token = sessionAPI.getToken();
-    const institution = sessionAPI.getInstitution();
-    
-    if (!institution || !institution.id) {
-      throw new Error('Institution data not found');
-    }
-    
-    // Load products
     const productsRes = await productsAPI.getInstitutionProducts(token);
     const products = productsRes.products || [];
-    
-    // Load simulations stats for this institution with error handling
-    let stats = null;
-    let simulations = [];
-    try {
-      stats = await simulationsAPI.getInstitutionSimulationStats(token, institution.id);
-      simulations = await simulationsAPI.getInstitutionSimulations(token, institution.id);
-      console.log('✅ Simulations stats loaded:', stats);
-      console.log('✅ Simulations loaded:', simulations.length);
-    } catch (simError) {
-      console.warn('⚠️ Failed to load simulations, continuing without them:', simError.message);
-      // Continue without simulations - don't block the rest of the dashboard
-      simulations = [];
-      stats = {
-        total_simulations: 0,
-        average_score: 0,
-        percentage_above_60: 0
-      };
-    }
-    
-    // Update stats - simulations totales should be the count of actual simulations done by PMEs
-    document.getElementById('totalSimulations').textContent = stats.total_simulations || 0;
-    document.getElementById('activeProducts').textContent = products.length;
-    
-    // Store all simulations for filtering
-    window.allSimulations = simulations || [];
-    
-    // Listen for date range changes and filter simulations
-    window.addEventListener('dateRangeChanged', (event) => {
-      const { startDate, endDate } = event.detail;
-      console.log('📅 Date range changed:', startDate, '-', endDate);
-      filterSimulationsByDateRange(startDate, endDate);
-    });
-    
-    // Function to filter simulations by date range
-    function filterSimulationsByDateRange(startDate, endDate) {
-      const start = new Date(startDate + 'T00:00:00');
-      const end = new Date(endDate + 'T23:59:59');
-      
-      const filtered = window.allSimulations.filter(sim => {
-        if (!sim.created_at) return false;
-        const simDate = new Date(sim.created_at);
-        return simDate >= start && simDate <= end;
-      });
-      
-      console.log('🔍 Filtered simulations:', filtered.length, 'from', window.allSimulations.length);
-      updateDashboardWithFilteredData(filtered);
-    }
-    
-    // Function to update dashboard with filtered simulations
-    function updateDashboardWithFilteredData(filteredSimulations) {
-      // Update total simulations count
-      document.getElementById('totalSimulations').textContent = filteredSimulations.length;
-      
-      // Calculate distribution for filtered data
-      const distribution = {
-        risque: 0,    // < 40
-        moyen: 0,     // 40-60
-        bon: 0,       // 60-80
-        excellent: 0  // > 80
-      };
-      
-      let totalScore = 0;
-      const validScores = [];
-      
-      filteredSimulations.forEach(sim => {
-        if (sim.calculated_score !== null) {
-          const score = sim.calculated_score;
-          validScores.push(score);
-          totalScore += score;
-          
-          if (score < 40) distribution.risque++;
-          else if (score < 60) distribution.moyen++;
-          else if (score < 80) distribution.bon++;
-          else distribution.excellent++;
-        }
-      });
-      
-      // Update average score
-      const avgScore = validScores.length > 0 ? totalScore / validScores.length : 0;
-      const avgScoreEl = document.getElementById('averageScore');
-      if (avgScoreEl) {
-        avgScoreEl.textContent = avgScore.toFixed(2);
-        const spanEl = avgScoreEl.querySelector('span') || document.createElement('span');
-        spanEl.className = 'text-xl text-gray-400 font-medium';
-        spanEl.textContent = '/100';
-        if (!avgScoreEl.querySelector('span')) {
-          avgScoreEl.appendChild(spanEl);
-        }
-      }
-      
-      // Update distribution bars
-      const total = Object.values(distribution).reduce((a, b) => a + b, 0);
-      
-      const updateBar = (countId, percentId, barId, count) => {
-        const countEl = document.getElementById(countId);
-        const percentEl = document.getElementById(percentId);
-        const barEl = document.getElementById(barId);
-        
-        countEl.textContent = count;
-        
-        const percentage = total > 0 ? Math.round((count / total) * 100) : 0;
-        percentEl.textContent = `(${percentage}%)`;
-        barEl.style.width = percentage + '%';
-      };
-      
-      updateBar('count-risque', 'percent-risque', 'bar-risque', distribution.risque);
-      updateBar('count-moyen', 'percent-moyen', 'bar-moyen', distribution.moyen);
-      updateBar('count-bon', 'percent-bon', 'bar-bon', distribution.bon);
-      updateBar('count-excellent', 'percent-excellent', 'bar-excellent', distribution.excellent);
-      
-      // Update products table with filtered data
-      updateProductsTableWithFilteredData(filteredSimulations);
-      
-      console.log('✅ Dashboard updated with filtered data:', distribution);
-    }
-    
-    // Function to update products table with filtered simulations
-    function updateProductsTableWithFilteredData(filteredSimulations) {
-      const tableBody = document.getElementById('productsTableBody');
-      tableBody.innerHTML = '';
-      
-      if (products.length === 0) {
-        tableBody.innerHTML = `
-          <tr class="hover:bg-background-light transition-colors">
-            <td class="px-6 py-4 text-center text-text-light-muted" colspan="3">Aucun produit pour le moment</td>
-          </tr>
-        `;
-        return;
-      }
-      
-      // Calculate stats for each product from filtered simulations
-      const productStats = {};
-      products.forEach(product => {
-        productStats[product.id] = {
-          simulation_count: 0,
-          total_score: 0,
-          score_count: 0,
-          average_score: 0
-        };
-      });
-      
-      // Aggregate stats from filtered simulations
-      filteredSimulations.forEach(sim => {
-        const productId = sim.credit_product_id;
-        if (productStats[productId]) {
-          productStats[productId].simulation_count++;
-          if (sim.calculated_score !== null) {
-            productStats[productId].total_score += sim.calculated_score;
-            productStats[productId].score_count++;
-          }
-        }
-      });
-      
-      // Calculate averages
-      Object.keys(productStats).forEach(productId => {
-        const stats = productStats[productId];
-        if (stats.score_count > 0) {
-          stats.average_score = stats.total_score / stats.score_count;
-        }
-      });
-      
-      // Update products with filtered stats
-      const updatedProducts = products.map(product => ({
-        ...product,
-        simulation_count: productStats[product.id]?.simulation_count || 0,
-        average_score: productStats[product.id]?.average_score || 0
-      }));
-      
-      // Sort by average score descending
-      const sortedProducts = [...updatedProducts].sort((a, b) => 
-        (b.average_score || 0) - (a.average_score || 0)
-      ).slice(0, 10);
-      
-      sortedProducts.forEach(product => {
-        const score = product.average_score ? Math.round(product.average_score) : '-';
-        const simulationCount = product.simulation_count || 0;
-        
-        // Determine score badge color
-        let badgeColor = 'bg-background-light text-text-light-muted';
-        if (product.average_score) {
-          if (product.average_score < 40) {
-            badgeColor = 'bg-red-100 text-red-800';
-          } else if (product.average_score < 60) {
-            badgeColor = 'bg-yellow-100 text-yellow-800';
-          } else if (product.average_score < 80) {
-            badgeColor = 'bg-blue-100 text-blue-800';
-          } else {
-            badgeColor = 'bg-blue-100 text-blue-800' + ' style="color: #0088CC;"';
-          }
-        }
-        
-        tableBody.innerHTML += `
-          <tr class="hover:bg-background-light transition-colors cursor-pointer product-row" data-product-id="${product.id}" data-product-name="${product.name}">
-            <td class="px-6 py-4">
-              <div>
-                <p class="font-semibold text-text-light text-sm">${product.name}</p>
-                <p class="text-xs text-text-light-muted">${product.description || ''}</p>
-              </div>
-            </td>
-            <td class="px-6 py-4 text-sm text-text-light font-medium text-center">${simulationCount}</td>
-            <td class="px-6 py-4 text-center">
-              <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${badgeColor}">${score}</span>
-            </td>
-          </tr>
-        `;
-      });
-    }
-    
-    // Update score distribution chart (initial load with all simulations)
-    updateDashboardWithFilteredData(window.allSimulations);
-    
-    // Populate products table
-    const tableBody = document.getElementById('productsTableBody');
-    tableBody.innerHTML = '';
-    
-    if (products.length === 0) {
-      tableBody.innerHTML = `
-        <tr class="hover:bg-background-light transition-colors">
-          <td class="px-6 py-4 text-center text-text-light-muted" colspan="3">Aucun produit pour le moment</td>
-        </tr>
-      `;
-    } else {
-      // Load stats for each product
-      for (const product of products) {
-        try {
-          const statsRes = await fetch(`${API_BASE_URL}/simulations/product/${product.id}/stats`);
-          if (statsRes.ok) {
-            const productStats = await statsRes.json();
-            product.simulation_count = productStats.total_simulations || 0;
-            product.average_score = productStats.average_score || 0;
-            console.log(`✅ Stats loaded for ${product.name}:`, productStats);
-          }
-        } catch (e) {
-          console.warn(`⚠️ Could not load stats for product ${product.id}:`, e.message);
-          product.simulation_count = 0;
-          product.average_score = 0;
-        }
-      }
-      
-      // Sort by average score descending
-      const sortedProducts = [...products].sort((a, b) => 
-        (b.average_score || 0) - (a.average_score || 0)
-      ).slice(0, 10);
-      
-      sortedProducts.forEach(product => {
-        const score = product.average_score ? Math.round(product.average_score) : '-';
-        const simulationCount = product.simulation_count || 0;
-        
-        // Determine score badge color
-        let badgeColor = 'bg-background-light text-text-light-muted';
-        if (product.average_score) {
-          if (product.average_score < 40) {
-            badgeColor = 'bg-red-100 text-red-800';
-          } else if (product.average_score < 60) {
-            badgeColor = 'bg-yellow-100 text-yellow-800';
-          } else if (product.average_score < 80) {
-            badgeColor = 'bg-blue-100 text-blue-800';
-          } else {
-            badgeColor = 'bg-blue-100 text-blue-800' + ' style="color: #0088CC;"';
-          }
-        }
-        
-        const icons = {
-          'Prêt Équipement': 'precision_manufacturing',
-          'Trésorerie Court Terme': 'payments',
-          'Crédit Bail': 'directions_car',
-          'Découvert Autorisé': 'account_balance'
-        };
-        
-        const iconColors = {
-          'Prêt Équipement': 'bg-blue-100 text-blue-600',
-          'Trésorerie Court Terme': 'bg-purple-100 text-purple-600',
-          'Crédit Bail': 'bg-orange-100 text-orange-600',
-          'Découvert Autorisé': 'bg-background-light text-text-light-muted'
-        };
-        
-        const iconName = icons[product.name] || 'payments';
-        const iconColor = iconColors[product.name] || 'bg-background-light text-text-light-muted';
-        
-        tableBody.innerHTML += `
-          <tr class="hover:bg-background-light transition-colors cursor-pointer product-row" data-product-id="${product.id}" data-product-name="${product.name}">
-            <td class="px-6 py-4">
-              <div>
-                <p class="font-semibold text-text-light text-sm">${product.name}</p>
-                <p class="text-xs text-text-light-muted">${product.description || ''}</p>
-              </div>
-            </td>
-            <td class="px-6 py-4 text-sm text-text-light font-medium text-center">${simulationCount}</td>
-            <td class="px-6 py-4 text-center">
-              <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${badgeColor}">${score}</span>
-            </td>
-          </tr>
-        `;
-      });
-    }
-    
-    // Update insight
-    if (products.length > 0) {
-      const topProduct = products.reduce((max, p) => 
-        (p.average_score || 0) > (max.average_score || 0) ? p : max
-      );
-      
-      if (topProduct && topProduct.average_score) {
-        const insight = `Le produit "${topProduct.name}" obtient en moyenne un score de ${Math.round(topProduct.average_score)}/100, indiquant une bonne préparation des PME pour ce type de financement.`;
-        document.getElementById('insightText').textContent = insight;
-      }
-    }
-    
+
+    document.getElementById('totalProducts').textContent = products.length;
+
+    const ordonnes = [...products].sort((a, b) =>
+      (a.name || '').localeCompare(b.name || '', 'fr')
+    );
+
+    renderProducts(ordonnes);
+    console.log('✅ Tableau de bord chargé:', products.length, 'produit(s)');
   } catch (error) {
-    console.error('Error loading dashboard data:', error);
-    document.getElementById('insightText').textContent = 'Erreur lors du chargement des données.';
+    console.error('❌ Erreur lors du chargement du tableau de bord:', error);
+    tableBody.innerHTML = `
+      <tr>
+        <td class="px-6 py-8 text-center text-red-600" colspan="5">Erreur lors du chargement de vos produits.</td>
+      </tr>
+    `;
   }
 }
 
-// Load on page load
 loadDashboardData();
-
-// ==================== SIMULATIONS MODAL ====================
-const simulationsModal = document.getElementById('simulationsModal');
-const simulationsModalBackdrop = document.getElementById('simulationsModalBackdrop');
-const closeSimulationsModalBtn = document.getElementById('closeSimulationsModalBtn');
-
-function closeSimulationsModal() {
-  simulationsModal.classList.add('hidden');
-}
-
-simulationsModalBackdrop.addEventListener('click', closeSimulationsModal);
-closeSimulationsModalBtn.addEventListener('click', closeSimulationsModal);
-
-// Open simulations modal when clicking on a product row
-document.addEventListener('click', async (e) => {
-  const productRow = e.target.closest('.product-row');
-  if (!productRow) return;
-  
-  const productId = productRow.getAttribute('data-product-id');
-  const productName = productRow.getAttribute('data-product-name');
-  
-  // Update modal title
-  document.getElementById('simulationsModalTitle').textContent = `Simulations - ${productName}`;
-  
-  // Open modal
-  simulationsModal.classList.remove('hidden');
-  
-  // Load simulations for this product
-  try {
-    const token = sessionAPI.getToken();
-    const institution = sessionAPI.getInstitution();
-    
-    // Fetch all simulations
-    const simsRes = await simulationsAPI.getInstitutionSimulations(token, institution.id);
-    const allSimulations = simsRes || [];
-    
-    console.log('All simulations:', allSimulations);
-    console.log('Product ID to filter:', productId);
-    
-    // Filter by product_id if available, otherwise show all simulations
-    let productSimulations = allSimulations.filter(sim => sim.product_id === productId);
-    
-    // If no results with product_id filter, try showing all (data structure might be different)
-    if (productSimulations.length === 0) {
-      console.warn('No simulations found with product_id filter, showing all simulations');
-      productSimulations = allSimulations;
-    }
-    
-    const contentDiv = document.getElementById('simulationsModalContent');
-    
-    if (productSimulations.length === 0) {
-      contentDiv.innerHTML = '<p class="text-text-light-muted text-center py-8">Aucune simulation disponible</p>';
-      return;
-    }
-    
-    // Display each simulation
-    contentDiv.innerHTML = productSimulations.map((sim, index) => {
-      let variables = '';
-      
-      console.log(`Simulation ${index + 1} complete data:`, sim);
-      console.log(`Simulation ${index + 1} simulation_data:`, sim.simulation_data);
-      console.log(`Simulation ${index + 1} product_variables:`, sim.credit_products?.product_variables);
-      
-      // Get variables from simulation_data (JSON field from database)
-      let varData = sim.simulation_data;
-      
-      // Parse if it's a JSON string
-      if (varData && typeof varData === 'string') {
-        try {
-          varData = JSON.parse(varData);
-        } catch (e) {
-          console.error(`Failed to parse simulation_data for simulation ${index + 1}:`, e);
-          varData = null;
-        }
-      }
-      
-      // Create a map of variable IDs to names from both product_variables AND model_variables
-      const variableNameMap = {};
-      
-      // First, try product_variables
-      if (sim.credit_products?.product_variables && Array.isArray(sim.credit_products.product_variables)) {
-        sim.credit_products.product_variables.forEach(pv => {
-          variableNameMap[pv.id] = pv.name || pv.field_key;
-        });
-      }
-      
-      // Then try model_variables (these are more likely to match simulation_data IDs)
-      if (sim.credit_products?.scoring_models?.model_variables && Array.isArray(sim.credit_products.scoring_models.model_variables)) {
-        sim.credit_products.scoring_models.model_variables.forEach(mv => {
-          variableNameMap[mv.id] = mv.name;
-        });
-      }
-      
-      console.log(`Variable name map:`, variableNameMap);
-      
-      // Display the variables if found
-      if (varData && typeof varData === 'object' && Object.keys(varData).length > 0) {
-        variables = Object.entries(varData)
-          .map(([key, value]) => {
-            let displayValue = value;
-            if (typeof value === 'object') {
-              displayValue = JSON.stringify(value);
-            }
-            // Get display name from map, or use the key directly
-            const displayLabel = variableNameMap[key] || key;
-            return `
-              <div class="flex justify-between py-2 px-3 bg-background-light rounded">
-                <span class="text-sm text-text-light-muted font-medium">${displayLabel}</span>
-                <span class="text-sm font-semibold text-text-light break-words">${displayValue}</span>
-              </div>
-            `;
-          })
-          .join('');
-      } else {
-        // If no variables found
-        variables = `
-          <div class="text-xs text-text-light-muted p-3 bg-background-light rounded">
-            <p class="text-center">Aucune variable disponible pour cette simulation</p>
-          </div>
-        `;
-      }
-      
-      // Determine score badge color
-      let scoreBadgeColor = 'bg-background-light text-text-light-muted';
-      const score = sim.calculated_score || 0;
-      if (score < 40) {
-        scoreBadgeColor = 'bg-red-100 text-red-800';
-      } else if (score < 60) {
-        scoreBadgeColor = 'bg-yellow-100 text-yellow-800';
-      } else if (score < 80) {
-        scoreBadgeColor = 'bg-blue-100 text-blue-800';
-      } else {
-        scoreBadgeColor = 'bg-blue-100 text-blue-800' + ' style="color: #0088CC;"';
-      }
-      
-      return `
-        <div class="bg-white border border-black/10 rounded-lg p-4">
-          <div class="flex justify-between items-center mb-4">
-            <h4 class="font-semibold text-text-light">Simulation ${index + 1}</h4>
-            <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${scoreBadgeColor}">${score.toFixed(2)}/100</span>
-          </div>
-          <div class="space-y-2">
-            ${variables}
-          </div>
-        </div>
-      `;
-    }).join('');
-    
-  } catch (error) {
-    console.error('Error loading simulations:', error);
-    const contentDiv = document.getElementById('simulationsModalContent');
-    contentDiv.innerHTML = '<p class="text-red-600 text-center py-8">Erreur lors du chargement des simulations</p>';
-  }
-});
-
-// ==================== DATE RANGE PICKER ====================
-(function() {
-  let selectedStartDate = null;
-  let selectedEndDate = null;
-  let currentMonth = new Date().getMonth();
-  let currentYear = new Date().getFullYear();
-  
-  // Initialize with default dates (1st of current month to today)
-  const today = new Date();
-  selectedStartDate = new Date(today.getFullYear(), today.getMonth(), 1);
-  selectedEndDate = new Date(today);
-  
-  const dateRangeBtn = document.getElementById('dateRangeBtn');
-  const dateRangeModal = document.getElementById('dateRangeModal');
-  const dateRangeBackdrop = document.getElementById('dateRangeBackdrop');
-  const monthSelect = document.getElementById('monthSelect');
-  const yearInput = document.getElementById('yearInput');
-  const calendarDays = document.getElementById('calendarDays');
-  const dateRangeDisplay = document.getElementById('dateRangeDisplay');
-  const prevMonthBtn = document.getElementById('prevMonthBtn');
-  const nextMonthBtn = document.getElementById('nextMonthBtn');
-  const resetDateRangeBtn = document.getElementById('resetDateRangeBtn');
-  const closeDateRangeBtn = document.getElementById('closeDateRangeBtn');
-  const confirmDateRangeBtn = document.getElementById('confirmDateRangeBtn');
-  
-  function formatDate(date) {
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
-  }
-  
-  function formatDateISO(date) {
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${year}-${month}-${day}`;
-  }
-  
-  function getDaysInMonth(month, year) {
-    return new Date(year, month + 1, 0).getDate();
-  }
-  
-  function getFirstDayOfMonth(month, year) {
-    const day = new Date(year, month, 1).getDay();
-    return day === 0 ? 6 : day - 1; // Adjust for Monday start
-  }
-  
-  function renderCalendar() {
-    calendarDays.innerHTML = '';
-    const daysInMonth = getDaysInMonth(currentMonth, currentYear);
-    const firstDay = getFirstDayOfMonth(currentMonth, currentYear);
-    
-    // Add empty cells for days before month starts
-    for (let i = 0; i < firstDay; i++) {
-      const emptyCell = document.createElement('div');
-      calendarDays.appendChild(emptyCell);
-    }
-    
-    // Add day cells
-    for (let day = 1; day <= daysInMonth; day++) {
-      const dayCell = document.createElement('button');
-      dayCell.type = 'button';
-      dayCell.className = 'p-2 rounded text-sm font-medium transition-colors relative';
-      dayCell.textContent = day;
-      
-      const cellDate = new Date(currentYear, currentMonth, day);
-      
-      // Determine styling
-      let isInRange = false;
-      let isStart = false;
-      let isEnd = false;
-      
-      if (selectedStartDate && selectedEndDate) {
-        const start = new Date(selectedStartDate);
-        const end = new Date(selectedEndDate);
-        
-        // Ensure start is before end
-        if (start > end) {
-          [start, end] = [end, start];
-        }
-        
-        isStart = cellDate.toDateString() === start.toDateString();
-        isEnd = cellDate.toDateString() === end.toDateString();
-        isInRange = cellDate >= start && cellDate <= end && !isStart && !isEnd;
-      } else if (selectedStartDate) {
-        isStart = cellDate.toDateString() === selectedStartDate.toDateString();
-      }
-      
-      if (isStart || isEnd) {
-        dayCell.className += ' bg-primary text-background-dark font-bold';
-      } else if (isInRange) {
-        dayCell.className += ' bg-primary/20 text-text-light';
-      } else {
-        dayCell.className += ' text-text-light hover:bg-background-light';
-      }
-      
-      dayCell.addEventListener('click', () => {
-        if (!selectedStartDate) {
-          selectedStartDate = cellDate;
-          selectedEndDate = null;
-        } else if (!selectedEndDate) {
-          // Check if same day is clicked
-          if (cellDate.toDateString() === selectedStartDate.toDateString()) {
-            selectedEndDate = cellDate;
-          } else {
-            selectedEndDate = cellDate;
-            // Swap if end is before start
-            if (selectedEndDate < selectedStartDate) {
-              [selectedStartDate, selectedEndDate] = [selectedEndDate, selectedStartDate];
-            }
-          }
-        } else {
-          // Reset on third click
-          selectedStartDate = cellDate;
-          selectedEndDate = null;
-        }
-        renderCalendar();
-      });
-      
-      calendarDays.appendChild(dayCell);
-    }
-  }
-  
-  function updateDisplay() {
-    if (selectedStartDate && selectedEndDate) {
-      dateRangeDisplay.textContent = `${formatDate(selectedStartDate)} - ${formatDate(selectedEndDate)}`;
-    }
-  }
-  
-  function openModal() {
-    monthSelect.value = currentMonth;
-    yearInput.value = currentYear;
-    dateRangeModal.classList.remove('hidden');
-    renderCalendar();
-  }
-  
-  function closeModal() {
-    dateRangeModal.classList.add('hidden');
-  }
-  
-  function confirmSelection() {
-    if (selectedStartDate && selectedEndDate) {
-      updateDisplay();
-      const event = new CustomEvent('dateRangeChanged', {
-        detail: {
-          startDate: formatDateISO(selectedStartDate),
-          endDate: formatDateISO(selectedEndDate)
-        }
-      });
-      window.dispatchEvent(event);
-    }
-    closeModal();
-  }
-  
-  function resetDates() {
-    const today = new Date();
-    selectedStartDate = new Date(today.getFullYear(), today.getMonth(), 1);
-    selectedEndDate = new Date(today);
-    currentMonth = today.getMonth();
-    currentYear = today.getFullYear();
-    monthSelect.value = currentMonth;
-    yearInput.value = currentYear;
-    renderCalendar();
-    updateDisplay();
-  }
-  
-  // Event listeners
-  dateRangeBtn.addEventListener('click', openModal);
-  dateRangeBackdrop.addEventListener('click', closeModal);
-  closeDateRangeBtn.addEventListener('click', closeModal);
-  confirmDateRangeBtn.addEventListener('click', confirmSelection);
-  resetDateRangeBtn.addEventListener('click', resetDates);
-  
-  prevMonthBtn.addEventListener('click', () => {
-    currentMonth--;
-    if (currentMonth < 0) {
-      currentMonth = 11;
-      currentYear--;
-    }
-    monthSelect.value = currentMonth;
-    yearInput.value = currentYear;
-    renderCalendar();
-  });
-  
-  nextMonthBtn.addEventListener('click', () => {
-    currentMonth++;
-    if (currentMonth > 11) {
-      currentMonth = 0;
-      currentYear++;
-    }
-    monthSelect.value = currentMonth;
-    yearInput.value = currentYear;
-    renderCalendar();
-  });
-  
-  monthSelect.addEventListener('change', () => {
-    currentMonth = parseInt(monthSelect.value);
-    renderCalendar();
-  });
-  
-  yearInput.addEventListener('change', () => {
-    currentYear = parseInt(yearInput.value);
-    renderCalendar();
-  });
-  
-  // Initialize display
-  updateDisplay();
-})();
 
 // ==================== MOBILE MENU (séparé du desktop) ====================
 const mobileMenuBtn = document.getElementById('mobileMenuBtn');

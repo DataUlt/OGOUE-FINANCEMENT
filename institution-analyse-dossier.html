@@ -3,7 +3,7 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link rel="icon" type="image/png" href="./O-removebg-preview.png"/>
-<title>OGOUÉ - Analyse des Dossiers</title>
+<title>Dossiers de financement (Institution)</title>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
@@ -15,9 +15,9 @@
                 extend: {
                     colors: {
                         "primary": "#0088CC",
-                        "primary-dark": "#19b823",
+                        "secondary": "#1E3A5F",
                         "background-light": "#f6f8f6",
-                        "surface-light": "#ffffff",
+                        "background-dark": "#111712",
                         "text-light": "#0a0c0a",
                         "text-light-muted": "#5c6c60",
                     },
@@ -34,42 +34,24 @@
             font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
         }
         .icon-filled {
-            font-variation-settings: 'FILL' 1, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
-        aside.collapsed {
-            width: 80px;
-        }
-        aside.collapsed .sidebar-text {
-            display: none;
-        }
+        aside.collapsed { width: 80px; }
+        aside.collapsed .sidebar-text { display: none; }
         aside.collapsed .sidebar-header {
             flex-direction: column;
             justify-content: center;
             padding: 12px;
         }
-        aside.collapsed .sidebar-header h1,
-        aside.collapsed .sidebar-header p {
-            display: none;
-        }
-        aside.collapsed .sidebar-header .size-10 {
-            margin: 0;
-        }
-        aside.collapsed .sidebar-nav {
-            padding: 8px;
-        }
-        aside.collapsed .sidebar-nav a {
-            padding: 12px;
-            justify-content: center;
-        }
+        aside.collapsed .sidebar-nav { padding: 8px; }
+        aside.collapsed .sidebar-nav a { padding: 12px; justify-content: center; }
         aside.collapsed .sidebar-user {
             padding: 8px;
             flex-direction: column;
             align-items: center;
         }
-        aside.collapsed .sidebar-user > div:last-child {
-            display: none;
-        }
-        
+        aside.collapsed .sidebar-user > div:last-child { display: none; }
+
         /* Mobile Responsive */
         @media (max-width: 768px) {
             aside#sidebar {
@@ -81,27 +63,12 @@
                 transition: left 0.3s ease;
                 overflow-y: auto;
             }
-            aside#sidebar.mobile-open {
-                left: 0;
-            }
-            /* Section profil et déconnexion plus compacte en mobile */
-            aside#sidebar .p-4.mt-auto {
-                padding: 0.75rem;
-                margin-top: 0;
-            }
-            aside#sidebar .sidebar-user {
-                padding: 0.5rem;
-                margin-bottom: 0.5rem;
-            }
-            aside#sidebar .sidebar-nav {
-                flex: 0 0 auto;
-            }
-            aside#sidebar #logoutBtn {
-                padding: 0.5rem 1rem;
-            }
-            .sidebar-backdrop {
-                display: none;
-            }
+            aside#sidebar.mobile-open { left: 0; }
+            aside#sidebar .p-4.mt-auto { padding: 0.75rem; margin-top: 0; }
+            aside#sidebar .sidebar-user { padding: 0.5rem; margin-bottom: 0.5rem; }
+            aside#sidebar .sidebar-nav { flex: 0 0 auto; }
+            aside#sidebar #logoutBtn { padding: 0.5rem 1rem; }
+            .sidebar-backdrop { display: none; }
             .sidebar-backdrop.mobile-open {
                 display: block;
                 position: fixed;
@@ -109,312 +76,522 @@
                 background-color: rgba(0, 0, 0, 0.5);
                 z-index: 30;
             }
-            header {
-                padding-left: 1rem !important;
-                padding-right: 1rem !important;
-            }
-            h2 {
-                font-size: 1.5rem !important;
-            }
-            main .p-8 {
-                padding: 1rem !important;
-            }
-            /* Mobile header with hamburger button */
+            main .p-8 { padding: 1rem !important; }
             .mobile-header {
                 display: flex;
                 position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
+                top: 0; left: 0; right: 0;
                 height: 56px;
                 background: white;
-                border-bottom: 1px solid rgba(0,0,0,0.1);
+                border-bottom: 1px solid rgba(0, 0, 0, 0.1);
                 align-items: center;
                 padding: 0 1rem;
                 z-index: 20;
             }
-            main.flex-1 {
-                padding-top: 56px;
-            }
+            main.flex-1 { padding-top: 56px; }
         }
         @media (min-width: 769px) {
-            .mobile-header {
-                display: none !important;
-            }
+            .mobile-header { display: none !important; }
         }
     </style>
 </head>
 <body class="bg-background-light text-text-light font-display overflow-hidden">
-<!-- Mobile Header with Hamburger -->
+<!-- Mobile Header -->
 <div class="mobile-header" id="mobileHeader">
-  <button id="mobileMenuBtn" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-    <span class="material-symbols-outlined text-2xl">menu</span>
-  </button>
-  <span class="ml-3 font-bold text-lg">OGOUÉ</span>
+    <button id="mobileMenuBtn" type="button" class="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+        <span class="material-symbols-outlined text-2xl">menu</span>
+    </button>
+    <span class="ml-3 font-bold text-lg text-primary">OGOUÉ</span>
 </div>
-
 <div class="flex h-screen w-full">
 <aside id="sidebar" class="w-64 flex flex-col border-r border-black/10 bg-white shrink-0 transition-all duration-300">
 <div class="sidebar-header p-6 flex items-center gap-3">
-<button id="sidebarToggle" class="flex-shrink-0 p-1.5 hover:bg-gray-50 rounded-lg transition-colors">
+<button id="sidebarToggle" type="button" class="flex-shrink-0 p-1.5 hover:bg-background-light rounded-lg transition-colors">
 <span class="material-symbols-outlined text-xl">menu</span>
 </button>
 </div>
 <nav class="sidebar-nav flex-1 px-4 flex flex-col gap-2 mt-4">
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-gray-50 hover:text-text-light transition-colors" href="institution-tableau-bord">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="institution-tableau-bord">
 <span class="material-symbols-outlined">dashboard</span>
 <span class="sidebar-text">Vue d'Ensemble</span>
 </a>
-<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-gray-50 hover:text-text-light transition-colors" href="institution-liste-produits">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-text-light-muted hover:bg-background-light hover:text-text-light transition-colors" href="institution-liste-produits">
 <span class="material-symbols-outlined">payments</span>
 <span class="sidebar-text">Produits</span>
 </a>
 <a class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 text-primary font-medium" href="institution-analyse-dossier">
-<span class="material-symbols-outlined icon-filled">folder_open</span>
+<span class="material-symbols-outlined icon-filled">folder_shared</span>
 <span class="sidebar-text">Dossiers</span>
 </a>
 </nav>
 <div class="p-4 mt-auto">
-<div class="sidebar-user bg-gray-50 rounded-lg p-4 flex items-center gap-3">
-<div class="size-8 rounded-full bg-cover bg-center" style="background: linear-gradient(135deg, #0088CC 0%, #19b823 100%);"></div>
+<div class="sidebar-user bg-background-light rounded-lg p-4 flex items-center gap-3">
+<div class="size-8 rounded-full bg-primary/15 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-[20px]">account_balance</span>
+</div>
 <div class="overflow-hidden">
-<p class="text-sm font-semibold text-text-light truncate" id="userEmail">-</p>
-<p class="text-xs text-text-light-muted truncate">Institution</p>
+<p class="text-sm font-semibold text-text-light truncate" id="sidebarOrgName">Institution</p>
+<p class="text-xs text-text-light-muted truncate" id="sidebarContactName">Contact</p>
+<p class="text-xs text-text-light-muted truncate" id="sidebarOrgEmail">email@example.com</p>
 </div>
 </div>
-</div>
-</aside>
-<main class="flex-1 flex flex-col h-full overflow-hidden">
-<header class="px-8 py-6 border-b border-black/10 bg-white flex flex-wrap justify-between items-end gap-4 shrink-0 z-10">
-<div class="flex flex-col gap-1">
-<h2 class="text-3xl font-black tracking-tight text-text-light">Analyse des Dossiers</h2>
-<p class="text-text-light-muted">Revue et gestion des demandes de crédit des PME.</p>
-</div>
-<div class="flex items-center gap-3">
-<a href="institution-tableau-bord" class="flex items-center gap-2 h-10 px-4 rounded-lg border border-black/10 bg-white hover:bg-gray-50 transition-colors text-sm font-semibold text-text-light">
-<span class="material-symbols-outlined text-[20px]">arrow_back</span>
-<span>Retour</span>
-</a>
-</div>
-</header>
-<div class="flex-1 overflow-y-auto p-8">
-<div class="max-w-7xl mx-auto">
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-<div class="lg:col-span-2">
-<div class="bg-white rounded-lg border border-black/10 shadow-sm">
-<div class="px-6 py-5 border-b border-black/10">
-<h3 class="text-lg font-bold text-text-light">Tous les Dossiers</h3>
-</div>
-<div class="overflow-x-auto">
-<table class="w-full text-left border-collapse">
-<thead class="bg-gray-50">
-<tr>
-<th class="px-6 py-4 text-xs font-semibold uppercase text-text-light-muted tracking-wider">Entreprise</th>
-<th class="px-6 py-4 text-xs font-semibold uppercase text-text-light-muted tracking-wider text-center">Montant</th>
-<th class="px-6 py-4 text-xs font-semibold uppercase text-text-light-muted tracking-wider text-center">Score</th>
-<th class="px-6 py-4 text-xs font-semibold uppercase text-text-light-muted tracking-wider text-center">Statut</th>
-<th class="px-6 py-4 text-xs font-semibold uppercase text-text-light-muted tracking-wider text-center">Actions</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-black/10" id="applicationsTableBody">
-<tr>
-<td class="px-6 py-4 text-center text-text-light-muted" colspan="5">Chargement...</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div class="lg:col-span-1">
-<div class="bg-white rounded-lg border border-black/10 shadow-sm p-6">
-<h3 class="text-lg font-bold text-text-light mb-4">Filtres</h3>
-<div class="space-y-4">
-<div>
-<label class="block text-sm font-semibold text-text-light mb-2">Statut</label>
-<select id="statusFilter" class="w-full px-3 py-2 rounded-lg border border-black/10 bg-white text-text-light">
-<option value="">Tous</option>
-<option value="draft">Brouillon</option>
-<option value="submitted">En révision</option>
-<option value="approved">Approuvé</option>
-<option value="rejected">Rejeté</option>
-</select>
-</div>
-<div>
-<label class="block text-sm font-semibold text-text-light mb-2">Produit</label>
-<select id="productFilter" class="w-full px-3 py-2 rounded-lg border border-black/10 bg-white text-text-light">
-<option value="">Tous les produits</option>
-</select>
-</div>
-<button id="filterBtn" class="w-full mt-4 h-10 px-4 rounded-lg bg-primary text-white font-bold text-sm hover:bg-primary/90 transition-colors">
-Appliquer les filtres
+<button id="logoutBtn" type="button" class="w-full mt-3 flex items-center justify-center gap-2 h-10 rounded-lg bg-red-100 text-red-600 hover:bg-red-200 transition-colors text-sm font-semibold">
+<span class="material-symbols-outlined text-[18px]">logout</span>
+<span class="sidebar-text">Déconnexion</span>
 </button>
 </div>
-</div>
-</div>
+</aside>
+
+<main class="flex-1 flex flex-col h-full overflow-hidden">
+<div class="flex-1 overflow-y-auto p-8">
+<div class="max-w-6xl mx-auto flex flex-col gap-8">
+
+  <!-- ══════════ LISTE ══════════ -->
+  <section id="vueListe">
+    <div class="flex flex-wrap justify-between items-start gap-4 mb-6">
+      <div>
+        <h1 class="text-4xl font-bold text-text-light mb-2">Dossiers de financement</h1>
+        <p class="text-text-light-muted text-base">
+          Les demandes déposées par les PME sur vos produits de crédit.
+        </p>
+      </div>
+    </div>
+
+    <!-- Filtres par statut -->
+    <div class="flex flex-wrap gap-2 mb-6" id="filtres"></div>
+
+    <div id="listeChargement" class="text-text-light-muted py-10 text-center">
+      Chargement des dossiers…
+    </div>
+
+    <div id="listeVide" class="hidden rounded-lg border border-dashed border-black/15 p-10 text-center bg-white">
+      <span class="material-symbols-outlined text-4xl text-text-light-muted">inbox</span>
+      <p class="mt-3 font-semibold">Aucun dossier pour le moment</p>
+      <p class="mt-1 text-sm text-text-light-muted max-w-md mx-auto">
+        Les PME déposent leurs dossiers depuis leur application OGOUE. Ils apparaîtront
+        ici dès qu'une demande sera déposée sur l'un de vos produits.
+      </p>
+    </div>
+
+    <div id="listeDossiers" class="flex flex-col gap-3"></div>
+  </section>
+
+  <!-- ══════════ DÉTAIL ══════════ -->
+  <section id="vueDetail" class="hidden">
+    <button id="btnRetour" type="button"
+            class="mb-4 inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline">
+      <span class="material-symbols-outlined text-base">arrow_back</span>
+      Retour aux dossiers
+    </button>
+
+    <div id="detailContenu" class="flex flex-col gap-6"></div>
+  </section>
+
 </div>
 </div>
 </main>
 </div>
 
 <script type="module">
-import { sessionAPI, applicationsAPI, productsAPI } from './api.js';
+import { sessionAPI, applicationsAPI } from './api.js';
 
-// Check authentication
+// ============================================================
+// Instruction des dossiers de financement
+// ------------------------------------------------------------
+// La PME constitue et depose son dossier depuis l'app OGOUE.
+// L'institution le consulte ici et fait avancer son statut.
+// ============================================================
+
 if (!sessionAPI.isLoggedIn()) {
   window.location.href = './institution-login';
 }
 
-const user = sessionAPI.getUser();
-document.getElementById('userEmail').textContent = user?.email || '-';
+const token = sessionAPI.getToken();
+const FCFA = new Intl.NumberFormat('fr-FR');
 
-// Sidebar toggle
+const STATUTS = {
+  depose:            { libelle: 'Déposé',             classe: 'bg-blue-100 text-blue-800' },
+  en_examen:         { libelle: "En cours d'examen",  classe: 'bg-indigo-100 text-indigo-800' },
+  complement_requis: { libelle: 'Complément demandé', classe: 'bg-amber-100 text-amber-800' },
+  accepte:           { libelle: 'Accepté',            classe: 'bg-emerald-100 text-emerald-800' },
+  refuse:            { libelle: 'Refusé',             classe: 'bg-red-100 text-red-800' },
+};
+
+// Doit refleter TRANSITIONS dans backend/src/controllers/applications.ts.
+// Le serveur reste seul juge : il revalide chaque transition.
+const ACTIONS = {
+  depose: [
+    { statut: 'en_examen',         libelle: "Mettre à l'examen", style: 'bg-indigo-600 text-white hover:bg-indigo-700' },
+    { statut: 'complement_requis', libelle: 'Demander un complément', style: 'bg-amber-500 text-white hover:bg-amber-600', noteObligatoire: true },
+    { statut: 'accepte',           libelle: 'Accepter',          style: 'bg-emerald-600 text-white hover:bg-emerald-700' },
+    { statut: 'refuse',            libelle: 'Refuser',           style: 'bg-red-600 text-white hover:bg-red-700' },
+  ],
+  en_examen: [
+    { statut: 'complement_requis', libelle: 'Demander un complément', style: 'bg-amber-500 text-white hover:bg-amber-600', noteObligatoire: true },
+    { statut: 'accepte',           libelle: 'Accepter',          style: 'bg-emerald-600 text-white hover:bg-emerald-700' },
+    { statut: 'refuse',            libelle: 'Refuser',           style: 'bg-red-600 text-white hover:bg-red-700' },
+  ],
+  complement_requis: [],
+  accepte: [],
+  refuse: [],
+};
+
+const AUTEURS = { pme: 'La PME', institution: 'Votre institution' };
+
+let tousLesDossiers = [];
+let filtreCourant = '';
+
+// ─────────── Utilitaires ───────────
+
+function echapper(valeur) {
+  return String(valeur ?? '').replace(/[&<>"']/g, (c) => (
+    { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+  ));
+}
+
+function formatDate(valeur) {
+  if (!valeur) return '—';
+  const d = new Date(valeur);
+  return Number.isNaN(d.getTime()) ? '—' : d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
+}
+
+function formatDateHeure(valeur) {
+  if (!valeur) return '—';
+  const d = new Date(valeur);
+  return Number.isNaN(d.getTime()) ? '—' : d.toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
+
+function badge(statut) {
+  const s = STATUTS[statut] || { libelle: statut, classe: 'bg-gray-100 text-gray-700' };
+  return `<span class="inline-flex rounded-full px-3 py-1 text-xs font-bold ${s.classe}">${s.libelle}</span>`;
+}
+
+// ─────────── Barre latérale ───────────
+
+function remplirInfosInstitution() {
+  try {
+    const institution = sessionAPI.getInstitution();
+    const user = sessionAPI.getUser();
+    if (institution) {
+      if (institution.name) document.getElementById('sidebarOrgName').textContent = institution.name;
+      if (institution.full_name) document.getElementById('sidebarContactName').textContent = institution.full_name;
+      if (institution.email) document.getElementById('sidebarOrgEmail').textContent = institution.email;
+    } else if (user) {
+      if (user.full_name) document.getElementById('sidebarContactName').textContent = user.full_name;
+      if (user.email) document.getElementById('sidebarOrgEmail').textContent = user.email;
+    }
+  } catch (error) {
+    console.error('Erreur infos institution:', error);
+  }
+}
+
+// ─────────── Liste ───────────
+
+function construireFiltres() {
+  const filtres = [{ valeur: '', libelle: 'Tous' }].concat(
+    Object.entries(STATUTS).map(([valeur, s]) => ({ valeur, libelle: s.libelle }))
+  );
+
+  document.getElementById('filtres').innerHTML = filtres.map((f) => {
+    const actif = f.valeur === filtreCourant;
+    return `
+      <button type="button" data-filtre="${f.valeur}"
+              class="rounded-lg px-4 py-2 text-sm font-semibold transition-colors ${
+                actif ? 'bg-primary text-white' : 'bg-white border border-black/10 text-text-light-muted hover:text-text-light'
+              }">${f.libelle}</button>
+    `;
+  }).join('');
+
+  document.querySelectorAll('[data-filtre]').forEach((bouton) => {
+    bouton.addEventListener('click', () => {
+      filtreCourant = bouton.dataset.filtre;
+      construireFiltres();
+      afficherListe();
+    });
+  });
+}
+
+function afficherListe() {
+  const liste = document.getElementById('listeDossiers');
+  const vide = document.getElementById('listeVide');
+
+  const dossiers = filtreCourant
+    ? tousLesDossiers.filter((d) => d.status === filtreCourant)
+    : tousLesDossiers;
+
+  if (dossiers.length === 0) {
+    liste.innerHTML = '';
+    vide.classList.remove('hidden');
+    vide.querySelector('p.font-semibold').textContent = filtreCourant
+      ? 'Aucun dossier avec ce statut'
+      : 'Aucun dossier pour le moment';
+    return;
+  }
+
+  vide.classList.add('hidden');
+  liste.innerHTML = dossiers.map((dossier) => {
+    const pme = dossier.pme ? dossier.pme.companyName : 'PME';
+    const produit = dossier.product ? dossier.product.name : 'Crédit';
+
+    return `
+      <button type="button" data-dossier="${dossier.id}"
+              class="w-full text-left bg-white rounded-lg border border-black/10 p-5 hover:border-primary/50 transition-colors">
+        <div class="flex flex-wrap items-start justify-between gap-4">
+          <div class="min-w-0">
+            <h2 class="font-bold text-lg">${echapper(pme)}</h2>
+            <p class="text-sm text-text-light-muted">${echapper(produit)}</p>
+            <p class="mt-2 text-sm">
+              ${dossier.amountRequested !== null ? `<strong>${FCFA.format(dossier.amountRequested)} FCFA</strong>` : 'Montant non précisé'}
+              ${dossier.durationMonths ? ` sur ${dossier.durationMonths} mois` : ''}
+            </p>
+          </div>
+          <div class="text-right shrink-0">
+            ${badge(dossier.status)}
+            <p class="mt-2 text-xs text-text-light-muted">Déposé le ${formatDate(dossier.submittedAt)}</p>
+          </div>
+        </div>
+      </button>
+    `;
+  }).join('');
+
+  liste.querySelectorAll('[data-dossier]').forEach((carte) => {
+    carte.addEventListener('click', () => ouvrirDetail(carte.dataset.dossier));
+  });
+}
+
+async function chargerDossiers() {
+  try {
+    const reponse = await applicationsAPI.getApplications(token);
+    tousLesDossiers = reponse.applications || [];
+    document.getElementById('listeChargement').classList.add('hidden');
+    construireFiltres();
+    afficherListe();
+  } catch (error) {
+    console.error('Erreur chargement dossiers:', error);
+    document.getElementById('listeChargement').innerHTML =
+      `<p class="text-red-600">Erreur lors du chargement des dossiers : ${echapper(error.message)}</p>`;
+  }
+}
+
+// ─────────── Détail ───────────
+
+async function ouvrirDetail(id) {
+  document.getElementById('vueListe').classList.add('hidden');
+  document.getElementById('vueDetail').classList.remove('hidden');
+  const contenu = document.getElementById('detailContenu');
+  contenu.innerHTML = '<p class="text-text-light-muted">Chargement du dossier…</p>';
+
+  let dossier;
+  try {
+    dossier = await applicationsAPI.getApplication(token, id);
+  } catch (error) {
+    contenu.innerHTML = `<p class="text-red-600">Erreur : ${echapper(error.message)}</p>`;
+    return;
+  }
+
+  const pme = dossier.pme || {};
+  const produit = dossier.product || {};
+  const actions = ACTIONS[dossier.status] || [];
+
+  contenu.innerHTML = `
+    <div class="bg-white rounded-lg border border-black/10 p-6">
+      <div class="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h1 class="text-3xl font-bold">${echapper(pme.companyName || 'PME')}</h1>
+          <p class="text-text-light-muted">${echapper(produit.name || 'Crédit')}</p>
+        </div>
+        ${badge(dossier.status)}
+      </div>
+
+      <dl class="mt-6 grid gap-4 sm:grid-cols-3">
+        <div>
+          <dt class="text-xs font-bold uppercase tracking-wide text-text-light-muted">Montant demandé</dt>
+          <dd class="mt-1 text-lg font-bold">${dossier.amountRequested !== null ? FCFA.format(dossier.amountRequested) + ' FCFA' : '—'}</dd>
+        </div>
+        <div>
+          <dt class="text-xs font-bold uppercase tracking-wide text-text-light-muted">Durée</dt>
+          <dd class="mt-1 text-lg font-bold">${dossier.durationMonths ? dossier.durationMonths + ' mois' : '—'}</dd>
+        </div>
+        <div>
+          <dt class="text-xs font-bold uppercase tracking-wide text-text-light-muted">Déposé le</dt>
+          <dd class="mt-1 text-lg font-bold">${formatDate(dossier.submittedAt)}</dd>
+        </div>
+      </dl>
+
+      ${dossier.purpose ? `
+        <div class="mt-6">
+          <p class="text-xs font-bold uppercase tracking-wide text-text-light-muted">Objet du financement</p>
+          <p class="mt-1">${echapper(dossier.purpose)}</p>
+        </div>
+      ` : ''}
+    </div>
+
+    <div class="bg-white rounded-lg border border-black/10 p-6">
+      <h2 class="font-bold text-lg mb-4">L'entreprise</h2>
+      <dl class="grid gap-4 sm:grid-cols-2">
+        <div>
+          <dt class="text-xs font-bold uppercase tracking-wide text-text-light-muted">Raison sociale</dt>
+          <dd class="mt-1">${echapper(pme.companyName || '—')}</dd>
+        </div>
+        <div>
+          <dt class="text-xs font-bold uppercase tracking-wide text-text-light-muted">Secteur</dt>
+          <dd class="mt-1">${echapper(pme.sector || '—')}</dd>
+        </div>
+        <div>
+          <dt class="text-xs font-bold uppercase tracking-wide text-text-light-muted">RCCM</dt>
+          <dd class="mt-1">${echapper(pme.rccmNumber || '—')}</dd>
+        </div>
+        <div>
+          <dt class="text-xs font-bold uppercase tracking-wide text-text-light-muted">NIF</dt>
+          <dd class="mt-1">${echapper(pme.nifNumber || '—')}</dd>
+        </div>
+        ${pme.activityDescription ? `
+          <div class="sm:col-span-2">
+            <dt class="text-xs font-bold uppercase tracking-wide text-text-light-muted">Activité</dt>
+            <dd class="mt-1">${echapper(pme.activityDescription)}</dd>
+          </div>
+        ` : ''}
+      </dl>
+    </div>
+
+    <div class="bg-white rounded-lg border border-black/10 p-6">
+      <h2 class="font-bold text-lg mb-4">Pièces justificatives (${dossier.documents.length})</h2>
+      ${dossier.documents.length > 0 ? `
+        <ul class="flex flex-col gap-2">
+          ${dossier.documents.map((d) => `
+            <li class="flex items-center gap-3 rounded-lg border border-black/10 px-4 py-3">
+              <span class="material-symbols-outlined text-text-light-muted">description</span>
+              <span class="flex-1 min-w-0 truncate">${echapper(d.name)}</span>
+              <a href="${echapper(d.fileUrl)}" target="_blank" rel="noopener"
+                 class="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline shrink-0">
+                <span class="material-symbols-outlined text-base">download</span>
+                Ouvrir
+              </a>
+            </li>
+          `).join('')}
+        </ul>
+      ` : '<p class="text-text-light-muted">Aucune pièce jointe à ce dossier.</p>'}
+    </div>
+
+    <div class="bg-white rounded-lg border border-black/10 p-6">
+      <h2 class="font-bold text-lg mb-4">Historique</h2>
+      <ol class="relative border-l border-black/10 ml-2">
+        ${dossier.history.map((h) => {
+          const s = STATUTS[h.status] || { libelle: h.status };
+          return `
+            <li class="ml-4 pb-4 last:pb-0">
+              <span class="absolute -left-1.5 w-3 h-3 rounded-full bg-primary/60"></span>
+              <p class="font-semibold">${s.libelle}</p>
+              <p class="text-xs text-text-light-muted">${AUTEURS[h.changedBy] || 'Système'} — ${formatDateHeure(h.at)}</p>
+              ${h.note ? `<p class="mt-1 text-sm">${echapper(h.note)}</p>` : ''}
+            </li>
+          `;
+        }).join('')}
+      </ol>
+    </div>
+
+    <div class="bg-white rounded-lg border border-black/10 p-6">
+      <h2 class="font-bold text-lg mb-1">Décision</h2>
+      ${actions.length === 0 ? `
+        <p class="text-text-light-muted">
+          ${dossier.status === 'complement_requis'
+            ? "La main est à la PME : elle doit compléter puis redéposer son dossier."
+            : 'Ce dossier est clos, son statut ne peut plus être modifié.'}
+        </p>
+      ` : `
+        <p class="text-text-light-muted mb-4">
+          La PME verra immédiatement votre décision et votre message dans son suivi.
+        </p>
+        <label class="flex flex-col gap-1 mb-4">
+          <span class="text-sm font-medium">Message à la PME</span>
+          <textarea id="champNote" rows="3" placeholder="Obligatoire pour demander un complément"
+                    class="rounded-lg border-black/10 focus:border-primary focus:ring-primary"></textarea>
+        </label>
+        <div id="erreurDecision" class="hidden mb-4 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700"></div>
+        <div class="flex flex-wrap gap-3">
+          ${actions.map((a) => `
+            <button type="button" data-action="${a.statut}" data-note-obligatoire="${a.noteObligatoire ? '1' : ''}"
+                    class="rounded-lg px-5 py-2.5 text-sm font-bold transition-colors ${a.style}">
+              ${a.libelle}
+            </button>
+          `).join('')}
+        </div>
+      `}
+    </div>
+  `;
+
+  contenu.querySelectorAll('[data-action]').forEach((bouton) => {
+    bouton.addEventListener('click', () => changerStatut(dossier.id, bouton));
+  });
+}
+
+async function changerStatut(id, bouton) {
+  const statut = bouton.dataset.action;
+  const note = (document.getElementById('champNote')?.value || '').trim();
+  const erreur = document.getElementById('erreurDecision');
+
+  if (bouton.dataset.noteObligatoire && !note) {
+    erreur.textContent = 'Précisez à la PME ce qui manque à son dossier.';
+    erreur.classList.remove('hidden');
+    return;
+  }
+
+  const boutons = document.querySelectorAll('[data-action]');
+  boutons.forEach((b) => { b.disabled = true; });
+
+  try {
+    await applicationsAPI.updateStatus(token, id, statut, note || null);
+    await chargerDossiers();
+    await ouvrirDetail(id);
+  } catch (error) {
+    console.error('Erreur changement de statut:', error);
+    erreur.textContent = error.message;
+    erreur.classList.remove('hidden');
+    boutons.forEach((b) => { b.disabled = false; });
+  }
+}
+
+document.getElementById('btnRetour').addEventListener('click', () => {
+  document.getElementById('vueDetail').classList.add('hidden');
+  document.getElementById('vueListe').classList.remove('hidden');
+});
+
+// ─────────── Barre latérale et menus ───────────
+
 const sidebar = document.getElementById('sidebar');
-const sidebarToggle = document.getElementById('sidebarToggle');
-
-sidebarToggle.addEventListener('click', () => {
+document.getElementById('sidebarToggle').addEventListener('click', () => {
   sidebar.classList.toggle('collapsed');
   localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
 });
-
 if (localStorage.getItem('sidebarCollapsed') === 'true') {
   sidebar.classList.add('collapsed');
 }
 
-// Load applications
-let allApplications = [];
-
-async function loadApplications() {
-  try {
-    const token = sessionAPI.getToken();
-    const res = await applicationsAPI.getApplications(token);
-    allApplications = res.applications || [];
-    
-    // Load products for filter
-    const productsRes = await productsAPI.getInstitutionProducts(token);
-    const products = productsRes.products || [];
-    
-    const productFilter = document.getElementById('productFilter');
-    products.forEach(product => {
-      const option = document.createElement('option');
-      option.value = product.id;
-      option.textContent = product.name;
-      productFilter.appendChild(option);
-    });
-    
-    renderApplications(allApplications);
-  } catch (error) {
-    console.error('Error loading applications:', error);
-  }
-}
-
-function renderApplications(applications) {
-  const tbody = document.getElementById('applicationsTableBody');
-  tbody.innerHTML = '';
-  
-  if (applications.length === 0) {
-    tbody.innerHTML = `
-      <tr>
-        <td class="px-6 py-4 text-center text-text-light-muted" colspan="5">Aucun dossier trouvé</td>
-      </tr>
-    `;
-    return;
-  }
-  
-  applications.forEach(app => {
-    const statusColor = {
-      'draft': 'bg-yellow-100 text-yellow-800',
-      'submitted': 'bg-blue-100 text-blue-800',
-      'review_needed': 'bg-blue-100 text-blue-800',
-      'approved': 'bg-blue-100 text-blue-800' + ' style="color: #0088CC;"',
-      'rejected': 'bg-red-100 text-red-800'
-    };
-    
-    const statusLabel = {
-      'draft': 'Brouillon',
-      'submitted': 'En révision',
-      'review_needed': 'En révision',
-      'approved': 'Approuvé',
-      'rejected': 'Rejeté'
-    };
-    
-    const status = app.status?.toLowerCase() || 'draft';
-    const colorClass = statusColor[status] || statusColor['draft'];
-    const label = statusLabel[status] || 'Brouillon';
-    const score = app.calculated_score ? `${Math.round(app.calculated_score)}` : '-';
-    const amount = app.simulation_data?.requested_amount ? `${Math.round(app.simulation_data.requested_amount).toLocaleString('fr-FR')} FCFA` : '-';
-    
-    tbody.innerHTML += `
-      <tr class="hover:bg-gray-50 transition-colors">
-        <td class="px-6 py-4">
-          <div class="flex items-center gap-3">
-            <div class="bg-blue-100 text-blue-600 rounded-lg p-2.5 flex items-center justify-center shrink-0">
-              <span class="material-symbols-outlined text-lg">business</span>
-            </div>
-            <div>
-              <p class="font-semibold text-text-light text-sm">${app.pme?.business_name || 'PME'}</p>
-              <p class="text-xs text-text-light-muted">ID: ${app.id.substring(0, 8)}</p>
-            </div>
-          </div>
-        </td>
-        <td class="px-6 py-4 text-sm text-text-light font-medium text-center">${amount}</td>
-        <td class="px-6 py-4 text-center">
-          <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${colorClass}">${score}</span>
-        </td>
-        <td class="px-6 py-4 text-center">
-          <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${colorClass}">${label}</span>
-        </td>
-        <td class="px-6 py-4 text-center">
-          <button class="text-primary hover:text-primary-dark font-semibold text-sm" onclick="window.location.href='institution-analyse-dossier?id=${app.id}'">
-            Détails
-          </button>
-        </td>
-      </tr>
-    `;
-  });
-}
-
-// Filter functionality
-document.getElementById('filterBtn').addEventListener('click', () => {
-  const statusFilter = document.getElementById('statusFilter').value;
-  const productFilter = document.getElementById('productFilter').value;
-  
-  const filtered = allApplications.filter(app => {
-    const statusMatch = !statusFilter || app.status?.toLowerCase() === statusFilter;
-    const productMatch = !productFilter || app.credit_product_id === productFilter;
-    return statusMatch && productMatch;
-  });
-  
-  renderApplications(filtered);
+document.getElementById('logoutBtn').addEventListener('click', () => {
+  sessionAPI.logout();
+  window.location.href = './institution-login';
 });
 
-// Load on page load
-loadApplications();
-
-// ==================== MOBILE MENU (séparé du desktop) ====================
-const mobileMenuBtn = document.getElementById('mobileMenuBtn');
 const backdrop = document.createElement('div');
 backdrop.className = 'sidebar-backdrop';
 document.body.appendChild(backdrop);
 
-function toggleMobileMenu() {
-  sidebar.classList.toggle('mobile-open');
-  backdrop.classList.toggle('mobile-open');
-}
-
+const mobileMenuBtn = document.getElementById('mobileMenuBtn');
 if (mobileMenuBtn) {
-  mobileMenuBtn.addEventListener('click', toggleMobileMenu);
+  mobileMenuBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('mobile-open');
+    backdrop.classList.toggle('mobile-open');
+  });
 }
-
 backdrop.addEventListener('click', () => {
   sidebar.classList.remove('mobile-open');
   backdrop.classList.remove('mobile-open');
 });
 
-window.addEventListener('resize', () => {
-  if (window.innerWidth > 768) {
-    sidebar.classList.remove('mobile-open');
-    backdrop.classList.remove('mobile-open');
-  }
-});
+// ─────────── Démarrage ───────────
+
+remplirInfosInstitution();
+chargerDossiers();
 </script>
-</body></html>
+</body>
+</html>

@@ -3,8 +3,10 @@
  * Centralized API calls for all frontend operations
  */
 
-// Dynamically set API_BASE_URL based on environment
-const API_BASE_URL = (() => {
+// Dynamically set API_BASE_URL based on environment.
+// Exportee : les pages ne doivent PAS la redefinir, sous peine de pointer
+// sur le mauvais backend (le 3001 local est celui d'OGOUE, pas du financement).
+export const API_BASE_URL = (() => {
   const hostname = window.location.hostname;
   
   // Local development
@@ -264,6 +266,52 @@ export const productsAPI = {
     });
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || "Failed to delete product");
+    return data;
+  },
+};
+
+// ============================================
+// DOSSIERS DE FINANCEMENT
+// ============================================
+// Les PME constituent et deposent leurs dossiers depuis l'app OGOUE.
+// L'institution les instruit ici : consultation et avancement du statut.
+
+export const applicationsAPI = {
+  /** Dossiers adresses a l'institution connectee (filtre optionnel par statut) */
+  getApplications: async (token, statut = null) => {
+    const url = statut
+      ? `${API_BASE_URL}/applications?status=${encodeURIComponent(statut)}`
+      : `${API_BASE_URL}/applications`;
+    const response = await fetch(url, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Failed to fetch applications");
+    return data;
+  },
+
+  /** Detail d'un dossier : pieces jointes et historique */
+  getApplication: async (token, id) => {
+    const response = await fetch(`${API_BASE_URL}/applications/${id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Failed to fetch application");
+    return data;
+  },
+
+  /** Fait avancer le dossier. La transition est validee cote serveur. */
+  updateStatus: async (token, id, status, note = null) => {
+    const response = await fetch(`${API_BASE_URL}/applications/${id}/status`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ status, note }),
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Failed to update application");
     return data;
   },
 };

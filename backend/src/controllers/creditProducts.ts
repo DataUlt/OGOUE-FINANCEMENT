@@ -231,10 +231,6 @@ export const creditProductsController = {
         throw new AppError("Name, amount_min, and amount_max are required", 400);
       }
 
-      if (!Array.isArray(variables) || variables.length === 0) {
-        throw new AppError("At least one variable is required", 400);
-      }
-
       // Get institution
       const { data: institution } = await supabase
         .from("institutions")
@@ -269,8 +265,9 @@ export const creditProductsController = {
         throw new AppError("Failed to create product", 500);
       }
 
-      // 2. Create variables with scoring rules
-      for (const variable of variables) {
+      // 2. Create variables with scoring rules (optionnel : un produit peut
+      // etre publie sans variable, l'offre de credit ne depend plus du scoring)
+      for (const variable of (Array.isArray(variables) ? variables : [])) {
         const variableId = uuidv4();
 
         const { error: varError } = await supabase.from("product_variables").insert({
@@ -350,7 +347,7 @@ export const creditProductsController = {
       if (!req.user) throw new AppError("Not authenticated", 401);
 
       const { id } = req.params;
-      const { name, objective, amount_min, amount_max, duration_min_months, duration_max_months, interest_type, typology, target, scoring_model_id, is_active } = req.body;
+      const { name, objective, amount_min, amount_max, duration_min_months, duration_max_months, interest_type, typology, target, scoring_model_id, is_active, required_documents } = req.body;
 
       // Verify ownership
       const { data: product } = await supabase
@@ -393,6 +390,63 @@ export const creditProductsController = {
         .eq("id", id);
 
       if (error) throw new AppError("Failed to update product", 500);
+
+      // Mettre a jour les pieces exigees quand le formulaire les envoie.
+      // On procede par difference plutot que par remplacement complet : les
+      // pieces inchangees gardent leur id, auquel les dossiers deja deposes
+      // rattachent leurs justificatifs.
+      if (Array.isArray(required_documents)) {
+        const souhaitees = [
+          ...new Set(
+            required_documents
+              .map((doc: any) => (typeof doc === "string" ? doc : doc?.name))
+              .map((docName: any) => (typeof docName === "string" ? docName.trim() : ""))
+              .filter(Boolean)
+          ),
+        ] as string[];
+
+        const { data: existantes, error: readError } = await supabase
+          .from("product_required_documents")
+          .select("id, name")
+          .eq("credit_product_id", id);
+
+        if (readError) {
+          console.error('❌ Required documents read error:', readError);
+          throw new AppError("Failed to update required documents", 500);
+        }
+
+        const aSupprimer = (existantes || [])
+          .filter((doc) => !souhaitees.includes(doc.name))
+          .map((doc) => doc.id);
+
+        if (aSupprimer.length > 0) {
+          const { error: deleteError } = await supabase
+            .from("product_required_documents")
+            .delete()
+            .in("id", aSupprimer);
+
+          if (deleteError) {
+            console.error('❌ Required documents delete error:', deleteError);
+            throw new AppError("Failed to update required documents", 500);
+          }
+        }
+
+        const nomsExistants = new Set((existantes || []).map((doc) => doc.name));
+        const aAjouter = souhaitees
+          .filter((docName) => !nomsExistants.has(docName))
+          .map((docName) => ({ id: uuidv4(), credit_product_id: id, name: docName }));
+
+        if (aAjouter.length > 0) {
+          const { error: insertError } = await supabase
+            .from("product_required_documents")
+            .insert(aAjouter);
+
+          if (insertError) {
+            console.error('❌ Required documents insert error:', insertError);
+            throw new AppError("Failed to update required documents", 500);
+          }
+        }
+      }
 
       console.log('✅ Product updated:', id);
       res.json({ message: "Product updated successfully" });
