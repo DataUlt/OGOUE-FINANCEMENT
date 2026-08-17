@@ -9,6 +9,7 @@ router.use(authMiddleware, requireRole(["institution"]));
 
 router.get("/", applicationsController.list);
 router.get("/:id", applicationsController.getOne);
+router.get("/:id/documents/:docId/url", applicationsController.getDocumentUrl);
 router.patch("/:id/status", applicationsController.updateStatus);
 
 export default router;

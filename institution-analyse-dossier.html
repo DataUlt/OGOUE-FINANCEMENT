@@ -462,11 +462,11 @@ async function ouvrirDetail(id) {
             <li class="flex items-center gap-3 rounded-lg border border-black/10 px-4 py-3">
               <span class="material-symbols-outlined text-text-light-muted">description</span>
               <span class="flex-1 min-w-0 truncate">${echapper(d.name)}</span>
-              <a href="${echapper(d.fileUrl)}" target="_blank" rel="noopener"
-                 class="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline shrink-0">
+              <button type="button" data-piece="${d.id}"
+                      class="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline shrink-0">
                 <span class="material-symbols-outlined text-base">download</span>
                 Ouvrir
-              </a>
+              </button>
             </li>
           `).join('')}
         </ul>
@@ -522,6 +522,25 @@ async function ouvrirDetail(id) {
 
   contenu.querySelectorAll('[data-action]').forEach((bouton) => {
     bouton.addEventListener('click', () => changerStatut(dossier.id, bouton));
+  });
+
+  // Les pieces sont dans un espace prive : on demande un lien signe,
+  // valable quelques minutes, au moment de l'ouverture.
+  contenu.querySelectorAll('[data-piece]').forEach((bouton) => {
+    bouton.addEventListener('click', async () => {
+      const libelle = bouton.innerHTML;
+      bouton.disabled = true;
+      try {
+        const url = await applicationsAPI.getDocumentUrl(token, dossier.id, bouton.dataset.piece);
+        window.open(url, '_blank', 'noopener');
+      } catch (error) {
+        console.error('Erreur ouverture piece:', error);
+        alert("Impossible d'ouvrir cette pièce : " + error.message);
+      } finally {
+        bouton.disabled = false;
+        bouton.innerHTML = libelle;
+      }
+    });
   });
 }
 

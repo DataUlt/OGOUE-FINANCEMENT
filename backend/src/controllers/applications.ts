@@ -25,6 +25,13 @@ const STATUTS_FINAUX = ["accepte", "refuse"];
 /** Un brouillon appartient encore a la PME : l'institution ne doit pas le voir. */
 const STATUTS_VISIBLES = ["depose", "en_examen", "complement_requis", "accepte", "refuse"];
 
+/**
+ * Bucket PRIVE des pieces de dossier, sur ce meme projet Supabase.
+ * Doit rester aligne avec OGOUE/backend/src/utils/financing-storage.js,
+ * qui y depose les fichiers.
+ */
+const BUCKET_PIECES = "dossiers-financement";
+
 const SELECT_APPLICATION = `
   id, status, amount_requested, duration_months, purpose,
   submitted_at, decided_at, decision_note, created_at, updated_at,
@@ -152,7 +159,7 @@ export const applicationsController = {
       const [{ data: documents }, { data: history }] = await Promise.all([
         supabase
           .from("application_documents")
-          .select("id, name, file_url, required_document_id, uploaded_at")
+          .select("id, name, required_document_id, uploaded_at")
           .eq("application_id", id)
           .order("uploaded_at", { ascending: true }),
         supabase
@@ -164,10 +171,11 @@ export const applicationsController = {
 
       res.json({
         ...transformApplication(application),
+        // Pas d'URL ici : le bucket est prive. Chaque piece s'ouvre via
+        // /documents/:docId/url, qui signe un lien valable 5 minutes.
         documents: (documents || []).map((d) => ({
           id: d.id,
           name: d.name,
-          fileUrl: d.file_url,
           requiredDocumentId: d.required_document_id,
           uploadedAt: d.uploaded_at,
         })),
@@ -184,6 +192,55 @@ export const applicationsController = {
       }
       console.error("❌ Erreur getOne application:", error);
       res.status(500).json({ error: "Failed to fetch application" });
+    }
+  },
+
+  /**
+   * GET /api/applications/:id/documents/:docId/url
+   * Lien de telechargement a duree limitee. Le bucket des pieces est
+   * prive : c'est le seul moyen d'ouvrir un justificatif, et il exige
+   * que le dossier soit bien adresse a cette institution.
+   */
+  getDocumentUrl: async (req: AuthRequest, res: Response) => {
+    try {
+      const institution = await getInstitutionForUser(req);
+      const { id, docId } = req.params;
+
+      const { data: application } = await supabase
+        .from("loan_applications")
+        .select("id")
+        .eq("id", id)
+        .eq("institution_id", institution.id)
+        .in("status", STATUTS_VISIBLES)
+        .maybeSingle();
+
+      if (!application) throw new AppError("Dossier introuvable", 404);
+
+      const { data: document } = await supabase
+        .from("application_documents")
+        .select("id, name, storage_path")
+        .eq("id", docId)
+        .eq("application_id", id)
+        .maybeSingle();
+
+      if (!document) throw new AppError("Pièce introuvable", 404);
+
+      const { data, error } = await supabase.storage
+        .from(BUCKET_PIECES)
+        .createSignedUrl(document.storage_path, 300);
+
+      if (error || !data?.signedUrl) {
+        console.error("❌ Erreur URL signée:", error?.message);
+        throw new AppError("Lien de téléchargement indisponible", 500);
+      }
+
+      res.json({ url: data.signedUrl, name: document.name });
+    } catch (error) {
+      if (error instanceof AppError) {
+        return res.status(error.status).json({ error: error.message });
+      }
+      console.error("❌ Erreur getDocumentUrl:", error);
+      res.status(500).json({ error: "Failed to create download link" });
     }
   },
 

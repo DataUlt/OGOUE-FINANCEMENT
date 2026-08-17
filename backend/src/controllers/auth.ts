@@ -1,6 +1,6 @@
 import { Response } from "express";
 import jwt from "jsonwebtoken";
-import { supabase } from "../lib/supabase.js";
+import { supabase, supabaseAuth } from "../lib/supabase.js";
 import { AuthRequest } from "../middleware/auth.js";
 import { AppError } from "../middleware/errorHandler.js";
 import { v4 as uuidv4 } from "uuid";
@@ -206,8 +206,10 @@ export const authController = {
         throw new AppError("Email and password required", 400);
       }
 
-      // 1. Authenticate with Supabase Auth
-      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+      // 1. Authenticate with Supabase Auth.
+      // Sur un client dedie : une connexion sur le client admin lui ferait
+      // perdre ses droits service_role (voir lib/supabase.ts).
+      const { data: authData, error: authError } = await supabaseAuth.auth.signInWithPassword({
         email,
         password,
       });

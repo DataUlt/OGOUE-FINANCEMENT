@@ -300,6 +300,20 @@ export const applicationsAPI = {
     return data;
   },
 
+  /**
+   * Lien de telechargement d'une piece. Le bucket est prive : ce lien
+   * est signe et ne vaut que quelques minutes.
+   */
+  getDocumentUrl: async (token, applicationId, docId) => {
+    const response = await fetch(
+      `${API_BASE_URL}/applications/${applicationId}/documents/${docId}/url`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Failed to create download link");
+    return data.url;
+  },
+
   /** Fait avancer le dossier. La transition est validee cote serveur. */
   updateStatus: async (token, id, status, note = null) => {
     const response = await fetch(`${API_BASE_URL}/applications/${id}/status`, {
