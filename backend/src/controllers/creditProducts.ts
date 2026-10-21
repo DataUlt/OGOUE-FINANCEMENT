@@ -3,7 +3,7 @@ import { supabase } from "../lib/supabase.js";
 import { AuthRequest } from "../middleware/auth.js";
 import { AppError } from "../middleware/errorHandler.js";
 import { v4 as uuidv4 } from "uuid";
-import type { CreateProductRequest, CreateProductVariableRequest, CreateScoringRuleRequest } from "../types/index.js";
+import type { CreateProductRequest } from "../types/index.js";
 
 export const creditProductsController = {
   // ============================================
@@ -19,7 +19,7 @@ export const creditProductsController = {
         throw new AppError("Institution ID is required", 400);
       }
 
-      // Get products with their variables and required documents
+      // Get products with their required documents
       const { data: products, error } = await supabase
         .from("credit_products")
         .select(
@@ -36,17 +36,8 @@ export const creditProductsController = {
           typology,
           target,
           is_active,
-          scoring_model_id,
           created_at,
           updated_at,
-          product_variables(
-            id,
-            name,
-            field_key,
-            variable_type,
-            weight,
-            display_order
-          ),
           product_required_documents(
             id,
             name
@@ -98,7 +89,7 @@ export const creditProductsController = {
 
       console.log('✅ Institution found:', institution.id);
 
-      // Get products with their variables and required documents
+      // Get products with their required documents
       const { data: products, error } = await supabase
         .from("credit_products")
         .select(
@@ -115,17 +106,8 @@ export const creditProductsController = {
           typology,
           target,
           is_active,
-          scoring_model_id,
           created_at,
           updated_at,
-          product_variables(
-            id,
-            name,
-            field_key,
-            variable_type,
-            weight,
-            display_order
-          ),
           product_required_documents(
             id,
             name
@@ -193,7 +175,6 @@ export const creditProductsController = {
         .select(
           `
           *,
-          product_variables(*),
           product_required_documents(*)
         `
         )
@@ -219,12 +200,12 @@ export const creditProductsController = {
     }
   },
 
-  // Create product with variables and scoring rules
+  // Create product with its required documents
   createProduct: async (req: AuthRequest, res: Response) => {
     try {
       if (!req.user) throw new AppError("Not authenticated", 401);
 
-      const { name, objective, amount_min, amount_max, duration_min_months, duration_max_months, interest_type, typology, target, variables, required_documents, scoring_model_id }: any = req.body;
+      const { name, objective, amount_min, amount_max, duration_min_months, duration_max_months, interest_type, typology, target, required_documents }: any = req.body;
 
       // Validation
       if (!name || amount_min === undefined || amount_max === undefined) {
@@ -256,7 +237,6 @@ export const creditProductsController = {
         interest_type: interest_type || null,
         typology: typology || null,
         target: target || null,
-        scoring_model_id: scoring_model_id || null,
         is_active: true,
       });
 
@@ -265,53 +245,7 @@ export const creditProductsController = {
         throw new AppError("Failed to create product", 500);
       }
 
-      // 2. Create variables with scoring rules (optionnel : un produit peut
-      // etre publie sans variable, l'offre de credit ne depend plus du scoring)
-      for (const variable of (Array.isArray(variables) ? variables : [])) {
-        const variableId = uuidv4();
-
-        const { error: varError } = await supabase.from("product_variables").insert({
-          id: variableId,
-          credit_product_id: productId,
-          name: variable.name,
-          description: variable.description || null,
-          field_key: variable.field_key,
-          variable_type: variable.variable_type,
-          is_required: variable.is_required,
-          numeric_min: variable.numeric_min || null,
-          numeric_max: variable.numeric_max || null,
-          categories: variable.categories ? JSON.stringify(variable.categories) : null,
-          weight: variable.weight,
-          display_order: variable.display_order || 0,
-        });
-
-        if (varError) {
-          console.error('❌ Variable insert error:', varError);
-          throw new AppError("Failed to create product variables", 500);
-        }
-
-        // Create scoring rules for this variable
-        if (variable.scoring_rules && Array.isArray(variable.scoring_rules)) {
-          const rulesToInsert = variable.scoring_rules.map((rule: CreateScoringRuleRequest) => ({
-            id: uuidv4(),
-            product_variable_id: variableId,
-            min_value: rule.min_value || null,
-            max_value: rule.max_value || null,
-            category_value: rule.category_value || null,
-            points_awarded: rule.points_awarded,
-            description: rule.description || null,
-          }));
-
-          const { error: ruleError } = await supabase.from("variable_scoring_rules").insert(rulesToInsert);
-
-          if (ruleError) {
-            console.error('❌ Rule insert error:', ruleError);
-            throw new AppError("Failed to create scoring rules", 500);
-          }
-        }
-      }
-
-      // 3. Create required documents for the product
+      // 2. Create required documents for the product
       if (Array.isArray(required_documents) && required_documents.length > 0) {
         const documentsToInsert = required_documents.map((doc: any) => ({
           id: uuidv4(),
@@ -327,7 +261,7 @@ export const creditProductsController = {
         }
       }
 
-      console.log('✅ Product created with variables and documents:', productId);
+      console.log('✅ Product created with documents:', productId);
       res.status(201).json({
         message: "Product created successfully",
         product_id: productId,
@@ -347,7 +281,7 @@ export const creditProductsController = {
       if (!req.user) throw new AppError("Not authenticated", 401);
 
       const { id } = req.params;
-      const { name, objective, amount_min, amount_max, duration_min_months, duration_max_months, interest_type, typology, target, scoring_model_id, is_active, required_documents } = req.body;
+      const { name, objective, amount_min, amount_max, duration_min_months, duration_max_months, interest_type, typology, target, is_active, required_documents } = req.body;
 
       // Verify ownership
       const { data: product } = await supabase
@@ -383,7 +317,6 @@ export const creditProductsController = {
           interest_type: interest_type !== undefined ? interest_type : undefined,
           typology: typology !== undefined ? typology : undefined,
           target: target !== undefined ? target : undefined,
-          scoring_model_id: scoring_model_id !== undefined ? scoring_model_id : undefined,
           is_active: is_active !== undefined ? is_active : undefined,
           updated_at: new Date(),
         })
@@ -459,7 +392,7 @@ export const creditProductsController = {
     }
   },
 
-  // Delete product (cascades to variables and rules)
+  // Delete product (cascades to required documents)
   deleteProduct: async (req: AuthRequest, res: Response) => {
     try {
       if (!req.user) throw new AppError("Not authenticated", 401);
@@ -517,16 +450,14 @@ export const creditProductsController = {
           `
           id,
           name,
-          description,
           objective,
           amount_min,
           amount_max,
           duration_min_months,
           duration_max_months,
-          interest_rate,
+          interest_type,
           institution_id,
-          institutions(id, name),
-          product_variables(id, name, field_key, variable_type, weight)
+          institutions(id, name)
         `
         )
         .eq("is_active", true);
@@ -547,65 +478,6 @@ export const creditProductsController = {
       }
       console.error('❌ Error fetching public products:', error);
       res.status(500).json({ error: "Failed to fetch products" });
-    }
-  },
-
-  // Get product details for simulation (public)
-  getProductForSimulation: async (req: Request, res: Response) => {
-    try {
-      const { id } = req.params;
-
-      const { data: product, error } = await supabase
-        .from("credit_products")
-        .select(
-          `
-          *,
-          institutions(name),
-          product_variables(*)
-        `
-        )
-        .eq("id", id)
-        .eq("is_active", true)
-        .single();
-
-      if (error) {
-        console.error('❌ Supabase error fetching product:', error);
-        throw new AppError("Product not found: " + error.message, 404);
-      }
-      
-      if (!product) {
-        console.error('❌ Product not found for ID:', id);
-        throw new AppError("Product not found", 404);
-      }
-
-      // Récupérer les variables du modèle de scoring
-      const { data: model_variables } = await supabase
-        .from("model_variables")
-        .select("id, name, display_name, description, weight, min_value, max_value, favorable_direction, is_blocking, variable_type, unit")
-        .eq("scoring_model_id", product.scoring_model_id);
-
-      // Aplatir la relation institutions pour accès facile
-      const institutionName = product.institutions && Array.isArray(product.institutions) 
-        ? product.institutions[0]?.name 
-        : product.institutions?.name;
-
-      console.log('✅ Product for simulation retrieved:', id);
-      console.log('✅ Institution name:', institutionName);
-      console.log('✅ Model variables retrieved:', model_variables?.length || 0);
-      
-      res.json({ 
-        product: {
-          ...product,
-          institution_name: institutionName
-        },
-        model_variables: model_variables || []
-      });
-    } catch (error) {
-      if (error instanceof AppError) {
-        return res.status(error.status).json({ error: error.message });
-      }
-      console.error('❌ Error fetching product:', error);
-      res.status(500).json({ error: "Failed to fetch product" });
     }
   },
 };

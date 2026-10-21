@@ -30,25 +30,6 @@ export interface CreateProductRequest {
   duration_months: number;
 }
 
-export interface CreateProductVariableRequest {
-  product_id: string;
-  variable_name: string;
-  variable_type: string;
-  weight: number;
-}
-
-export interface CreateScoringRuleRequest {
-  model_id?: string;
-  rule_name?: string;
-  rule_condition?: string;
-  rule_score?: number;
-  min_value?: number | null;
-  max_value?: number | null;
-  category_value?: string | null;
-  points_awarded: number;
-  description?: string | null;
-}
-
 // Profile Types
 export interface InstitutionProfileRequest {
   name?: string;

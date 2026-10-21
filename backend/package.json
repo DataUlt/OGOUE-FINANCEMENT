@@ -1,14 +1,13 @@
 {
   "name": "ogoue-backend",
   "version": "1.0.0",
-  "description": "Backend API for OGOUÉ Credit Scoring Platform",
+  "description": "Backend API pour la plateforme de financement OGOUÉ",
   "main": "dist/index.js",
   "type": "module",
   "scripts": {
     "start": "node dist/index.js",
     "dev": "ts-node src/index.ts",
-    "build": "tsc",
-    "test": "node run-tests.js"
+    "build": "tsc"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.26.0",

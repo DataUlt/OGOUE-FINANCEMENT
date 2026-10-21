@@ -206,13 +206,6 @@ export const productsAPI = {
     return data;
   },
 
-  getProductForSimulation: async (productId) => {
-    const response = await fetch(`${API_BASE_URL}/credit-products/public/${productId}`);
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "Failed to fetch product");
-    return data;
-  },
-
   getInstitutionProducts: async (token) => {
     const response = await fetch(`${API_BASE_URL}/credit-products`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -326,72 +319,6 @@ export const applicationsAPI = {
     });
     const data = await response.json();
     if (!response.ok) throw new Error(data.error || "Failed to update application");
-    return data;
-  },
-};
-
-// ============================================
-// SIMULATIONS (REPLACES APPLICATIONS)
-// ============================================
-
-export const simulationsAPI = {
-  createSimulation: async (token, simulationData) => {
-    const response = await fetch(`${API_BASE_URL}/simulations`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(simulationData),
-    });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "Failed to create simulation");
-    return data;
-  },
-
-  getPMESimulations: async (token) => {
-    const response = await fetch(`${API_BASE_URL}/simulations/me`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "Failed to fetch simulations");
-    return data;
-  },
-
-  getInstitutionSimulations: async (token, institutionId) => {
-    const response = await fetch(`${API_BASE_URL}/simulations/institution/${institutionId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "Failed to fetch simulations");
-    return data;
-  },
-
-  getInstitutionSimulationStats: async (token, institutionId) => {
-    const response = await fetch(`${API_BASE_URL}/simulations/institution/${institutionId}/stats`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "Failed to fetch stats");
-    return data;
-  },
-
-  getSimulation: async (token, id) => {
-    const response = await fetch(`${API_BASE_URL}/simulations/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "Failed to fetch simulation");
-    return data;
-  },
-
-  deleteSimulation: async (token, id) => {
-    const response = await fetch(`${API_BASE_URL}/simulations/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || "Failed to delete simulation");
     return data;
   },
 };
@@ -533,108 +460,10 @@ export const apiHelpers = {
   },
 };
 
-// ============================================
-// SCORING MODELS API
-// ============================================
-
-export const modelsAPI = {
-  // Create a new scoring model
-  createModel: async (token, modelData) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/scoring-models`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify(modelData),
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to create model');
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error('❌ Error creating model:', error);
-      throw error;
-    }
-  },
-
-  // Get all models for institution
-  getModels: async (token) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/scoring-models`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to fetch models');
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error('❌ Error fetching models:', error);
-      throw error;
-    }
-  },
-
-  // Get a single model by ID
-  getModel: async (token, modelId) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/scoring-models/${modelId}`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to fetch model');
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error('❌ Error fetching model:', error);
-      throw error;
-    }
-  },
-
-  // Delete a model
-  deleteModel: async (token, modelId) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/scoring-models/${modelId}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to delete model');
-      }
-
-      return await response.json();
-    } catch (error) {
-      console.error('❌ Error deleting model:', error);
-      throw error;
-    }
-  },
-};
-
 export default {
   authAPI,
   profileAPI,
   productsAPI,
-  modelsAPI,
-  simulationsAPI,
   sessionAPI,
   apiHelpers,
 };

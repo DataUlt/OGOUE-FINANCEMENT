@@ -6,7 +6,6 @@ const router = Router();
 
 // Public routes (no auth required) - defined first for specificity
 router.get("/public/all", creditProductsController.getAllActiveProducts);
-router.get("/public/:id", creditProductsController.getProductForSimulation);
 router.get("/public/institution/:institutionId", creditProductsController.getProductsByInstitution);
 
 // Protected routes (auth required)

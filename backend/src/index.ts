@@ -12,7 +12,8 @@ const PORT = process.env.PORT || 3001;
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+// Le logo arrive en base64 dans le JSON : la limite par défaut (100 Ko) le refuse (413)
+app.use(express.json({ limit: '5mb' }));
 app.use(fileUpload());  // Add file upload middleware
 
 // Routes
@@ -23,17 +24,13 @@ app.get('/api/health', (req: Request, res: Response) => {
 // Import and use route files
 import authRouter from './routes/index.js';
 import creditProductRouter from './routes/creditProducts.js';
-import simulationRouter from './routes/simulations.js';
 import profileRouter from './routes/profile.js';
-import scoringModelRouter from './routes/scoringModels.js';
 import applicationRouter from './routes/applications.js';
 
 // Use routes - using the auth router from routes/index.ts
 app.use('/api/auth', authRouter);
 app.use('/api/credit-products', creditProductRouter);
-app.use('/api/simulations', simulationRouter);
 app.use('/api/profile', profileRouter);
-app.use('/api/scoring-models', scoringModelRouter);
 app.use('/api/applications', applicationRouter);
 
 // Error handling middleware
