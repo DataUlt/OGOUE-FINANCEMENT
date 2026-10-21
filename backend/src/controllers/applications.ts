@@ -32,6 +32,62 @@ const STATUTS_VISIBLES = ["depose", "en_examen", "complement_requis", "accepte",
  */
 const BUCKET_PIECES = "dossiers-financement";
 
+/** Les horodatages de l'historique n'ont pas de fuseau : on les marque UTC pour un affichage exact. */
+function versUtc(valeur: string | null): string | null {
+  if (!valeur) return null;
+  return new Date(valeur.endsWith("Z") ? valeur : valeur + "Z").toISOString();
+}
+
+/** Statuts pour lesquels la discussion est ouverte (un brouillon reste a la PME). */
+const STATUTS_DISCUSSION = ["depose", "en_examen", "complement_requis", "accepte", "refuse"];
+
+/** Memes formats et taille que les pieces du dossier cote PME. */
+const TYPES_PIECES = [
+  "application/pdf",
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "application/msword",
+  "application/vnd.ms-excel",
+  "text/plain",
+];
+const TAILLE_MAX_PIECE = 10 * 1024 * 1024;
+
+const COLONNES_MESSAGE = "id, author_role, author_name, body, attachment_name, attachment_size, created_at";
+
+/** Fichier recu par express-fileupload */
+interface UploadedFichier {
+  name: string;
+  data: Buffer;
+  size: number;
+  mimetype: string;
+}
+
+/** Forme renvoyee au front, sans chemin de stockage. */
+function messageVersApi(row: any) {
+  return {
+    id: row.id,
+    authorRole: row.author_role,
+    authorName: row.author_name,
+    body: row.body,
+    attachment: row.attachment_name ? { name: row.attachment_name, size: row.attachment_size } : null,
+    createdAt: row.created_at,
+  };
+}
+
+/** Dossier de l'institution, hors brouillons. */
+async function dossierDeInstitution(applicationId: string, institutionId: string) {
+  const { data } = await supabase
+    .from("loan_applications")
+    .select("id, status, pme_id")
+    .eq("id", applicationId)
+    .eq("institution_id", institutionId)
+    .maybeSingle();
+  return data;
+}
+
 const SELECT_APPLICATION = `
   id, status, amount_requested, duration_months, purpose,
   submitted_at, decided_at, decision_note, created_at, updated_at,
@@ -183,7 +239,7 @@ export const applicationsController = {
           status: h.status,
           note: h.note,
           changedBy: h.changed_by,
-          at: h.created_at,
+          at: versUtc(h.created_at),
         })),
       });
     } catch (error) {
@@ -325,6 +381,132 @@ export const applicationsController = {
       }
       console.error("❌ Erreur updateStatus:", error);
       res.status(500).json({ error: "Failed to update application" });
+    }
+  },
+  /**
+   * GET /api/applications/:id/messages
+   * Discussion du dossier. Un brouillon n'est pas visible de l'institution.
+   */
+  listMessages: async (req: AuthRequest, res: Response) => {
+    try {
+      const institution = await getInstitutionForUser(req);
+      const dossier = await dossierDeInstitution(req.params.id, institution.id);
+      if (!dossier) throw new AppError("Dossier introuvable", 404);
+
+      const { data, error } = await supabase
+        .from("application_messages")
+        .select(COLONNES_MESSAGE)
+        .eq("application_id", dossier.id)
+        .order("created_at", { ascending: true });
+
+      if (error) throw new AppError("Impossible de lire la discussion", 500);
+
+      res.json({ messages: (data || []).map(messageVersApi) });
+    } catch (error) {
+      if (error instanceof AppError) {
+        return res.status(error.status).json({ error: error.message });
+      }
+      console.error("❌ Erreur listMessages:", error);
+      res.status(500).json({ error: "Failed to load messages" });
+    }
+  },
+
+  /**
+   * POST /api/applications/:id/messages
+   * Message texte et/ou piece jointe (champ multipart « file »).
+   */
+  postMessage: async (req: AuthRequest, res: Response) => {
+    try {
+      const institution = await getInstitutionForUser(req);
+      const texte = typeof req.body?.body === "string" ? req.body.body.trim() : "";
+      if (texte.length > 2000) throw new AppError("Message trop long (2000 caractères maximum)", 400);
+
+      const fichier = (req as any).files?.file as UploadedFichier | undefined;
+      if (!texte && !fichier) throw new AppError("Écrivez un message ou joignez un fichier", 400);
+
+      const dossier = await dossierDeInstitution(req.params.id, institution.id);
+      if (!dossier) throw new AppError("Dossier introuvable", 404);
+      if (!STATUTS_DISCUSSION.includes(dossier.status)) {
+        throw new AppError("La discussion n'est pas encore ouverte pour ce dossier", 409);
+      }
+
+      let piece: { chemin: string; nom: string; taille: number } | null = null;
+      if (fichier) {
+        if (!TYPES_PIECES.includes(fichier.mimetype)) throw new AppError("Format de fichier non accepté", 400);
+        if (fichier.size > TAILLE_MAX_PIECE) throw new AppError("Le fichier dépasse 10 Mo", 400);
+
+        const extension = fichier.name.includes(".") ? fichier.name.split(".").pop() : "bin";
+        const chemin = dossier.pme_id + "/" + Date.now() + "_" + Math.random().toString(36).slice(2, 10) + "." + extension;
+        const { error: erreurUpload } = await supabase.storage
+          .from(BUCKET_PIECES)
+          .upload(chemin, fichier.data, { contentType: "application/octet-stream", upsert: false });
+        if (erreurUpload) {
+          console.error("❌ Upload pièce discussion:", erreurUpload.message);
+          throw new AppError("Impossible d'envoyer le fichier", 500);
+        }
+        piece = { chemin, nom: fichier.name, taille: fichier.size };
+      }
+
+      const { data, error } = await supabase
+        .from("application_messages")
+        .insert({
+          application_id: dossier.id,
+          author_role: "institution",
+          author_name: institution.name,
+          body: texte || null,
+          attachment_name: piece ? piece.nom : null,
+          attachment_path: piece ? piece.chemin : null,
+          attachment_size: piece ? piece.taille : null,
+        })
+        .select(COLONNES_MESSAGE)
+        .single();
+
+      if (error || !data) {
+        // Pas de fichier orphelin si l'enregistrement echoue
+        if (piece) await supabase.storage.from(BUCKET_PIECES).remove([piece.chemin]);
+        throw new AppError("Impossible d'enregistrer le message", 500);
+      }
+
+      res.status(201).json({ message: messageVersApi(data) });
+    } catch (error) {
+      if (error instanceof AppError) {
+        return res.status(error.status).json({ error: error.message });
+      }
+      console.error("❌ Erreur postMessage:", error);
+      res.status(500).json({ error: "Failed to send message" });
+    }
+  },
+
+  /**
+   * GET /api/applications/:id/messages/:msgId/attachment
+   * Lien signe de 5 minutes vers la piece jointe d'un message.
+   */
+  getMessageAttachment: async (req: AuthRequest, res: Response) => {
+    try {
+      const institution = await getInstitutionForUser(req);
+      const dossier = await dossierDeInstitution(req.params.id, institution.id);
+      if (!dossier) throw new AppError("Dossier introuvable", 404);
+
+      const { data: message } = await supabase
+        .from("application_messages")
+        .select("attachment_name, attachment_path")
+        .eq("id", req.params.msgId)
+        .eq("application_id", dossier.id)
+        .maybeSingle();
+      if (!message?.attachment_path) throw new AppError("Pièce jointe introuvable", 404);
+
+      const { data, error } = await supabase.storage
+        .from(BUCKET_PIECES)
+        .createSignedUrl(message.attachment_path, 300);
+      if (error || !data?.signedUrl) throw new AppError("Lien de téléchargement indisponible", 500);
+
+      res.json({ url: data.signedUrl, name: message.attachment_name });
+    } catch (error) {
+      if (error instanceof AppError) {
+        return res.status(error.status).json({ error: error.message });
+      }
+      console.error("❌ Erreur getMessageAttachment:", error);
+      res.status(500).json({ error: "Failed to load attachment" });
     }
   },
 };

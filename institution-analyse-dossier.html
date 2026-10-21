@@ -150,8 +150,8 @@
   <section id="vueListe">
     <div class="flex flex-wrap justify-between items-start gap-4 mb-6">
       <div>
-        <h1 class="text-4xl font-bold text-text-light mb-2">Dossiers de financement</h1>
-        <p class="text-text-light-muted text-base">
+        <h1 class="text-3xl font-bold text-text-light mb-2">Dossiers de financement</h1>
+        <p class="text-text-light-muted text-sm">
           Les demandes déposées par les PME sur vos produits de crédit.
         </p>
       </div>
@@ -338,7 +338,7 @@ function afficherListe() {
               class="w-full text-left bg-white rounded-lg border border-black/10 p-5 hover:border-primary/50 transition-colors">
         <div class="flex flex-wrap items-start justify-between gap-4">
           <div class="min-w-0">
-            <h2 class="font-bold text-lg">${echapper(pme)}</h2>
+            <h2 class="font-bold text-base">${echapper(pme)}</h2>
             <p class="text-sm text-text-light-muted">${echapper(produit)}</p>
             <p class="mt-2 text-sm">
               ${dossier.amountRequested !== null ? `<strong>${FCFA.format(dossier.amountRequested)} FCFA</strong>` : 'Montant non précisé'}
@@ -346,7 +346,7 @@ function afficherListe() {
             </p>
           </div>
           <div class="text-right shrink-0">
-            ${badge(dossier.status)}
+            <div class="flex items-center justify-end gap-2">${badge(dossier.status)}<span data-non-lu="${dossier.id}"></span></div>
             <p class="mt-2 text-xs text-text-light-muted">Déposé le ${formatDate(dossier.submittedAt)}</p>
           </div>
         </div>
@@ -359,6 +359,64 @@ function afficherListe() {
   });
 }
 
+// ─────────── Non lus (suivi local, par navigateur) ───────────
+const CLE_LU_INST = 'ogo_fin_lu_inst';
+
+function lusInstitution() {
+  try { return JSON.parse(localStorage.getItem(CLE_LU_INST) || '{}'); } catch (e) { return {}; }
+}
+
+function marquerLuInstitution(id) {
+  try {
+    const points = lusInstitution();
+    points[id] = new Date().toISOString();
+    localStorage.setItem(CLE_LU_INST, JSON.stringify(points));
+  } catch (e) { /* stockage indisponible */ }
+}
+
+/** Messages et étapes de la PME non lus, par dossier */
+async function nonLusInstitution(dossiers) {
+  const lus = lusInstitution();
+  const resultat = {};
+  await Promise.all(dossiers.filter((d) => d.status !== 'brouillon').map(async (d) => {
+    const [detail, messages] = await Promise.all([
+      applicationsAPI.getApplication(token, d.id),
+      applicationsAPI.getMessages(token, d.id),
+    ]);
+    const depuis = lus[d.id] ? new Date(lus[d.id]) : null;
+    const apres = (date) => !depuis || new Date(date) > depuis;
+    const messagesPme = messages.filter((m) => m.authorRole === 'pme' && apres(m.createdAt)).length;
+    const etapesPme = ((detail && detail.history) || []).filter((e) => e.changedBy === 'pme' && apres(e.at)).length;
+    resultat[d.id] = messagesPme + etapesPme;
+  }));
+  return resultat;
+}
+
+function pastilleNonLus(n) {
+  return '<span class="inline-flex items-center justify-center text-xs font-bold text-white bg-red-500 rounded-full min-w-[22px] h-[22px] px-1.5">' + n + '</span>';
+}
+
+/** Affiche les pastilles : sur chaque carte et sur le menu Dossiers */
+async function actualiserNonLus() {
+  let non = {};
+  try { non = await nonLusInstitution(tousLesDossiers); } catch (e) { console.error('Non lus:', e); }
+  document.querySelectorAll('[data-non-lu]').forEach((el) => {
+    const n = non[el.dataset.nonLu] || 0;
+    el.innerHTML = n ? pastilleNonLus(n) : '';
+  });
+  const total = Object.values(non).reduce((s, n) => s + n, 0);
+  const lien = [...document.querySelectorAll('.sidebar-nav a')].find((a) => a.textContent.includes('Dossiers'));
+  if (lien) {
+    let pastille = lien.querySelector('.ogo-nonlus-menu');
+    if (!pastille) {
+      pastille = document.createElement('span');
+      pastille.className = 'ogo-nonlus-menu ml-auto';
+      lien.appendChild(pastille);
+    }
+    pastille.innerHTML = total ? pastilleNonLus(total) : '';
+  }
+}
+
 async function chargerDossiers() {
   try {
     const reponse = await applicationsAPI.getApplications(token);
@@ -366,6 +424,7 @@ async function chargerDossiers() {
     document.getElementById('listeChargement').classList.add('hidden');
     construireFiltres();
     afficherListe();
+    actualiserNonLus();
   } catch (error) {
     console.error('Erreur chargement dossiers:', error);
     document.getElementById('listeChargement').innerHTML =
@@ -382,79 +441,82 @@ async function ouvrirDetail(id) {
   contenu.innerHTML = '<p class="text-text-light-muted">Chargement du dossier…</p>';
 
   let dossier;
+  let messages = [];
   try {
     dossier = await applicationsAPI.getApplication(token, id);
+    marquerLuInstitution(id);
   } catch (error) {
     contenu.innerHTML = `<p class="text-red-600">Erreur : ${echapper(error.message)}</p>`;
     return;
   }
 
+  try { messages = await applicationsAPI.getMessages(token, id); } catch (error) { console.error('Erreur messages:', error); }
   const pme = dossier.pme || {};
   const produit = dossier.product || {};
   const actions = ACTIONS[dossier.status] || [];
 
   contenu.innerHTML = `
-    <div class="bg-white rounded-lg border border-black/10 p-6">
+    <div class="rounded-2xl bg-white border border-[#e8ede8] shadow-sm p-6">
       <div class="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 class="text-3xl font-bold">${echapper(pme.companyName || 'PME')}</h1>
-          <p class="text-text-light-muted">${echapper(produit.name || 'Crédit')}</p>
+          <h1 class="text-2xl font-bold">${echapper(pme.companyName || 'PME')}</h1>
+          <p class="text-sm font-semibold text-[#006699]">${echapper(produit.name || 'Crédit')}</p>
         </div>
         ${badge(dossier.status)}
       </div>
 
       <dl class="mt-6 grid gap-4 sm:grid-cols-3">
         <div>
-          <dt class="text-xs font-bold uppercase tracking-wide text-text-light-muted">Montant demandé</dt>
-          <dd class="mt-1 text-lg font-bold">${dossier.amountRequested !== null ? FCFA.format(dossier.amountRequested) + ' FCFA' : '—'}</dd>
+          <dt class="text-sm text-gray-500">Montant demandé</dt>
+          <dd class="mt-1 text-base font-semibold">${dossier.amountRequested !== null ? FCFA.format(dossier.amountRequested) + ' FCFA' : '—'}</dd>
         </div>
         <div>
-          <dt class="text-xs font-bold uppercase tracking-wide text-text-light-muted">Durée</dt>
-          <dd class="mt-1 text-lg font-bold">${dossier.durationMonths ? dossier.durationMonths + ' mois' : '—'}</dd>
+          <dt class="text-sm text-gray-500">Durée</dt>
+          <dd class="mt-1 text-base font-semibold">${dossier.durationMonths ? dossier.durationMonths + ' mois' : '—'}</dd>
         </div>
         <div>
-          <dt class="text-xs font-bold uppercase tracking-wide text-text-light-muted">Déposé le</dt>
-          <dd class="mt-1 text-lg font-bold">${formatDate(dossier.submittedAt)}</dd>
+          <dt class="text-sm text-gray-500">Déposé le</dt>
+          <dd class="mt-1 text-base font-semibold">${formatDate(dossier.submittedAt)}</dd>
         </div>
       </dl>
 
       ${dossier.purpose ? `
         <div class="mt-6">
-          <p class="text-xs font-bold uppercase tracking-wide text-text-light-muted">Objet du financement</p>
+          <p class="text-sm text-gray-500">Objet du financement</p>
           <p class="mt-1">${echapper(dossier.purpose)}</p>
         </div>
       ` : ''}
     </div>
 
-    <div class="bg-white rounded-lg border border-black/10 p-6">
+    <div class="rounded-2xl bg-white border border-[#e8ede8] shadow-sm p-6">
       <h2 class="font-bold text-lg mb-4">L'entreprise</h2>
       <dl class="grid gap-4 sm:grid-cols-2">
         <div>
-          <dt class="text-xs font-bold uppercase tracking-wide text-text-light-muted">Raison sociale</dt>
+          <dt class="text-sm text-gray-500">Raison sociale</dt>
           <dd class="mt-1">${echapper(pme.companyName || '—')}</dd>
         </div>
         <div>
-          <dt class="text-xs font-bold uppercase tracking-wide text-text-light-muted">Secteur</dt>
+          <dt class="text-sm text-gray-500">Secteur</dt>
           <dd class="mt-1">${echapper(pme.sector || '—')}</dd>
         </div>
         <div>
-          <dt class="text-xs font-bold uppercase tracking-wide text-text-light-muted">RCCM</dt>
+          <dt class="text-sm text-gray-500">RCCM</dt>
           <dd class="mt-1">${echapper(pme.rccmNumber || '—')}</dd>
         </div>
         <div>
-          <dt class="text-xs font-bold uppercase tracking-wide text-text-light-muted">NIF</dt>
+          <dt class="text-sm text-gray-500">NIF</dt>
           <dd class="mt-1">${echapper(pme.nifNumber || '—')}</dd>
         </div>
         ${pme.activityDescription ? `
           <div class="sm:col-span-2">
-            <dt class="text-xs font-bold uppercase tracking-wide text-text-light-muted">Activité</dt>
+            <dt class="text-sm text-gray-500">Activité</dt>
             <dd class="mt-1">${echapper(pme.activityDescription)}</dd>
           </div>
         ` : ''}
       </dl>
     </div>
 
-    <div class="bg-white rounded-lg border border-black/10 p-6">
+    <div class="rounded-2xl bg-white border border-[#e8ede8] shadow-sm p-6">
       <h2 class="font-bold text-lg mb-4">Pièces justificatives (${dossier.documents.length})</h2>
       ${dossier.documents.length > 0 ? `
         <ul class="flex flex-col gap-2">
@@ -473,24 +535,14 @@ async function ouvrirDetail(id) {
       ` : '<p class="text-text-light-muted">Aucune pièce jointe à ce dossier.</p>'}
     </div>
 
-    <div class="bg-white rounded-lg border border-black/10 p-6">
-      <h2 class="font-bold text-lg mb-4">Historique</h2>
-      <ol class="relative border-l border-black/10 ml-2">
-        ${dossier.history.map((h) => {
-          const s = STATUTS[h.status] || { libelle: h.status };
-          return `
-            <li class="ml-4 pb-4 last:pb-0">
-              <span class="absolute -left-1.5 w-3 h-3 rounded-full bg-primary/60"></span>
-              <p class="font-semibold">${s.libelle}</p>
-              <p class="text-xs text-text-light-muted">${AUTEURS[h.changedBy] || 'Système'} — ${formatDateHeure(h.at)}</p>
-              ${h.note ? `<p class="mt-1 text-sm">${echapper(h.note)}</p>` : ''}
-            </li>
-          `;
-        }).join('')}
+    <div class="rounded-2xl bg-white border border-[#e8ede8] shadow-sm p-6">
+      <h2 class="text-lg font-bold mb-4">Historique</h2>
+      <ol class="flex flex-col gap-3">
+        ${historiqueAvecEchanges(dossier.history, messages)}
       </ol>
     </div>
 
-    <div class="bg-white rounded-lg border border-black/10 p-6">
+    <div class="rounded-2xl bg-white border border-[#e8ede8] shadow-sm p-6">
       <h2 class="font-bold text-lg mb-1">Décision</h2>
       ${actions.length === 0 ? `
         <p class="text-text-light-muted">
@@ -502,12 +554,6 @@ async function ouvrirDetail(id) {
         <p class="text-text-light-muted mb-4">
           La PME verra immédiatement votre décision et votre message dans son suivi.
         </p>
-        <label class="flex flex-col gap-1 mb-4">
-          <span class="text-sm font-medium">Message à la PME</span>
-          <textarea id="champNote" rows="3" placeholder="Obligatoire pour demander un complément"
-                    class="rounded-lg border-black/10 focus:border-primary focus:ring-primary"></textarea>
-        </label>
-        <div id="erreurDecision" class="hidden mb-4 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700"></div>
         <div class="flex flex-wrap gap-3">
           ${actions.map((a) => `
             <button type="button" data-action="${a.statut}" data-note-obligatoire="${a.noteObligatoire ? '1' : ''}"
@@ -518,11 +564,44 @@ async function ouvrirDetail(id) {
         </div>
       `}
     </div>
+  <div id="modalDecision" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div id="fondDecision" class="absolute inset-0 bg-black/40"></div>
+    <div class="relative w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl">
+      <h2 id="titreDecision" class="text-lg font-bold mb-2"></h2>
+      <p id="aideDecision" class="text-sm text-text-light-muted mb-4"></p>
+      <textarea id="champDecision" rows="4" placeholder="Votre message à la PME"
+                class="w-full rounded-lg border-black/10 focus:border-primary focus:ring-primary"></textarea>
+      <label class="mt-3 inline-flex items-center gap-2 text-sm text-text-light-muted cursor-pointer">
+        <span class="material-symbols-outlined text-base">attach_file</span>
+        <span id="nomFichierDecision">Joindre un document à compléter (10 Mo max)</span>
+        <input id="champFichierDecision" type="file" class="hidden"
+               accept=".pdf,.jpg,.jpeg,.png,.webp,.doc,.docx,.xls,.xlsx,.txt" />
+      </label>
+      <div id="erreurDecision" class="hidden mt-3 rounded-lg bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-700"></div>
+      <div class="flex justify-end gap-3 mt-5">
+        <button id="btnAnnulerDecision" type="button" class="rounded-lg px-5 py-2.5 text-sm font-semibold bg-gray-100 hover:bg-gray-200">Annuler</button>
+        <button id="btnConfirmerDecision" type="button" class="rounded-lg px-5 py-2.5 text-sm font-bold text-white bg-primary hover:opacity-90 disabled:opacity-60">Confirmer</button>
+      </div>
+    </div>
+  </div>
   `;
 
   contenu.querySelectorAll('[data-action]').forEach((bouton) => {
-    bouton.addEventListener('click', () => changerStatut(dossier.id, bouton));
+    bouton.addEventListener('click', () => ouvrirDecision(dossier.id, bouton));
   });
+  contenu.querySelectorAll('[data-message]').forEach((bouton) => {
+    bouton.addEventListener('click', async () => {
+      const url = await applicationsAPI.getMessageAttachmentUrl(token, dossier.id, bouton.dataset.message);
+      window.open(url, '_blank', 'noopener');
+    });
+  });
+  document.getElementById('btnAnnulerDecision').addEventListener('click', fermerDecision);
+  document.getElementById('champFichierDecision').addEventListener('change', (e) => {
+    fichierDecision = e.target.files[0] || null;
+    document.getElementById('nomFichierDecision').textContent = fichierDecision ? fichierDecision.name : 'Joindre un document à compléter (10 Mo max)';
+  });
+  document.getElementById('fondDecision').addEventListener('click', fermerDecision);
+  document.getElementById('btnConfirmerDecision').addEventListener('click', confirmerDecision);
 
   // Les pieces sont dans un espace prive : on demande un lien signe,
   // valable quelques minutes, au moment de l'ouverture.
@@ -544,29 +623,132 @@ async function ouvrirDetail(id) {
   });
 }
 
-async function changerStatut(id, bouton) {
-  const statut = bouton.dataset.action;
-  const note = (document.getElementById('champNote')?.value || '').trim();
-  const erreur = document.getElementById('erreurDecision');
+// Chaque etape affiche sa note, puis les messages echanges depuis l'etape precedente.
+const ETIQUETTES_STATUT = {
+  brouillon: ['Brouillon', 'bg-gray-100 text-gray-700'],
+  depose: ['Déposé', 'bg-blue-100 text-blue-800'],
+  en_examen: ['En examen', 'bg-amber-100 text-amber-800'],
+  complement_requis: ['Complément requis', 'bg-orange-100 text-orange-800'],
+  accepte: ['Accepté', 'bg-emerald-100 text-emerald-800'],
+  refuse: ['Refusé', 'bg-red-100 text-red-800'],
+};
 
-  if (bouton.dataset.noteObligatoire && !note) {
-    erreur.textContent = 'Précisez à la PME ce qui manque à son dossier.';
+function badgeStatut(statut) {
+  const [libelle, classes] = ETIQUETTES_STATUT[statut] || [statut, 'bg-gray-100 text-gray-700'];
+  return '<span class="inline-flex items-center rounded-full px-2.5 py-1 text-xs font-bold ' + classes + '">' + libelle + '</span>';
+}
+
+function bulleMessageInstitution(message) {
+  const estNous = message.authorRole === 'institution';
+  const piece = message.attachment
+    ? '<button type="button" data-message="' + message.id + '" class="mt-1 inline-flex max-w-full min-w-0 items-center gap-1 font-semibold underline break-all text-left">'
+      + '<span class="material-symbols-outlined text-base">description</span>' + echapper(message.attachment.name) + '</button>'
+    : '';
+  return '<div class="flex ' + (estNous ? 'justify-end' : 'justify-start') + '"><div class="max-w-[85%] rounded-lg px-3 py-2 text-sm ' + (estNous ? 'bg-[#0B2A5B] text-white' : 'bg-background-light text-text-light') + '">'
+    + '<p class="text-xs font-semibold opacity-80">' + (estNous ? 'Vous' : echapper(message.authorName || 'PME')) + ' · ' + formatDateHeure(message.createdAt) + '</p>'
+    + (message.body ? '<p class="mt-1 whitespace-pre-wrap">' + echapper(message.body) + '</p>' : '')
+    + piece
+    + '</div></div>';
+}
+
+function historiqueAvecEchanges(history, messages) {
+  if (history.length === 0) return '<li class="text-sm text-gray-500">Aucune étape pour le moment.</li>';
+  return history.map((h, i) => {
+    const debut = i > 0 ? new Date(history[i - 1].at) : new Date(0);
+    const fin = new Date(h.at);
+    const echanges = messages.filter((m) => {
+      const date = new Date(m.createdAt);
+      return date > debut && date <= fin;
+    });
+    // La demande ou la décision de l'institution est un message de l'institution : il s'affiche à droite
+    const parInstitution = h.changedBy === 'institution';
+    if (parInstitution && h.note) {
+      echanges.push({ id: null, authorRole: 'institution', authorName: '', body: h.note, createdAt: h.at, attachment: null });
+    }
+    echanges.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+    const noteSeule = !parInstitution && h.note
+      ? '<p class="text-sm text-gray-600 mt-1">' + echapper(h.note) + '</p>'
+      : '';
+    return '<li class="flex items-start gap-3">'
+      + (parInstitution ? '' : '<span class="mt-1 size-2.5 rounded-full bg-[#006699] shrink-0"></span>')
+      + '<div class="min-w-0 flex-1 flex flex-col ' + (parInstitution ? 'items-end' : 'items-start') + '">'
+      + '<div class="flex flex-wrap items-center gap-2">' + badgeStatut(h.status) + '<span class="text-xs text-gray-500">' + formatDateHeure(h.at) + '</span></div>'
+      + noteSeule
+      + (echanges.length ? '<div class="mt-3 flex flex-col gap-2">' + echanges.map(bulleMessageInstitution).join('') + '</div>' : '')
+      + '</div>' + (parInstitution ? '<span class="mt-1 size-2.5 rounded-full bg-[#006699] shrink-0"></span>' : '') + '</li>';
+  }).join('');
+}
+
+let decisionEnCours = null;
+let fichierDecision = null;
+
+const TITRES_DECISION = {
+  en_examen: "Mettre le dossier à l'examen",
+  complement_requis: 'Demander un complément',
+  accepte: 'Accepter le dossier',
+  refuse: 'Refuser le dossier',
+};
+
+const AIDE_DECISION = {
+  en_examen: 'Message facultatif, affiché à la PME dans son suivi.',
+  complement_requis: 'Indiquez précisément les pièces ou informations à compléter. Ce message est obligatoire : la PME le verra dans son suivi.',
+  accepte: 'Message facultatif, affiché à la PME dans son suivi.',
+  refuse: 'Message facultatif : expliquez la décision si vous le souhaitez.',
+};
+
+function ouvrirDecision(id, bouton) {
+  const statut = bouton.dataset.action;
+  decisionEnCours = { id, statut, obligatoire: !!bouton.dataset.noteObligatoire };
+  document.getElementById('titreDecision').textContent = TITRES_DECISION[statut] || 'Confirmer la décision';
+  document.getElementById('aideDecision').textContent = AIDE_DECISION[statut] || '';
+  document.getElementById('champDecision').value = '';
+  fichierDecision = null;
+  document.getElementById('champFichierDecision').value = '';
+  document.getElementById('nomFichierDecision').textContent = 'Joindre un document à compléter (10 Mo max)';
+  document.getElementById('erreurDecision').classList.add('hidden');
+  document.getElementById('modalDecision').classList.remove('hidden');
+  document.getElementById('champDecision').focus();
+}
+
+function fermerDecision() {
+  document.getElementById('modalDecision').classList.add('hidden');
+  decisionEnCours = null;
+}
+
+function confirmerDecision() {
+  const note = document.getElementById('champDecision').value.trim();
+  const erreur = document.getElementById('erreurDecision');
+  if (fichierDecision && fichierDecision.size > 10 * 1024 * 1024) {
+    erreur.textContent = 'Le fichier dépasse 10 Mo.';
     erreur.classList.remove('hidden');
     return;
   }
+  if (decisionEnCours.obligatoire && !note) {
+    erreur.textContent = 'Ce message est obligatoire pour demander un complément.';
+    erreur.classList.remove('hidden');
+    return;
+  }
+  changerStatut(decisionEnCours.id, decisionEnCours.statut, note);
+}
 
-  const boutons = document.querySelectorAll('[data-action]');
-  boutons.forEach((b) => { b.disabled = true; });
+async function changerStatut(id, statut, note) {
+  const erreur = document.getElementById('erreurDecision');
+  const controles = [...document.querySelectorAll('[data-action]'), document.getElementById('btnConfirmerDecision')];
+  controles.forEach((b) => { if (b) b.disabled = true; });
 
   try {
+    if (fichierDecision) {
+      await applicationsAPI.postMessage(token, id, { body: '', file: fichierDecision });
+    }
     await applicationsAPI.updateStatus(token, id, statut, note || null);
+    fermerDecision();
     await chargerDossiers();
     await ouvrirDetail(id);
   } catch (error) {
     console.error('Erreur changement de statut:', error);
     erreur.textContent = error.message;
     erreur.classList.remove('hidden');
-    boutons.forEach((b) => { b.disabled = false; });
+    controles.forEach((b) => { if (b) b.disabled = false; });
   }
 }
 

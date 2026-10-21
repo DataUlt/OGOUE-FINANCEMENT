@@ -307,6 +307,42 @@ export const applicationsAPI = {
     return data.url;
   },
 
+  /** Discussion du dossier : messages texte et pieces jointes */
+  getMessages: async (token, applicationId) => {
+    const response = await fetch(`${API_BASE_URL}/applications/${applicationId}/messages`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Failed to fetch messages");
+    return data.messages;
+  },
+
+  /** Envoie un message (texte, fichier, ou les deux) */
+  postMessage: async (token, applicationId, { body = "", file = null } = {}) => {
+    const formData = new FormData();
+    if (body) formData.append("body", body);
+    if (file) formData.append("file", file);
+    const response = await fetch(`${API_BASE_URL}/applications/${applicationId}/messages`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+      body: formData,
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Failed to send message");
+    return data.message;
+  },
+
+  /** Lien signe (5 minutes) vers la piece jointe d'un message */
+  getMessageAttachmentUrl: async (token, applicationId, messageId) => {
+    const response = await fetch(
+      `${API_BASE_URL}/applications/${applicationId}/messages/${messageId}/attachment`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Failed to create download link");
+    return data.url;
+  },
+
   /** Fait avancer le dossier. La transition est validee cote serveur. */
   updateStatus: async (token, id, status, note = null) => {
     const response = await fetch(`${API_BASE_URL}/applications/${id}/status`, {
