@@ -360,36 +360,19 @@ function afficherListe() {
 }
 
 // ─────────── Non lus (suivi local, par navigateur) ───────────
-const CLE_LU_INST = 'ogo_fin_lu_inst';
-
-function lusInstitution() {
-  try { return JSON.parse(localStorage.getItem(CLE_LU_INST) || '{}'); } catch (e) { return {}; }
-}
-
-function marquerLuInstitution(id) {
+/** Éléments non lus par dossier : messages et étapes de la PME, enregistrés sur le serveur */
+async function nonLusInstitution() {
   try {
-    const points = lusInstitution();
-    points[id] = new Date().toISOString();
-    localStorage.setItem(CLE_LU_INST, JSON.stringify(points));
-  } catch (e) { /* stockage indisponible */ }
+    const reponse = await applicationsAPI.getUnread(token);
+    return reponse.parDossier || {};
+  } catch (e) {
+    return {};
+  }
 }
 
-/** Messages et étapes de la PME non lus, par dossier */
-async function nonLusInstitution(dossiers) {
-  const lus = lusInstitution();
-  const resultat = {};
-  await Promise.all(dossiers.filter((d) => d.status !== 'brouillon').map(async (d) => {
-    const [detail, messages] = await Promise.all([
-      applicationsAPI.getApplication(token, d.id),
-      applicationsAPI.getMessages(token, d.id),
-    ]);
-    const depuis = lus[d.id] ? new Date(lus[d.id]) : null;
-    const apres = (date) => !depuis || new Date(date) > depuis;
-    const messagesPme = messages.filter((m) => m.authorRole === 'pme' && apres(m.createdAt)).length;
-    const etapesPme = ((detail && detail.history) || []).filter((e) => e.changedBy === 'pme' && apres(e.at)).length;
-    resultat[d.id] = messagesPme + etapesPme;
-  }));
-  return resultat;
+/** Marque le dossier comme consulté par l'institution */
+function marquerLuInstitution(id) {
+  applicationsAPI.markSeen(token, id).catch(() => {});
 }
 
 function pastilleNonLus(n) {

@@ -151,6 +151,23 @@ async function getInstitutionForUser(req: AuthRequest) {
   return institution;
 }
 
+
+/** Les horodatages de l'historique n'ont pas de fuseau : sans fuseau, on les lit en UTC */
+function dateUtc(valeur: string): Date {
+  return new Date(/([zZ]|[+-]\d{2}:?\d{2})$/.test(valeur) ? valeur : valeur + "Z");
+}
+
+/** Nombre d'éléments postérieurs à la dernière consultation, par dossier */
+function compterNonLus(ids: string[], vus: any[], evenements: { application_id: string; date: string }[]) {
+  const vuLe = new Map((vus || []).map((v) => [v.application_id, new Date(v.vu_le)]));
+  const parDossier: Record<string, number> = Object.fromEntries(ids.map((id) => [id, 0]));
+  for (const e of evenements) {
+    const seuil = vuLe.get(e.application_id);
+    if (!seuil || dateUtc(e.date) > seuil) parDossier[e.application_id] += 1;
+  }
+  return parDossier;
+}
+
 export const applicationsController = {
   /**
    * GET /api/applications
@@ -507,6 +524,72 @@ export const applicationsController = {
       }
       console.error("❌ Erreur getMessageAttachment:", error);
       res.status(500).json({ error: "Failed to load attachment" });
+    }
+  },
+  /**
+   * GET /api/applications/unread
+   * Éléments non lus par dossier, côté institution (messages et étapes de la PME).
+   */
+  listUnread: async (req: AuthRequest, res: Response) => {
+    try {
+      const institution = await getInstitutionForUser(req);
+      const { data: dossiers, error } = await supabase
+        .from("loan_applications")
+        .select("id")
+        .eq("institution_id", institution.id)
+        .in("status", STATUTS_VISIBLES);
+      if (error) throw new AppError("Impossible de lire les dossiers", 500);
+
+      const ids: string[] = (dossiers || []).map((d: any) => d.id);
+      if (ids.length === 0) return res.json({ parDossier: {} });
+
+      const [{ data: vus }, { data: messages }, { data: historique }] = await Promise.all([
+        supabase.from("application_reads").select("application_id, vu_le").eq("cote", "institution").in("application_id", ids),
+        supabase.from("application_messages").select("application_id, created_at").eq("author_role", "pme").in("application_id", ids),
+        supabase.from("application_status_history").select("application_id, created_at").eq("changed_by", "pme").in("application_id", ids),
+      ]);
+      const evenements = [
+        ...(messages || []).map((m: any) => ({ application_id: m.application_id, date: m.created_at })),
+        ...(historique || []).map((h: any) => ({ application_id: h.application_id, date: h.created_at })),
+      ];
+      res.json({ parDossier: compterNonLus(ids, vus || [], evenements) });
+    } catch (error) {
+      if (error instanceof AppError) {
+        return res.status(error.status).json({ error: error.message });
+      }
+      console.error("❌ Erreur listUnread:", error);
+      res.status(500).json({ error: "Failed to load unread items" });
+    }
+  },
+
+  /**
+   * POST /api/applications/:id/seen
+   * L'institution a consulté le dossier.
+   */
+  markSeen: async (req: AuthRequest, res: Response) => {
+    try {
+      const institution = await getInstitutionForUser(req);
+      const { data: dossier } = await supabase
+        .from("loan_applications")
+        .select("id")
+        .eq("id", req.params.id)
+        .eq("institution_id", institution.id)
+        .in("status", STATUTS_VISIBLES)
+        .maybeSingle();
+      if (!dossier) throw new AppError("Dossier introuvable", 404);
+
+      const { error } = await supabase
+        .from("application_reads")
+        .upsert({ cote: "institution", application_id: dossier.id, vu_le: new Date().toISOString() }, { onConflict: "cote,application_id" });
+      if (error) throw new AppError("Impossible d'enregistrer la consultation", 500);
+
+      res.json({ ok: true });
+    } catch (error) {
+      if (error instanceof AppError) {
+        return res.status(error.status).json({ error: error.message });
+      }
+      console.error("❌ Erreur markSeen:", error);
+      res.status(500).json({ error: "Failed to record view" });
     }
   },
 };

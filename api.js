@@ -343,6 +343,24 @@ export const applicationsAPI = {
     return data.url;
   },
 
+  /** Éléments non lus par dossier, côté institution (messages et étapes de la PME) */
+  getUnread: async (token) => {
+    const response = await fetch(`${API_BASE_URL}/applications/unread`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "Failed to load unread items");
+    return data;
+  },
+
+  /** Enregistre que l'institution a consulté le dossier */
+  markSeen: async (token, id) => {
+    await fetch(`${API_BASE_URL}/applications/${id}/seen`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  },
+
   /** Fait avancer le dossier. La transition est validee cote serveur. */
   updateStatus: async (token, id, status, note = null) => {
     const response = await fetch(`${API_BASE_URL}/applications/${id}/status`, {
