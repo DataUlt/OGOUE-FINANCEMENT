@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <link rel="icon" type="image/png" href="./O-removebg-preview.png"/>
+  <title>Adresse confirmée - OGOUE</title>
+
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" crossorigin href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: "#0088CC",
+            "background-light": "#f6f8f6",
+            "background-dark": "#111712",
+            "text-light": "#0a0c0a",
+            "text-light-muted": "#5c6c60",
+            secondary: "#1E3A5F",
+          },
+          fontFamily: {
+            display: ["Manrope", "sans-serif"],
+          },
+          borderRadius: {
+            DEFAULT: "1rem",
+            lg: "2rem",
+            xl: "3rem",
+            full: "9999px",
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    }
+  </style>
+</head>
+
+<body class="bg-background-light font-display text-text-light antialiased">
+  <div class="relative w-full overflow-x-hidden">
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-50 w-full bg-white border-b border-black/10">
+      <nav class="max-w-7xl mx-auto px-6 lg:px-8 py-2 flex items-center justify-between gap-4">
+        <a href="https://www.ogoue.com" class="flex items-center">
+          <img src="./Logo-ogoue (2).png" alt="OGOUÉ Logo" class="h-20 w-auto">
+        </a>
+
+        <div class="hidden lg:flex items-center gap-7 text-[15px] font-semibold">
+          <a class="text-text-light hover:text-primary transition-colors" href="https://www.ogoue.com/">Accueil</a>
+        </div>
+
+        <div class="hidden lg:flex items-center gap-5">
+          <a href="/institution-register" class="rounded-full px-5 py-3 bg-primary text-white text-[15px] font-bold hover:bg-primary/90 transition-colors">S'inscrire</a>
+        </div>
+
+        <!-- Mobile menu button -->
+        <button id="mobile-menu-btn" class="lg:hidden inline-flex items-center justify-center rounded-full h-10 w-10 border border-black/10 bg-white hover:bg-background-light transition" aria-label="Ouvrir le menu">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      </nav>
+    </header>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden lg:hidden border-t border-black/10 bg-white">
+      <div class="flex flex-col gap-1 px-6 py-4">
+          <a href="https://www.ogoue.com/" class="rounded-xl px-4 py-3 text-[15px] font-semibold text-text-light hover:bg-background-light transition">Accueil</a>
+        <div class="pt-3 flex flex-col gap-2">
+          <a href="/institution-register" class="rounded-full h-12 px-6 inline-flex items-center justify-center bg-primary text-white text-[15px] font-bold">S'inscrire</a>
+        </div>
+      </div>
+    </div>
+
+    <main class="py-16 sm:py-24 px-6">
+      <div class="max-w-md mx-auto text-center">
+
+        <div id="etatChargement" class="hidden">
+          <p class="text-text-light-muted">Confirmation en cours...</p>
+        </div>
+
+        <div id="etatSucces" class="hidden">
+          <span class="material-symbols-outlined text-primary text-5xl">mark_email_read</span>
+          <h1 class="mt-6 text-2xl font-extrabold tracking-tight text-text-light">Adresse e-mail confirmée</h1>
+          <p class="mt-3 text-text-light-muted">Ouverture de votre espace institution...</p>
+        </div>
+
+        <div id="etatNeutre" class="hidden">
+          <span class="material-symbols-outlined text-primary text-5xl">mark_email_unread</span>
+          <h1 class="mt-6 text-2xl font-extrabold tracking-tight text-text-light">Vérifiez votre e-mail</h1>
+          <p class="mt-3 text-text-light-muted">Cliquez sur le lien reçu par e-mail pour activer votre compte. Si vous ne l'avez pas reçu, saisissez votre adresse ci-dessous.</p>
+        </div>
+
+        <div id="etatErreur" class="hidden">
+          <span class="material-symbols-outlined text-primary text-5xl">mark_email_unread</span>
+          <h1 class="mt-6 text-2xl font-extrabold tracking-tight text-text-light">Ce lien n'est plus valide</h1>
+          <p class="mt-3 text-text-light-muted">Le lien a expiré ou il a déjà été utilisé. Saisissez votre adresse ci-dessous pour recevoir le plus récent.</p>
+          <p id="erreurDetail" class="mt-2 text-sm text-red-700"></p>
+        </div>
+
+        <div id="blocRenvoi" class="hidden mt-8 flex flex-col gap-4">
+          <input id="renvoiEmail" type="email" placeholder="votre.email@institution.com" class="rounded-full h-12 px-5 border border-black/10 bg-white text-base text-center" />
+          <button type="button" id="renvoiBtn" class="rounded-full h-12 px-8 inline-flex items-center justify-center bg-secondary text-white text-base font-bold hover:bg-secondary/90 transition">Renvoyer le lien</button>
+          <p id="renvoiStatus" class="text-sm text-text-light-muted"></p>
+        </div>
+
+        <a href="./institution-login" class="mt-6 inline-block text-sm font-bold text-primary hover:underline">Aller à la connexion</a>
+
+      </div>
+    </main>
+
+    <footer class="bg-white border-t border-black/10 px-6 py-8 text-center text-sm text-text-light-muted">
+      © 2026 OGOUE. Tous droits réservés.
+    </footer>
+
+  <script>
+    // Menu mobile
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuBtn?.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+  </script>
+
+  <script type="module">
+    import { authAPI, sessionAPI } from './api.js';
+
+    const ETATS = ['etatChargement', 'etatSucces', 'etatErreur', 'etatNeutre'];
+    function afficher(id, avecRenvoi) {
+      ETATS.forEach((e) => document.getElementById(e).classList.toggle('hidden', e !== id));
+      document.getElementById('blocRenvoi').classList.toggle('hidden', !avecRenvoi);
+    }
+
+    // Supabase renvoie le résultat dans le fragment de l'adresse (#access_token=... ou #error=...)
+    const parametres = new URLSearchParams(window.location.hash.slice(1));
+    history.replaceState(null, '', window.location.pathname);
+
+    async function traiter() {
+      if (parametres.get('error') || parametres.get('error_code')) {
+        afficher('etatErreur', true);
+        document.getElementById('erreurDetail').textContent = parametres.get('error_description') || '';
+        return;
+      }
+      const accessToken = parametres.get('access_token');
+      if (!accessToken) {
+        afficher('etatNeutre', true);
+        return;
+      }
+      afficher('etatChargement', false);
+      try {
+        const reponse = await authAPI.confirmInstitution(accessToken);
+        sessionAPI.setToken(reponse.token);
+        sessionAPI.setUser(reponse.user);
+        if (reponse.institution) sessionAPI.setInstitution(reponse.institution);
+        afficher('etatSucces', false);
+        setTimeout(() => { window.location.href = './institution-tableau-bord'; }, 1500);
+      } catch (e) {
+        afficher('etatErreur', true);
+        document.getElementById('erreurDetail').textContent = e.message;
+      }
+    }
+
+    document.getElementById('renvoiBtn').addEventListener('click', async () => {
+      const email = document.getElementById('renvoiEmail').value.trim();
+      const statut = document.getElementById('renvoiStatus');
+      if (!email) {
+        statut.textContent = "Saisissez l'adresse e-mail de votre compte.";
+        return;
+      }
+      try {
+        await authAPI.resendConfirmation(email);
+        statut.textContent = "Un nouveau lien vient d'être envoyé. Ouvrez le plus récent.";
+      } catch (e) {
+        statut.textContent = "❌ " + e.message;
+      }
+    });
+
+    traiter();
+  </script>
+</body>
+</html>

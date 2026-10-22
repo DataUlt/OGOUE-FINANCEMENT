@@ -42,6 +42,9 @@ export const authAPI = {
         full_name: fullName
       };
       
+      // Origine pour le lien de confirmation (doit figurer dans la liste autorisée du backend)
+      body.redirectOrigin = window.location.origin;
+
       // Add role-specific data
       if (userType === 'institution' && institutionName) {
         body.institution_name = institutionName;
@@ -114,12 +117,39 @@ export const authAPI = {
         throw new Error('Server returned invalid JSON. Backend might be returning an error page.');
       }
       
-      if (!response.ok) throw new Error(data.error || `Login failed (${response.status})`);
+      if (!response.ok) {
+        const erreur = new Error(data.error || `Login failed (${response.status})`);
+        erreur.code = data.code;
+        erreur.email = data.email;
+        throw erreur;
+      }
       return data;
     } catch (error) {
       console.error('❌ Login error details:', error);
       throw error;
     }
+  },
+
+  confirmInstitution: async (accessToken) => {
+    const response = await fetch(`${API_BASE_URL}/auth/confirm-institution`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ accessToken }),
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.error || "Impossible de finaliser la confirmation");
+    return data;
+  },
+
+  resendConfirmation: async (email) => {
+    const response = await fetch(`${API_BASE_URL}/auth/resend-confirmation`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, redirectOrigin: window.location.origin }),
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.error || "Impossible d'envoyer le lien pour le moment");
+    return data;
   },
 
   getCurrentUser: async (token) => {

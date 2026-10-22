@@ -6,6 +6,8 @@ const router = Router();
 
 router.post("/register", authController.register);
 router.post("/login", authController.login);
+router.post("/resend-confirmation", authController.resendConfirmation);
+router.post("/confirm-institution", authController.confirmerInstitution);
 router.get("/me", authMiddleware, authController.getCurrentUser);
 router.post("/logout", authMiddleware, authController.logout);
 router.post("/upload-logo", authController.uploadLogo);

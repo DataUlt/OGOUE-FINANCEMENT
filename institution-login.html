@@ -261,6 +261,23 @@
       console.error('Login error:', error);
       errorMessage.textContent = `❌ ${error.message}`;
       errorMessage.classList.remove('hidden');
+      if (error.code === 'EMAIL_NON_CONFIRME') {
+        const renvoi = document.createElement('button');
+        renvoi.type = 'button';
+        renvoi.className = 'mt-3 block underline font-semibold';
+        renvoi.textContent = 'Renvoyer le lien de confirmation';
+        renvoi.addEventListener('click', async () => {
+          renvoi.disabled = true;
+          try {
+            await authAPI.resendConfirmation(error.email || email);
+            renvoi.textContent = 'Lien renvoyé';
+          } catch (e) {
+            renvoi.disabled = false;
+            errorMessage.textContent = `❌ ${e.message}`;
+          }
+        });
+        errorMessage.appendChild(renvoi);
+      }
       submitBtn.disabled = false;
       submitBtn.innerHTML = 'Se connecter';
     }

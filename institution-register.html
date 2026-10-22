@@ -299,6 +299,21 @@
               </p>
             </div>
           </form>
+
+          <!-- Vérification de l'adresse, affichée après l'inscription -->
+          <div id="verificationPanel" class="hidden text-center py-8 sm:py-12">
+            <span class="material-symbols-outlined text-primary text-5xl">mark_email_unread</span>
+            <h2 class="mt-5 text-2xl font-extrabold tracking-tight text-text-light">Vérifiez votre e-mail</h2>
+            <p class="mt-3 text-text-light-muted">
+              Nous avons envoyé un lien de confirmation à <span id="verificationEmail" class="font-bold text-text-light"></span>.
+              Cliquez dessus pour activer votre compte, puis connectez-vous.
+            </p>
+            <button type="button" id="renvoiBtn" class="mt-8 rounded-full h-12 px-8 inline-flex items-center justify-center bg-secondary text-white text-base font-bold hover:bg-secondary/90 transition">
+              Renvoyer le lien
+            </button>
+            <p id="renvoiStatus" class="mt-3 text-sm text-text-light-muted"></p>
+            <a href="./institution-login" class="mt-6 inline-block text-sm font-bold text-primary hover:underline">Aller à la connexion</a>
+          </div>
         </div>
       </section>
 
@@ -487,6 +502,30 @@
         );
 
         console.log('✅ Registration response received:', data);
+
+        if (data.needsConfirmation) {
+          // Le formulaire laisse la place au panneau de vérification
+          document.getElementById('registerForm').classList.add('hidden');
+          errorMessage.classList.add('hidden');
+          successMessage.classList.add('hidden');
+          document.getElementById('verificationEmail').textContent = email;
+          document.getElementById('verificationPanel').classList.remove('hidden');
+          const renvoiBtn = document.getElementById('renvoiBtn');
+          const renvoiStatus = document.getElementById('renvoiStatus');
+          renvoiBtn.addEventListener('click', async () => {
+            renvoiBtn.disabled = true;
+            renvoiStatus.textContent = 'Envoi en cours...';
+            try {
+              await authAPI.resendConfirmation(email);
+              renvoiStatus.textContent = "Un nouveau lien vient d'être envoyé.";
+            } catch (e) {
+              renvoiStatus.textContent = `❌ ${e.message}`;
+            } finally {
+              renvoiBtn.disabled = false;
+            }
+          });
+          return;
+        }
 
         sessionAPI.setToken(data.token);
         sessionAPI.setUser(data.user);
