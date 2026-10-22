@@ -147,6 +147,20 @@
             }
         }
     </style>
+<style>
+  @media (max-width: 767.98px) {
+    table.cartes-mobile, table.cartes-mobile tbody { display: block; width: 100%; }
+    table.cartes-mobile thead { display: none; }
+    table.cartes-mobile tr { display: flex; flex-wrap: wrap; gap: 6px 12px; padding: 14px 16px; }
+    table.cartes-mobile td { display: block; padding: 0 !important; text-align: left !important; min-width: 0; }
+    table.cartes-mobile td[data-label]::before {
+      content: attr(data-label); display: block; font-size: 11px; color: #5c6c60; margin-bottom: 2px;
+    }
+    table.cartes-mobile td:first-child { flex: 0 0 100%; }
+    table.cartes-mobile td:not(:first-child) { flex: 1 1 40%; }
+    table.cartes-mobile td[colspan] { flex: 0 0 100%; text-align: center !important; }
+  }
+</style>
 </head>
 <body class="bg-background-light text-text-light font-display overflow-hidden">
 <!-- Mobile Header with Hamburger -->
@@ -218,7 +232,7 @@
 <a href="institution-liste-produits" class="text-primary text-sm font-semibold hover:underline">Gérer les produits</a>
 </div>
 <div class="overflow-x-auto rounded-b-lg">
-<table class="w-full text-left border-collapse">
+<table class="cartes-mobile w-full text-left border-collapse">
 <thead class="bg-background-light">
 <tr>
 <th class="px-6 py-4 text-xs font-semibold uppercase text-text-light-muted tracking-wider">Nom du Produit</th>
@@ -377,14 +391,14 @@ function renderProducts(products) {
 
     return `
       <tr class="hover:bg-background-light transition-colors">
-        <td class="px-6 py-4">
+        <td data-label="Produit" class="px-6 py-4">
           <p class="font-semibold text-text-light text-sm">${escapeHtml(product.name)}</p>
           <p class="text-xs text-text-light-muted">${escapeHtml(product.objective || '')}</p>
         </td>
-        <td class="px-6 py-4 text-sm text-text-light">${escapeHtml(product.typology || '-')}</td>
-        <td class="px-6 py-4 text-sm text-text-light whitespace-nowrap">${formatMontant(product.amount_min, product.amount_max)}</td>
-        <td class="px-6 py-4 text-sm text-text-light text-center whitespace-nowrap">${formatDuree(product.duration_min_months, product.duration_max_months)}</td>
-        <td class="px-6 py-4 text-sm text-text-light font-medium text-center">${nbDocs}</td>
+        <td data-label="Typologie" class="px-6 py-4 text-sm text-text-light">${escapeHtml(product.typology || '-')}</td>
+        <td data-label="Montant" class="px-6 py-4 text-sm text-text-light whitespace-nowrap">${formatMontant(product.amount_min, product.amount_max)}</td>
+        <td data-label="Durée" class="px-6 py-4 text-sm text-text-light text-center whitespace-nowrap">${formatDuree(product.duration_min_months, product.duration_max_months)}</td>
+        <td data-label="Pièces exigées" class="px-6 py-4 text-sm text-text-light font-medium text-center">${nbDocs}</td>
       </tr>
     `;
   }).join('');

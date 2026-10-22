@@ -142,6 +142,20 @@
             }
         }
     </style>
+<style>
+  @media (max-width: 767.98px) {
+    table.cartes-mobile, table.cartes-mobile tbody { display: block; width: 100%; min-width: 0; }
+    table.cartes-mobile thead { display: none; }
+    table.cartes-mobile tr { display: flex; flex-wrap: wrap; gap: 8px 12px; padding: 14px 16px; border-bottom: 1px solid rgba(0,0,0,.08); }
+    table.cartes-mobile td { display: block; padding: 0 !important; text-align: left !important; min-width: 0; }
+    table.cartes-mobile td:first-child { flex: 0 0 100%; }
+    table.cartes-mobile td[data-label]::before { content: attr(data-label); display: block; font-size: 11px; color: #5c6c60; margin-bottom: 2px; }
+    table.cartes-mobile td[data-label] { flex: 1 1 40%; }
+    table.cartes-mobile td[data-actions] { flex: 0 0 100%; }
+    table.cartes-mobile td[data-actions] > div { justify-content: flex-end !important; }
+    table.cartes-mobile td[colspan] { flex: 0 0 100%; text-align: center !important; }
+  }
+</style>
 </head>
 <body class="bg-background-light text-text-light font-display overflow-hidden">
 <!-- Mobile Header -->
@@ -210,7 +224,7 @@
 </div>
 
 <div class="border border-black/10 rounded-lg bg-white overflow-x-auto">
-<table class="w-full min-w-full">
+<table class="cartes-mobile w-full min-w-full">
 <thead>
 <tr class="border-b border-black/10 bg-background-light">
 <th class="text-left text-xs font-semibold text-text-light px-4 py-3">Nom du Produit</th>
@@ -365,25 +379,25 @@ function displayProducts(productsToDisplay) {
             <p class="font-semibold text-text-light text-sm">${product.name}</p>
           </div>
         </td>
-        <td class="px-4 py-3">
+        <td data-label="Cible" class="px-4 py-3">
           <p class="text-sm text-text-light-muted">${product.target || 'N/A'}</p>
         </td>
-        <td class="px-4 py-3">
+        <td data-label="Objectif" class="px-4 py-3">
           <p class="text-sm text-text-light-muted">${product.objective || 'N/A'}</p>
         </td>
-        <td class="px-4 py-3">
+        <td data-label="Montants" class="px-4 py-3">
           <p class="text-sm text-text-light font-medium whitespace-nowrap">${montants}</p>
         </td>
-        <td class="px-4 py-3">
+        <td data-label="Durée" class="px-4 py-3">
           <p class="text-sm text-text-light-muted whitespace-nowrap">${duree}</p>
         </td>
-        <td class="px-4 py-3">
+        <td data-label="Taux d'Intérêt" class="px-4 py-3">
           <p class="text-sm text-text-light-muted">${product.interest_type || 'N/A'}</p>
         </td>
-        <td class="px-4 py-3">
+        <td data-label="Typologie" class="px-4 py-3">
           <p class="text-sm text-text-light-muted">${product.typology || 'N/A'}</p>
         </td>
-        <td class="px-4 py-3">
+        <td data-label="Documents Requis" class="px-4 py-3">
           <div class="flex flex-col gap-1.5">
             ${product.product_required_documents && product.product_required_documents.length > 0 
               ? product.product_required_documents.map(doc => `
@@ -396,7 +410,7 @@ function displayProducts(productsToDisplay) {
             }
           </div>
         </td>
-        <td class="px-4 py-3 text-center">
+        <td data-actions="1" class="px-4 py-3 text-center">
           <div class="flex justify-center gap-1">
             <a href="institution-modification-produit?id=${product.id}" class="p-1.5 hover:bg-blue-500/10 rounded transition-colors inline-flex items-center justify-center" title="Modifier">
               <span class="material-symbols-outlined text-sm text-blue-500">edit</span>
