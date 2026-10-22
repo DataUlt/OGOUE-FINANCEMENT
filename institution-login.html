@@ -52,45 +52,35 @@
   <div class="relative w-full overflow-x-hidden">
 
     <!-- HEADER -->
-    <header class="sticky top-0 z-50 w-full bg-background-light/80 backdrop-blur-md">
-      <div class="max-w-7xl mx-auto px-6 lg:px-8">
-        <div class="flex items-center justify-between h-20 border-b border-black/10">
-          <div class="flex items-center gap-4">
-            <img src="./Logo-ogoue (2).png" alt="OGOUÉ Logo" class="h-28 w-auto">
-          </div>
+    <header class="sticky top-0 z-50 w-full bg-white border-b border-black/10">
+      <nav class="max-w-7xl mx-auto px-6 lg:px-8 py-2 flex items-center justify-between gap-4">
+        <a href="https://www.ogoue.com" class="flex items-center">
+          <img src="./Logo-ogoue (2).png" alt="OGOUÉ Logo" class="h-20 w-auto">
+        </a>
 
-          <nav class="hidden md:flex items-center gap-8">
-            <a class="text-text-light-muted hover:text-text-light text-sm font-medium transition-colors" href="https://www.ogoue.com">Accueil</a>
-            <a class="text-text-light-muted hover:text-text-light text-sm font-medium transition-colors" href="https://www.ogoue.com#features">Fonctionnalités</a>
-            <a class="text-text-light-muted hover:text-text-light text-sm font-medium transition-colors" href="https://www.ogoue.com#benefits">Avantages</a>
-            <a class="text-text-light-muted hover:text-text-light text-sm font-medium transition-colors" href="https://www.ogoue.com/apropos">À propos</a>
-          </nav>
-
-          <!-- Mobile menu button -->
-          <button id="mobile-menu-btn" class="md:hidden text-text-light">
-            <span class="material-symbols-outlined text-2xl">menu</span>
-          </button>
-
-          <div class="hidden md:flex items-center gap-3">
-            <a href="/institution-register"
-               class="flex min-w-[84px] items-center justify-center overflow-hidden rounded-full h-10 px-6 bg-primary text-background-dark text-sm font-bold tracking-wide hover:bg-opacity-90 transition-colors">
-              <span class="truncate">S'inscrire</span>
-            </a>
-          </div>
+        <div class="hidden lg:flex items-center gap-7 text-[15px] font-semibold">
+          <a class="text-text-light hover:text-primary transition-colors" href="https://www.ogoue.com/">Accueil</a>
         </div>
-      </div>
+
+        <div class="hidden lg:flex items-center gap-5">
+          <a href="/institution-register" class="rounded-full px-5 py-3 bg-primary text-white text-[15px] font-bold hover:bg-primary/90 transition-colors">S'inscrire</a>
+        </div>
+
+        <!-- Mobile menu button -->
+        <button id="mobile-menu-btn" class="lg:hidden inline-flex items-center justify-center rounded-full h-10 w-10 border border-black/10 bg-white hover:bg-background-light transition" aria-label="Ouvrir le menu">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      </nav>
     </header>
 
     <!-- Mobile menu -->
-    <div id="mobile-menu" class="hidden fixed inset-0 top-20 z-40 md:hidden bg-background-light border-t border-black/10">
-      <nav class="flex flex-col p-6 space-y-4">
-        <a href="https://www.ogoue.com" class="text-text-light font-medium hover:text-primary transition-colors">Accueil</a>
-        <a href="https://www.ogoue.com#features" class="text-text-light font-medium hover:text-primary transition-colors">Fonctionnalités</a>
-        <a href="https://www.ogoue.com#benefits" class="text-text-light font-medium hover:text-primary transition-colors">Avantages</a>
-        <a href="https://www.ogoue.com/apropos" class="text-text-light font-medium hover:text-primary transition-colors">À propos</a>
-        <hr class="border-black/10" />
-        <a href="/institution-register" class="text-primary font-bold hover:text-text-light transition-colors">S'inscrire</a>
-      </nav>
+    <div id="mobile-menu" class="hidden lg:hidden border-t border-black/10 bg-white">
+      <div class="flex flex-col gap-1 px-6 py-4">
+          <a href="https://www.ogoue.com/" class="rounded-xl px-4 py-3 text-[15px] font-semibold text-text-light hover:bg-background-light transition">Accueil</a>
+        <div class="pt-3 flex flex-col gap-2">
+          <a href="/institution-register" class="rounded-full h-12 px-6 inline-flex items-center justify-center bg-primary text-white text-[15px] font-bold">S'inscrire</a>
+        </div>
+      </div>
     </div>
 
     <main>
